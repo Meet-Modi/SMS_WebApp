@@ -6,45 +6,40 @@ class Employee{
 	private $table_name = "employee";
 
 	//object properties
-	public $first_name;
-	public $last_name;
-	public $user_id;
+	public $userid;
+	public $firstname;
+	public $lastname;
 	public $password;
 	public $admin;
-	public $Token;
 
 	public function __construct($db){
     	$this->conn = $db;
     }
-
 
     // create new user record
 	function create(){
 	 
 	    // insert query
 	    $query = "INSERT INTO " . $this->table_name . "
-            SET
-                first_name = :first_name,
-                last_name = :last_name,
-                user_id = :user_id,
-                password = :password,
-                admin = :admin";
- 
+	            SET
+	            	userid = :userid;
+	                firstname = :firstname,
+	                lastname = :lastname,
+	                password = :password";
+	 
 	    // prepare the query
 	    $stmt = $this->conn->prepare($query);
-	 	echo($this->first_name);
+	 
 	    // sanitize
-	    $this->first_name=htmlspecialchars(strip_tags($this->first_name));
-	    $this->last_name=htmlspecialchars(strip_tags($this->last_name));
-	    $this->user_id=htmlspecialchars(strip_tags($this->user_id));
+	    $this->firstname=htmlspecialchars(strip_tags($this->firstname));
+	    $this->lastname=htmlspecialchars(strip_tags($this->lastname));
+	    $this->email=htmlspecialchars(strip_tags($this->email));
 	    $this->password=htmlspecialchars(strip_tags($this->password));
-	    $this->admin=htmlspecialchars(strip_tags($this->admin));
-	 	
+	 
 	    // bind the values
-	    $stmt->bindParam(':firstname', $this->first_name);
-	    $stmt->bindParam(':lastname', $this->last_name);
-	    $stmt->bindParam(':email', $this->user_id);
-	    $stmt->bindParam(':admin', $this->admin);
+	    $stmt->bindParam(':firstname', $this->firstname);
+	    $stmt->bindParam(':lastname', $this->lastname);
+	    $stmt->bindParam(':email', $this->email);
 	 
 	    // hash the password before saving to database
 	    $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
@@ -57,7 +52,6 @@ class Employee{
 	 
 	    return false;
 	}
-
 
 
 }
