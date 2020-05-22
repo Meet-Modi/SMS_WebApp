@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 class Employee{
 
 	//database connection and table name
@@ -19,38 +21,25 @@ class Employee{
     // create new user record
 	function create(){
 	 
-	    // insert query
-	    $query = "INSERT INTO " . $this->table_name . "
-	            SET
-	            	userid = :userid;
-	                firstname = :firstname,
-	                lastname = :lastname,
-	                password = :password";
-	 
-	    // prepare the query
-	    $stmt = $this->conn->prepare($query);
-	 
-	    // sanitize
+	    $this->userid=htmlspecialchars(strip_tags($this->userid));
 	    $this->firstname=htmlspecialchars(strip_tags($this->firstname));
 	    $this->lastname=htmlspecialchars(strip_tags($this->lastname));
-	    $this->email=htmlspecialchars(strip_tags($this->email));
 	    $this->password=htmlspecialchars(strip_tags($this->password));
-	 
-	    // bind the values
-	    $stmt->bindParam(':firstname', $this->firstname);
-	    $stmt->bindParam(':lastname', $this->lastname);
-	    $stmt->bindParam(':email', $this->email);
-	 
-	    // hash the password before saving to database
+	 	$this->admin=htmlspecialchars(strip_tags($this->admin));
+
 	    $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
-	    $stmt->bindParam(':password', $password_hash);
-	 
-	    // execute the query, also check if query was successful
-	    if($stmt->execute()){
-	        return true;
-	    }
-	 
-	    return false;
+	 	
+		$query = "INSERT INTO employee ";
+		$query .= "(userid, firstname, lastname, password, admin) VALUES";
+		$query .= "('".$this->userid."','".$this->firstname."','".$this->lastname."','".$this->password."',".$this->admin.");";
+		
+		if ($this->conn->query($query) === TRUE) {
+  			return true;
+		} else {
+  			echo "Error: " . $query . "<br>" . $this->conn->error;
+  			return false;
+		}
+
 	}
 
 
