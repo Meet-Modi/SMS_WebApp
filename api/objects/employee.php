@@ -31,7 +31,7 @@ class Employee{
 	 	
 		$query = "INSERT INTO employee ";
 		$query .= "(userid, firstname, lastname, password, admin) VALUES";
-		$query .= "('".$this->userid."','".$this->firstname."','".$this->lastname."','".$this->password."',".$this->admin.");";
+		$query .= "('".$this->userid."','".$this->firstname."','".$this->lastname."','".$password_hash."',".$this->admin.");";
 		
 		if ($this->conn->query($query) === TRUE) {
   			return true;
@@ -40,6 +40,59 @@ class Employee{
   			return false;
 		}
 
+	}
+
+	// check if given email exist in the database
+	function useridExists(){
+	
+		// query to check if email exists
+		$this->userid=htmlspecialchars(strip_tags($this->userid));
+		
+	$query = "SELECT firstname, lastname, admin, password FROM " . $this->table_name . " WHERE userid = '". $this->userid ."'";
+		// prepare the query
+		$result = $this->conn->query($query);
+
+		if ($result->num_rows > 0) {
+			$row = $result->fetch_assoc();
+			$this->firstname = $row['firstname'];
+			$this->lastname = $row['lastname'];
+			$this->password = $row['password'];
+			$this->admin = $row['admin'];
+			return true;
+		} else {
+			return false;
+		}
+		
+	/*	
+		$stmt = $this->conn->prepare( $query );
+	
+		// sanitize
+		
+	
+		// bind given email value
+		$stmt->bindParam(1, $this->userid);
+	
+		// execute the query
+		$stmt->execute();
+	
+		// get number of rows
+		$num = $stmt->rowCount();
+	
+		// if email exists, assign values to object properties for easy access and use for php sessions
+		if($num>0){
+	
+			// get record details / values
+			$row = $stmt->fetch(PDO::FETCH_ASSOC);
+	
+			// assign values to object properties
+			
+	
+			// return true because email exists in the database
+			return true;
+		}
+	
+		// return false if email does not exist in the database
+		return false;*/
 	}
 
 
