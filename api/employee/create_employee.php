@@ -27,15 +27,14 @@ $user->userid = $data->userid;
 $user->firstname = $data->firstname;
 $user->lastname = $data->lastname;
 $user->password = $data->password;
-$user->admin = $data->admin;
 
 // create the user
 if(
     !empty($user->firstname) &&
     !empty($user->userid) &&
     !empty($user->password) &&
-    !empty($user->admin) &&
-    $user->create()
+    !empty($data->admin_password) &&
+    $user->create($data->admin_password)
 ){
  
     // set response code

@@ -43,8 +43,7 @@ if($userid_exists && password_verify($data->password, $user->password)){
        "data" => array(
            "userid" => $user->userid,
            "firstname" => $user->firstname,
-           "lastname" => $user->lastname,
-           "admin" => $user->admin
+           "lastname" => $user->lastname
        )
     );
  

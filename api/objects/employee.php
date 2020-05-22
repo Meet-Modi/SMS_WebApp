@@ -12,32 +12,40 @@ class Employee{
 	public $firstname;
 	public $lastname;
 	public $password;
-	public $admin;
 
 	public function __construct($db){
     	$this->conn = $db;
     }
 
     // create new user record
-	function create(){
+	function create($admin_password){
 	 
 	    $this->userid=htmlspecialchars(strip_tags($this->userid));
 	    $this->firstname=htmlspecialchars(strip_tags($this->firstname));
 	    $this->lastname=htmlspecialchars(strip_tags($this->lastname));
 	    $this->password=htmlspecialchars(strip_tags($this->password));
-	 	$this->admin=htmlspecialchars(strip_tags($this->admin));
-
-	    $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
-	 	
-		$query = "INSERT INTO employee ";
-		$query .= "(userid, firstname, lastname, password, admin) VALUES";
-		$query .= "('".$this->userid."','".$this->firstname."','".$this->lastname."','".$password_hash."',".$this->admin.");";
+	 	$password_hash = password_hash($this->password, PASSWORD_BCRYPT);
 		
-		if ($this->conn->query($query) === TRUE) {
-  			return true;
+		$query1 = "SELECT admin_id FROM admin WHERE password ='".$admin_password."'";
+		// prepare the query
+		$result = $this->conn->query($query1);
+
+		if ($result->num_rows > 0) {
+			
+			$query2 = "INSERT INTO employee ";
+			$query2 .= "(userid, firstname, lastname, password) VALUES";
+			$query2 .= "('".$this->userid."','".$this->firstname."','".$this->lastname."','".$password_hash."');";
+			
+			if ($this->conn->query($query2) === TRUE) {
+				return true;
+			} else {
+				//echo "Error: " . $query2 . "<br>" . $this->conn->error;
+				return false;
+			} 
+			
 		} else {
-  			echo "Error: " . $query . "<br>" . $this->conn->error;
-  			return false;
+			//echo "Error: Admin password is wrong. <br>";
+			return false;
 		}
 
 	}
@@ -48,7 +56,7 @@ class Employee{
 		// query to check if email exists
 		$this->userid=htmlspecialchars(strip_tags($this->userid));
 		
-	$query = "SELECT firstname, lastname, admin, password FROM " . $this->table_name . " WHERE userid = '". $this->userid ."'";
+		$query = "SELECT firstname, lastname, password FROM " . $this->table_name . " WHERE userid = '". $this->userid ."'";
 		// prepare the query
 		$result = $this->conn->query($query);
 
@@ -57,44 +65,12 @@ class Employee{
 			$this->firstname = $row['firstname'];
 			$this->lastname = $row['lastname'];
 			$this->password = $row['password'];
-			$this->admin = $row['admin'];
 			return true;
 		} else {
 			return false;
 		}
 		
-	/*	
-		$stmt = $this->conn->prepare( $query );
-	
-		// sanitize
-		
-	
-		// bind given email value
-		$stmt->bindParam(1, $this->userid);
-	
-		// execute the query
-		$stmt->execute();
-	
-		// get number of rows
-		$num = $stmt->rowCount();
-	
-		// if email exists, assign values to object properties for easy access and use for php sessions
-		if($num>0){
-	
-			// get record details / values
-			$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	
-			// assign values to object properties
-			
-	
-			// return true because email exists in the database
-			return true;
-		}
-	
-		// return false if email does not exist in the database
-		return false;*/
 	}
-
 
 }
 
