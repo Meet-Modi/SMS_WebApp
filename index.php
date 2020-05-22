@@ -58,7 +58,7 @@
 					</div>
 
 					<div class="text-center p-t-12">
-						<a class="txt2" href="views/Signup/signup.html">
+						<a class="txt2" href="views/Signup/signup.php">
 							Sign Up
 							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
 						</a>

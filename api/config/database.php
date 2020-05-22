@@ -17,21 +17,7 @@ class Database{
         {
             die("Connection failed: " . $this->conn->connect_error);
         }
-        /*if (!defined('PDO::ATTR_DRIVER_NAME')) {
-            echo 'PDO is unavailable<br/>';
-        }
-        elseif (defined('PDO::ATTR_DRIVER_NAME')) {
-            echo 'PDO is available<br/>';
-        }
-
-        try{
-            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
-            echo("connection established");
-        }catch(PDOException $exception){
-            echo "Connection error: " . $exception->getMessage();
-        }
-        */
-
+       
         return $this->conn;
     }    
 }
