@@ -1,5 +1,18 @@
 
+html,
+body {
+    display: table;
+    height: 100%;
+    margin: 0;
+    width: 100%;
+}
 
+#header,
+#footer {
+    background: #ff0000;
+    display: table-row;
+    height: 11px;
+}
 
 
 /*//////////////////////////////////////////////////////////////////
