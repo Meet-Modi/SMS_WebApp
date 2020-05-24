@@ -22,23 +22,23 @@
 <!--===============================================================================================-->
 </head>
 <body>
-
-	<div id="response"></div>
-	<div id="content">
-		<div class="limiter">
+            <div id="response"></div>
+            <div id="content">
+           
+   			<div class="limiter">
 				<div class="container-login100">
 					<div class="wrap-login100">
 						<div class="login100-pic js-tilt" data-tilt>
 							<img src="images/img-01.png" alt="IMG">
 						</div>
 
-						<form class="login100-form validate-form">
+						<form class="login100-form validate-form" id='login_form'>
 							<span class="login100-form-title">
 								Employee Login
 							</span>
 
 							<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-								<input class="input100" type="text" name="email" placeholder="Email">
+								<input class="input100" type="text" name="userid" placeholder="Email">
 								<span class="focus-input100"></span>
 								<span class="symbol-input100">
 									<i class="fa fa-envelope" aria-hidden="true"></i>
@@ -46,7 +46,7 @@
 							</div>
 
 							<div class="wrap-input100 validate-input" data-validate = "Password is required">
-								<input class="input100" type="password" name="pass" placeholder="Password">
+								<input class="input100" type="password" name="password" placeholder="Password">
 								<span class="focus-input100"></span>
 								<span class="symbol-input100">
 									<i class="fa fa-lock" aria-hidden="true"></i>
@@ -70,7 +70,7 @@
 				</div>
 			</div>
 	        
-	</div>
+            </div>
 <!--===============================================================================================-->	
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
@@ -103,6 +103,7 @@ $(document).ready(function(){
     $(document).on('click', '#sign_up', function(){
  
         var html = `
+          
 			<div class="limiter">
 				<div class="container-login100">
 					<div class="wrap-login100">
@@ -110,29 +111,30 @@ $(document).ready(function(){
 							<img src="images/img-01.png" alt="IMG">
 						</div>
 
-						<form class="login100-form validate-form" action="/action.php">
+						<form class="login100-form validate-form" id='sign_up_form'>
 							<span class="login100-form-title">
 								Employee Sign Up
 							</span>
 
-							<div class="wrap-input100 validate-input" data-validate = "Valid name is required: example">
-								<input class="input100" type="text" name="fname" placeholder="First Name">
-							</div>
-
-							<div class="wrap-input100 validate-input" data-validate = "Valid name is required: example">
-								<input class="input100" type="text" name="lname" placeholder="Last Name">
-							</div>
-
 							<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-								<input class="input100" type="text" name="email" placeholder="User Name">
+								<input class="input100" type="text" name="userid" placeholder="User Name">
 								<span class="focus-input100"></span>
 								<span class="symbol-input100">
 									<i class="fa fa-envelope" aria-hidden="true"></i>
 								</span>
 							</div>
 
+							<div class="wrap-input100 validate-input" data-validate = "Valid name is required: example">
+								<input class="input100" type="text" name="firstname" placeholder="First Name">
+							</div>
+
+							<div class="wrap-input100 validate-input" data-validate = "Valid name is required: example">
+								<input class="input100" type="text" name="lastname" placeholder="Last Name">
+							</div>
+
+							
 							<div class="wrap-input100 validate-input" data-validate = "Password is required">
-								<input class="input100" type="password" name="pass" placeholder="Password">
+								<input class="input100" type="password" name="password" placeholder="Password">
 								<span class="focus-input100"></span>
 								<span class="symbol-input100">
 									<i class="fa fa-lock" aria-hidden="true"></i>
@@ -140,7 +142,7 @@ $(document).ready(function(){
 							</div>
 
 							<div class="wrap-input100 validate-input" data-validate = "Password is required">
-								<input class="input100" type="password" name="pass" placeholder="Admin Password">
+								<input class="input100" type="password" name="admin_password" placeholder="Admin Password">
 								<span class="focus-input100"></span>
 								<span class="symbol-input100">
 									<i class="fa fa-lock" aria-hidden="true"></i>
@@ -173,10 +175,11 @@ $(document).ready(function(){
 	    // get form data
 	    var sign_up_form=$(this);
 	    var form_data=JSON.stringify(sign_up_form.serializeObject());
-	 
+	 	$('#response').html(form_data);
+	    
 	    // submit form data to api
 	    $.ajax({
-	        url: "api/create_employee.php",
+	        url: "api/employee/create_employee.php",
 	        type : "POST",
 	        contentType : 'application/json',
 	        data : form_data,
@@ -205,10 +208,10 @@ $(document).ready(function(){
 	    // get form data
 	    var login_form=$(this);
 	    var form_data=JSON.stringify(login_form.serializeObject());
-	 
+	 	//$('#response').html(form_data);
 	    // submit form data to api
 		$.ajax({
-		    url: "api/login.php",
+		    url: "api/employee/login_employee.php",
 		    type : "POST",
 		    contentType : 'application/json',
 		    data : form_data,
@@ -253,13 +256,13 @@ $(document).ready(function(){
 							<img src="images/img-01.png" alt="IMG">
 						</div>
 
-						<form class="login100-form validate-form">
+						<form class="login100-form validate-form" id='login_form'>
 							<span class="login100-form-title">
 								Employee Login
 							</span>
 
 							<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-								<input class="input100" type="text" name="email" placeholder="Email">
+								<input class="input100" type="text" name="userid" placeholder="Email">
 								<span class="focus-input100"></span>
 								<span class="symbol-input100">
 									<i class="fa fa-envelope" aria-hidden="true"></i>
@@ -267,7 +270,7 @@ $(document).ready(function(){
 							</div>
 
 							<div class="wrap-input100 validate-input" data-validate = "Password is required">
-								<input class="input100" type="password" name="pass" placeholder="Password">
+								<input class="input100" type="password" name="password" placeholder="Password">
 								<span class="focus-input100"></span>
 								<span class="symbol-input100">
 									<i class="fa fa-lock" aria-hidden="true"></i>
@@ -318,9 +321,10 @@ $(document).ready(function(){
 	 
 	    // validate jwt to verify access
 	    var jwt = getCookie('jwt');
-	    $.post("api/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
+	    $.post("api/employee/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
 	 
 	        // home page html will be here
+	        window.location = "http://localhost/SMS_WebApp/views/Dashboard/index.html";
 	    })
 	 
 	    // show login page on error will be here
@@ -336,7 +340,7 @@ $(document).ready(function(){
 	        while (c.charAt(0) == ' '){
 	            c = c.substring(1);
 	        }
-	 
+	  
 	        if (c.indexOf(name) == 0) {
 	            return c.substring(name.length, c.length);
 	        }
