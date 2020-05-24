@@ -109,6 +109,36 @@ class Customer{
 		return json_encode($json_output);
 	}
 
+	function updateCustomer() {
+
+		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
+		$this->billing_name=htmlspecialchars(strip_tags($this->billing_name));
+		$this->contact_fname=htmlspecialchars(strip_tags($this->contact_fname));
+		$this->contact_lname=htmlspecialchars(strip_tags($this->contact_lname));
+		$this->contact_no1=htmlspecialchars(strip_tags($this->contact_no1));
+		$this->contact_no2=htmlspecialchars(strip_tags($this->contact_no2));
+		$this->address=htmlspecialchars(strip_tags($this->address));
+		$this->city=htmlspecialchars(strip_tags($this->city));
+		$this->state=htmlspecialchars(strip_tags($this->state));
+		$this->pincode=htmlspecialchars(strip_tags($this->pincode));
+		$this->email=htmlspecialchars(strip_tags($this->email));
+
+		$query = "UPDATE ". $this->table_name ;
+		$query .= " SET billingname = '". $this->billing_name ."', firstname = '". $this->contact_fname ."', lastname = '". $this->contact_lname ."',";
+		$query .= " contactno1 = '". $this->contact_no1 ."', contactno2 = '". $this->contact_no2 ."', address = '". $this->address ."',";
+		$query .= " city = '". $this->city ."', state = '". $this->state ."', pincode = '". $this->pincode ."', email = '". $this->email ."'";
+		$query .= " WHERE customerid = '". $this->customer_id ."'";
+		
+		// echo($query);
+
+		if ($this->conn->query($query) === TRUE) {
+			//echo("3rd query executed");
+			return true;
+		} else {
+			//echo "Error: " . $query2 . "<br>" . $this->conn->error;
+			return false;
+		} 
+	}
 }
 
 
