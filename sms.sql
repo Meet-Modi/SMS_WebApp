@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2020 at 07:48 PM
+-- Generation Time: May 24, 2020 at 08:25 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -39,6 +39,34 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`admin_id`, `password`) VALUES
 ('admin', 'sde@123$');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `amc`
+--
+
+CREATE TABLE `amc` (
+  `amcid` varchar(20) NOT NULL,
+  `customerid` varchar(20) NOT NULL,
+  `amctypeid` varchar(5) NOT NULL,
+  `fromdate` date NOT NULL,
+  `period` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `totalservices` int(11) NOT NULL,
+  `amount` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `amc_type`
+--
+
+CREATE TABLE `amc_type` (
+  `amctypeid` varchar(5) NOT NULL,
+  `amctype` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -159,6 +187,12 @@ INSERT INTO `place` (`placeid`, `placetype`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `amc`
+--
+ALTER TABLE `amc`
+  ADD PRIMARY KEY (`amcid`);
 
 --
 -- Indexes for table `complaint`
