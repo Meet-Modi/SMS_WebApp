@@ -249,6 +249,7 @@ $(document).ready(function(){
 	 
 	    // login page html
 	    var html = `
+        
    			<div class="limiter">
 				<div class="container-login100">
 					<div class="wrap-login100">
@@ -322,14 +323,14 @@ $(document).ready(function(){
 	    // validate jwt to verify access
 	    var jwt = getCookie('jwt');
 	    $.post("api/employee/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
-	 
-	        // home page html will be here
-	        window.location = "http://localhost/SMS_WebApp/views/Dashboard/index.html";
+			window.location = 'http://localhost/SMS_WebApp/views/Dashboard/index.html?jwt=' + jwt;
 	    })
 	 
 	    // show login page on error will be here
 	}
 	 
+	
+
 	// get or read cookie
 	function getCookie(cname){
 	    var name = cname + "=";
