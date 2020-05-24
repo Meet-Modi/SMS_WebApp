@@ -34,7 +34,28 @@
 <!--===============================================================================================-->
 </head>
 <body class="animsition">
-	
+<?php
+$jwt_token = $_GET["jwt"];
+$myObj = (object)array();
+$myObj->jwt = $jwt_token;
+$myJSON = json_encode($myObj);
+
+$ch = curl_init();
+
+curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/employee/validate_token.php" );
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+curl_setopt($ch, CURLOPT_POST,           1 );
+curl_setopt($ch, CURLOPT_POSTFIELDS,     $myJSON ); 
+curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+
+$result=curl_exec ($ch);
+$data = json_decode($result);
+$userid = $data->data->userid;
+$firstname = $data->data->firstname;
+$lastname = $data->data->lastname;
+
+?>
+
 	<!-- Header -->
 	<header class="header1">
 		<!-- Header desktop -->
@@ -50,13 +71,13 @@
 					<nav class="menu">
 						<ul class="main_menu">
 							<li>
-								<a href="index.php">AMC</a>
+								<a href="../AMC/index.html">AMC</a>
 							</li>
 							<li>
-								<a href="product.php">Customer</a>
+								<a href="../Customer/index.html">Customer</a>
 							</li>
 							<li>
-								<a href="product.php">Complaint</a>
+								<a href="../Complaint/index.html">Complaint</a>
 							</li>
 						</ul>
 					</nav>
@@ -79,12 +100,12 @@
 								<li class="header-cart-item">
 									<div class="header-cart-item-txt">
 										<a href="#" class="header-cart-item-name">
-											Userid : Jinesh0303
+											Userid : <?php echo($userid); ?>
 										</a>
 									</div>
 									<div class="header-cart-item-txt">
 										<a href="#" class="header-cart-item-name">
-											Name : Jinesh Patel
+											Name : <?php echo($firstname." ".$lastname); ?>
 										</a>
 									</div>
 								</li>
@@ -105,8 +126,7 @@
 		</div>
 	</header>
 <?php
-$jwt_token = $_GET["jwt"];
-echo($jwt_token);
+
 ?>
 
 <!--===============================================================================================-->
