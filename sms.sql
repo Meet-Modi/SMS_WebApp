@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2020 at 08:25 PM
+-- Generation Time: May 25, 2020 at 09:25 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -57,6 +57,14 @@ CREATE TABLE `amc` (
   `amount` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `amc`
+--
+
+INSERT INTO `amc` (`amcid`, `customerid`, `amctypeid`, `fromdate`, `period`, `quantity`, `totalservices`, `amount`) VALUES
+('1', '1', '1', '2020-01-01', 8, 6, 16, 24000),
+('2', '2', '3', '2019-01-12', 2, 4, 4, 8000);
+
 -- --------------------------------------------------------
 
 --
@@ -67,6 +75,14 @@ CREATE TABLE `amc_type` (
   `amctypeid` varchar(5) NOT NULL,
   `amctype` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `amc_type`
+--
+
+INSERT INTO `amc_type` (`amctypeid`, `amctype`) VALUES
+('1', 'PREVENTIVE'),
+('3', 'WARRENTY');
 
 -- --------------------------------------------------------
 
