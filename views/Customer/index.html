@@ -83,9 +83,6 @@ $result=curl_exec ($ch);
 $result=curl_exec ($ch);
 $data_customer = json_decode($result);
 
-
-
-
 ?>
 
 
@@ -95,7 +92,7 @@ $data_customer = json_decode($result);
 		<div class="container-menu-header">
 			<div class="wrap_header">
 				<!-- Logo -->
-				<a href="index.php" class="logo">
+				<a href="../DashBoard/index.html" class="logo">
 					<img src="images/icons/logo.jpeg" alt="IMG-LOGO">
 				</a>
 
@@ -188,11 +185,14 @@ $data_customer = json_decode($result);
 						<th>Billing Name</th>
 						<th>First name</th>
 						<th>Last name</th>
-						<th>place ID</th>
-						<th>Address</th>
+						<th>email</th>
 						<th>Contact No. 1</th>
 						<th>Contact No. 2</th>
-						<th>email</th>
+						<th>place ID</th>
+						<th>Address</th>
+						<th>City</th>
+						<th>State</th>
+						<th>Pincode</th>
 						<th>Action</th>
 						</tr>
 						</thead>
@@ -206,28 +206,35 @@ $data_customer = json_decode($result);
 				                echo "<td>".$stand->billingname."</td>";
 				                echo "<td>".$stand->firstname."</td>";
 				                echo "<td>".$stand->lastname."</td>";
-				                echo "<td>".$stand->placeid."</td>";
-				                echo "<td>".$stand->address."</td>";
+				                echo "<td>".$stand->email."</td>";
 				                echo "<td>".$stand->contactno1."</td>";
 				                echo "<td>".$stand->contactno2."</td>";
-				                echo "<td>".$stand->email."</td>";
-				                echo "<td><div class='row'><button class='w-size0 bg10 bo-rad-10 hov1'>Update</button><button class='w-size0 bg9 bo-rad-10 hov0'>View</button></div></td>";
+				                echo "<td>".$stand->placeid."</td>";
+				                echo "<td>".$stand->address."</td>";
+				                echo "<td>".$stand->city."</td>";
+				                echo "<td>".$stand->state."</td>";
+				                echo "<td>".$stand->pincode."</td>";
+				              echo "<td><div class='row'><button class='w-size0 bg10 bo-rad-10 hov1'>Update</button><button class='w-size0 bg9 bo-rad-10 hov0'>View</button></div></td>";
 				                echo "</tr>";
 				            }
 						?>
 						</tbody>
 						<tfoot>
-						<tr>
-						<th>Customer ID</th>
-						<th>Billing Name</th>
-						<th>First name</th>
-						<th>Last name</th>
-						<th>place ID</th>
-						<th>Address</th>
-						<th>Contact No. 1</th>
-						<th>Contact No. 2</th>
-						<th>email</th>
-						</tr>
+							<tr>
+							<th>Customer ID</th>
+							<th>Billing Name</th>
+							<th>First name</th>
+							<th>Last name</th>
+							<th>email</th>
+							<th>Contact No. 1</th>
+							<th>Contact No. 2</th>
+							<th>place ID</th>
+							<th>Address</th>
+							<th>City</th>
+							<th>State</th>
+							<th>Pincode</th>
+							<th>Action</th>
+							</tr>
 						</tfoot>
 					</table>
 					</div>
