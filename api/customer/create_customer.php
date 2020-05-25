@@ -22,7 +22,7 @@ $user = new Customer($db);
 $json = file_get_contents("php://input");
 $data = json_decode($json);
 // set product property values
-$user->customer_id = $data->customer_id;
+//$user->customer_id = $data->customer_id;
 $user->billing_name = $data->billing_name;
 $user->contact_fname = $data->contact_fname;
 $user->contact_lname = $data->contact_lname;

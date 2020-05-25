@@ -3586,6 +3586,11 @@ SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE
 /*[ Width Size ]
 ///////////////////////////////////////////////////////////
 */
+
+.w-size0 {
+	width: 100px;
+}
+
 .w-size1 {
 	width: 161px;
 }
@@ -3724,7 +3729,8 @@ SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE
 .bg6 {background-color: #f0f0f0;}
 .bg7 {background-color: #333333;}
 .bg8 {background-color: #e6e6e6;}
-
+.bg9 {background-color: #33ff33;}
+.bg10{background-color: #e65540;} 
 .bg-img1 {
 	background-repeat: no-repeat;
 	background-position: center 0;
@@ -3970,6 +3976,10 @@ EFFECT   EFFECT   EFFECT   EFFECT   EFFECT   EFFECT  EFFECT
 /*[ Hover ]
 ///////////////////////////////////////////////////////////
 */
+.hov0:hover {
+  	color: white;
+}
+
 .hov1:hover {
     background-color: #e65540;
   	color: white;

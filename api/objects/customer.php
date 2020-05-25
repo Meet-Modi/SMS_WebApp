@@ -28,7 +28,7 @@ class Customer{
 	
 	function create($user_fname, $user_lname, $place) {
 
-		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
+		//$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
 		$this->billing_name=htmlspecialchars(strip_tags($this->billing_name));
 		$this->contact_fname=htmlspecialchars(strip_tags($this->contact_fname));
 		$this->contact_lname=htmlspecialchars(strip_tags($this->contact_lname));
@@ -61,8 +61,8 @@ class Customer{
 				$row = $result2->fetch_assoc();
 				$this->place_id = $row['placeid'];
 				$query3 = "INSERT INTO ". $this->table_name ;
-				$query3 .= "(customerid, userid, billingname, placeid, firstname, lastname, contactno1, contactno2, address, city, state, pincode, email) VALUES";
-				$query3 .= "('".$this->customer_id."','".$this->user_id."','".$this->billing_name."','".$this->place_id."',";
+				$query3 .= "(userid, billingname, placeid, firstname, lastname, contactno1, contactno2, address, city, state, pincode, email) VALUES";
+				$query3 .= "('".$this->user_id."','".$this->billing_name."','".$this->place_id."',";
 				$query3 .= "'".$this->contact_fname."','".$this->contact_lname."','".$this->contact_no1."','".$this->contact_no2."',";
 				$query3 .= "'".$this->address."','".$this->city."','".$this->state."','".$this->pincode."','".$this->email."');";
 
