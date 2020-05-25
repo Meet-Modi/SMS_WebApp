@@ -3578,6 +3578,11 @@ SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE
 	height: 100%;
 }
 
+.tablepostion{
+	position: relative;
+	top: 50px;
+}
+
 /*[ Width Size ]
 ///////////////////////////////////////////////////////////
 */
@@ -3590,6 +3595,9 @@ SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE
 }
 
 .w-size3 {
+	position: relative;
+	top: 20px;
+	left: 30px;
 	max-width: 294px;
 }
 
