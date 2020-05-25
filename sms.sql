@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2020 at 09:25 AM
+-- Generation Time: May 25, 2020 at 11:01 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -91,20 +91,12 @@ INSERT INTO `amc_type` (`amctypeid`, `amctype`) VALUES
 --
 
 CREATE TABLE `complaint` (
-  `complaintid` varchar(10) NOT NULL,
-  `customerid` varchar(20) NOT NULL,
-  `complainttypeid` varchar(5) NOT NULL,
+  `complaintid` int(20) NOT NULL,
+  `customerid` int(20) NOT NULL,
+  `complainttypeid` int(5) NOT NULL,
   `remarks` varchar(50) NOT NULL,
   `status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `complaint`
---
-
-INSERT INTO `complaint` (`complaintid`, `customerid`, `complainttypeid`, `remarks`, `status`) VALUES
-('1', '1', '2', 'Repair it ASAP', 'Resolved'),
-('2', '2', '3', 'Nothing', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -113,18 +105,9 @@ INSERT INTO `complaint` (`complaintid`, `customerid`, `complainttypeid`, `remark
 --
 
 CREATE TABLE `complain_type` (
-  `complaintypeid` varchar(5) NOT NULL,
+  `complaintypeid` int(5) NOT NULL,
   `complaintype` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `complain_type`
---
-
-INSERT INTO `complain_type` (`complaintypeid`, `complaintype`) VALUES
-('1', 'COMPRESSOR FAILURE'),
-('2', 'GAS LEAKAGE'),
-('3', 'ICE FORMATION');
 
 -- --------------------------------------------------------
 
@@ -133,7 +116,7 @@ INSERT INTO `complain_type` (`complaintypeid`, `complaintype`) VALUES
 --
 
 CREATE TABLE `customer` (
-  `customerid` varchar(20) NOT NULL,
+  `customerid` int(20) NOT NULL,
   `userid` varchar(20) NOT NULL,
   `billingname` varchar(50) NOT NULL,
   `placeid` varchar(5) NOT NULL,
@@ -148,14 +131,6 @@ CREATE TABLE `customer` (
   `email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `customer`
---
-
-INSERT INTO `customer` (`customerid`, `userid`, `billingname`, `placeid`, `firstname`, `lastname`, `contactno1`, `contactno2`, `address`, `city`, `state`, `pincode`, `email`) VALUES
-('1', 'jinesh@example.com', 'SBI-Vastral', '2', 'ABC', 'XYZ', '123456789', '987654321', 'afgdvdssd', 'ahmedabad', 'gujarat', '123456', 'ABC@XYZ.com'),
-('2', 'meet@example.com', 'SBI-CTM', '4', 'GHI', 'PQR', '456456456', '323323323', 'aasdfgdv', 'ahmedabad', 'gujarat', '654321', 'XYZ@ABC.com');
-
 -- --------------------------------------------------------
 
 --
@@ -169,16 +144,6 @@ CREATE TABLE `employee` (
   `password` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `employee`
---
-
-INSERT INTO `employee` (`userid`, `firstname`, `lastname`, `password`) VALUES
-('jinesh', 'j', 'p', '$2y$10$dsALB4NGTso3igukazQLc.NPxXQelmzOZHjt2EVBKZD.jTM8QEs8C'),
-('jinesh@example.com', 'Jinesh', 'Patel', '$2y$10$LM2ZbEbCpeFbBImjsf9/Z.gdbDTkHwTgZotaPvIZFO/ztmuGucCOW'),
-('meet@example.com', 'Meet', 'Modi', '$2y$10$aGcLIeHVhXXGJCpDfzuoZeJsVB/d5VPjbq/f5k1wRGzKwphiyDQvq'),
-('mike@codeofaninja.com', 'Mike', 'Dalisay', '$2y$10$.mkHCvX71wTDsMP23gf1KOUqX1AfO6wkgFAsJTYyJs6hqUtbv.u5C');
-
 -- --------------------------------------------------------
 
 --
@@ -189,16 +154,6 @@ CREATE TABLE `place` (
   `placeid` varchar(5) NOT NULL,
   `placetype` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `place`
---
-
-INSERT INTO `place` (`placeid`, `placetype`) VALUES
-('1', 'HOME/RESIDENCE'),
-('2', 'CORPORATE'),
-('3', 'OFFICE'),
-('4', 'BANK');
 
 --
 -- Indexes for dumped tables
@@ -239,6 +194,28 @@ ALTER TABLE `employee`
 --
 ALTER TABLE `place`
   ADD PRIMARY KEY (`placeid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `complaint`
+--
+ALTER TABLE `complaint`
+  MODIFY `complaintid` int(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `complain_type`
+--
+ALTER TABLE `complain_type`
+  MODIFY `complaintypeid` int(5) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `customerid` int(20) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
