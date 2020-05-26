@@ -69,7 +69,6 @@
 					</div>
 				</div>
 			</div>
-	        
             </div>
 <!--===============================================================================================-->	
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -321,6 +320,7 @@ $(document).ready(function(){
 	function showHomePage(){
 	 
 	    // validate jwt to verify access
+
 	    var jwt = getCookie('jwt');
 	    $.post("api/employee/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
 			window.location = 'http://localhost/SMS_WebApp/views/Dashboard/index.html?jwt=' + jwt;

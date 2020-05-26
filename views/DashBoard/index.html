@@ -35,7 +35,25 @@
 </head>
 <body class="animsition">
 <?php
-$jwt_token = $_GET["jwt"];
+$cookie_name = "jwt_token";
+if(isset($_GET['jwt'])){
+	$jwt_token = $_GET["jwt"];
+	$cookie_name = "jwt_token"; 
+	$cookie_value = $jwt_token;
+	// 86400 = 1 day 
+	setcookie($cookie_name, $cookie_value, time() + 3600, "/"); 
+}
+else{
+	if(isset($_COOKIE[$cookie_name])) { 
+		echo "Cookie named '" . $cookie_name . "' is set!";
+		$jwt_token = $_COOKIE[$cookie_name]; 
+	} 
+	else{
+		header("Location: ../../index.html");
+		exit();
+	}		
+}
+
 $myObj = (object)array();
 $myObj->jwt = $jwt_token;
 $myJSON = json_encode($myObj);
@@ -62,7 +80,7 @@ $lastname = $data->data->lastname;
 		<div class="container-menu-header">
 			<div class="wrap_header">
 				<!-- Logo -->
-				<a href="index.php" class="logo">
+				<a href="index.html" class="logo">
 					<img src="images/icons/logo.jpeg" alt="IMG-LOGO">
 				</a>
 
@@ -126,8 +144,8 @@ $lastname = $data->data->lastname;
 		</div>
 	</header>
 <?php
-
 ?>
+
 
 <!--===============================================================================================-->
 	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>

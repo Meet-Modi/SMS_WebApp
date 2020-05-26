@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>SDE | Customers</title>
+	<title>Customers | SDE</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -32,24 +32,10 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-	<!-- Ionicons -->
-	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-	<!-- DataTables -->
-	<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-	<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-	<!-- Theme style -->
-	<link rel="stylesheet" href="dist/css/adminlte.min.css">
-	<!-- Google Font: Source Sans Pro -->
-	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-<!--===============================================================================================-->
-	
 </head>
-<body>
-
+<body class="animsition">
 <?php
 $jwt_token = $_GET["jwt"];
-//echo($jwt_token);
 $myObj = (object)array();
 $myObj->jwt = $jwt_token;
 $myJSON = json_encode($myObj);
@@ -68,33 +54,15 @@ $userid = $data->data->userid;
 $firstname = $data->data->firstname;
 $lastname = $data->data->lastname;
 
-$myObj = (object)array();
-$myObj->customer_id = "1";
-$myObj->option = "2";
-$myJSON = json_encode($myObj);
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/customer/show_customers.php" );
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-curl_setopt($ch, CURLOPT_POST,           1 );
-curl_setopt($ch, CURLOPT_POSTFIELDS,     $myJSON ); 
-curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
-$result=curl_exec ($ch);
-$result=curl_exec ($ch);
-$data_customer = json_decode($result);
-
-
-
 ?>
 
-
 	<!-- Header -->
-	<header class="header">
+	<header class="header1">
 		<!-- Header desktop -->
 		<div class="container-menu-header">
 			<div class="wrap_header">
 				<!-- Logo -->
-				<a href="../DashBoard/index.html" class="logo">
+				<a href="index.php" class="logo">
 					<img src="images/icons/logo.jpeg" alt="IMG-LOGO">
 				</a>
 
@@ -157,107 +125,6 @@ $data_customer = json_decode($result);
 			</div>
 		</div>
 	</header>
-
-	
-		
-<div class="wrapper tablepostion">
-	<div class='w-size3'>
-		<button class='flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4' name="AddEmployee" value="AddEmployee">
-			New Customer.
-		</button>
-	</div>
-	<div class="content">
-
-	
-		<!-- Main content -->
-		<section class="content">
-			<div class="container-fluid">
-			<div class="row">
-				<div class="col-12">
-				<div class="card">
-					<div class="card-header">
-					<h3 class="card-title">DataTable with minimal features & hover style</h3>
-					</div>
-					<!-- /.card-header -->
-					<div class="card-body">
-					<table id="example2" class="table table-bordered table-hover">
-						<thead>
-						<tr>
-						<th>Customer ID</th>
-						<th>Billing Name</th>
-						<th>First name</th>
-						<th>Last name</th>
-						<th>email</th>
-						<th>Contact No. 1</th>
-						<th>Contact No. 2</th>
-						<th>place ID</th>
-						<th>Address</th>
-						<th>City</th>
-						<th>State</th>
-						<th>Pincode</th>
-						<th>Action</th>
-						</tr>
-						</thead>
-						<tbody>
-						<?php
-
-							foreach ($data_customer as $stand) {
-				                // Output a row
-				                echo "<tr>";
-				                echo "<td>".$stand->customerid."</td>";
-				                echo "<td>".$stand->billingname."</td>";
-				                echo "<td>".$stand->firstname."</td>";
-				                echo "<td>".$stand->lastname."</td>";
-				                echo "<td>".$stand->email."</td>";
-				                echo "<td>".$stand->contactno1."</td>";
-				                echo "<td>".$stand->contactno2."</td>";
-				                echo "<td>".$stand->placeid."</td>";
-				                echo "<td>".$stand->address."</td>";
-				                echo "<td>".$stand->city."</td>";
-				                echo "<td>".$stand->state."</td>";
-				                echo "<td>".$stand->pincode."</td>";
-				              echo "<td><div class='row'><button class='w-size0 bg10 bo-rad-10 hov1'>Update</button><button class='w-size0 bg9 bo-rad-10 hov0'>View</button></div></td>";
-				                echo "</tr>";
-				            }
-						?>
-						</tbody>
-						<tfoot>
-							<tr>
-							<th>Customer ID</th>
-							<th>Billing Name</th>
-							<th>First name</th>
-							<th>Last name</th>
-							<th>email</th>
-							<th>Contact No. 1</th>
-							<th>Contact No. 2</th>
-							<th>place ID</th>
-							<th>Address</th>
-							<th>City</th>
-							<th>State</th>
-							<th>Pincode</th>
-							<th>Action</th>
-							</tr>
-						</tfoot>
-					</table>
-					</div>
-					<!-- /.card-body -->
-				</div>
-				<!-- /.card -->
-	
-				<!-- /.card -->
-				</div>
-				<!-- /.col -->
-			</div>
-			<!-- /.row -->
-			</div>
-			<!-- /.container-fluid -->
-		</section>
-		<!-- /.content -->
-	</div>
-
-</div>
-				
-
 
 <!--===============================================================================================-->
 	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -330,40 +197,6 @@ $data_customer = json_decode($result);
 	</script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>
-
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- DataTables -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- page script -->
-<script>
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true,
-      "autoWidth": false,
-    });
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-	  "responsive": true,
-    });
-  });
-</script>
-
-
 
 </body>
 </html>
