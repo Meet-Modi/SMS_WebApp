@@ -47,17 +47,18 @@ class Customer{
 		$query1 = "SELECT userid FROM employee WHERE firstname = '" . $firstname . "' AND lastname = '" . $lastname ."'";
 		// prepare the query
 		$result1 = $this->conn->query($query1);
-		//echo("*1st query executed");
+//		echo("*1st query executed");
 
 		if ($result1->num_rows > 0) {
 			$row = $result1->fetch_assoc();
 			$this->user_id = $row['userid'];
-			//echo("echo in if 1");
+//			echo("echo in if 1");
 
 			$query2 = "SELECT placeid FROM place WHERE placetype = '" . $place_type ."'";
 			// prepare the query
 			$result2 = $this->conn->query($query2);
 			if ($result2->num_rows > 0) {
+//				echo("in if 2");
 				$row = $result2->fetch_assoc();
 				$this->place_id = $row['placeid'];
 				$query3 = "INSERT INTO ". $this->table_name ;

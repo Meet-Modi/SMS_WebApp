@@ -52,7 +52,11 @@ if(
     http_response_code(200);
  
     // display message: user was created
-    echo json_encode(array("message" => "User was created."));
+    echo json_encode(
+        array(
+            "message" => "User was created."
+        )
+    );
 }
  
 // message if unable to create user

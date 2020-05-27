@@ -99,8 +99,9 @@
 // jQuery codes
 $(document).ready(function(){
     // show sign up / registration form
+
     $(document).on('click', '#sign_up', function(){
- 
+ 		console.log("clicked");
         var html = `
           
 			<div class="limiter">
@@ -170,7 +171,7 @@ $(document).ready(function(){
  
     // trigger when registration form is submitted
 	$(document).on('submit', '#sign_up_form', function(){
-	 
+	 	
 	    // get form data
 	    var sign_up_form=$(this);
 	    var form_data=JSON.stringify(sign_up_form.serializeObject());
@@ -203,7 +204,7 @@ $(document).ready(function(){
  
 	// trigger when login form is submitted
 	$(document).on('submit', '#login_form', function(){
-	 
+	 	console.info("hi");
 	    // get form data
 	    var login_form=$(this);
 	    var form_data=JSON.stringify(login_form.serializeObject());
@@ -325,6 +326,7 @@ $(document).ready(function(){
 	    $.post("api/employee/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
 			window.location = 'http://localhost/SMS_WebApp/views/Dashboard/index.html?jwt=' + jwt;
 	    })
+
 	 
 	    // show login page on error will be here
 	}

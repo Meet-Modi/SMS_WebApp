@@ -212,7 +212,7 @@ $data_customer = json_decode($result);
 				                echo "<td>".$stand->city."</td>";
 				                echo "<td>".$stand->state."</td>";
 				                echo "<td>".$stand->pincode."</td>";
-				              echo "<td><div class='row'><button class='w-size0 bg10 bo-rad-10 hov1' style='border: none;'>Update</button><button class='w-size0 bg9 bo-rad-10 hov0' style='border: none;'>View</button></div></td>";
+				              echo "<td><div class='row'><button class='w-size0 bg10 bo-rad-10 hov1' style='border: none;'>Update</button><button href='ViewCustomer.html?customer_id=" . $stand->customerid . "'class='w-size0 bg9 bo-rad-10 hov0' style='border: none;'>View</button></div></td>";
 				                echo "</tr>";
 				            }
 						?>
