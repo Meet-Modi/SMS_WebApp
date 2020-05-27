@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>DashBoard</title>
+	<title>SDE | DashBoard</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -36,8 +36,8 @@
 <body class="animsition">
 <?php
 $cookie_name = "jwt_token";
-if(isset($_GET['jwt'])){
-	$jwt_token = $_GET["jwt"];
+if(isset($_POST['jwt_token'])){
+	$jwt_token = $_POST["jwt_token"];
 	$cookie_name = "jwt_token"; 
 	$cookie_value = $jwt_token;
 	// 86400 = 1 day 

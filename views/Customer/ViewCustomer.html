@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Advanced form elements</title>
+  <title>SDE | Customers</title>
   	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -87,23 +87,15 @@
 <body class="hold-transition sidebar-mini animsition">
 <?php
 $cookie_name = "jwt_token";
-if(isset($_GET['jwt'])){
-	$jwt_token = $_GET["jwt"];
-	$cookie_name = "jwt_token"; 
-	$cookie_value = $jwt_token;
-	// 86400 = 1 day 
-	setcookie($cookie_name, $cookie_value, time() + 3600, "/"); 
-}
+
+if(isset($_COOKIE[$cookie_name])) { 
+	echo "Cookie named '" . $cookie_name . "' is set!";
+	$jwt_token = $_COOKIE[$cookie_name]; 
+} 
 else{
-	if(isset($_COOKIE[$cookie_name])) { 
-		echo "Cookie named '" . $cookie_name . "' is set!";
-		$jwt_token = $_COOKIE[$cookie_name]; 
-	} 
-	else{
-		header("Location: ../../index.html");
-		exit();
-	}		
-}
+	header("Location: ../../index.html");
+	exit();
+}		
 
 $myObj = (object)array();
 $myObj->jwt = $jwt_token;
@@ -123,8 +115,37 @@ $userid = $data->data->userid;
 $firstname = $data->data->firstname;
 $lastname = $data->data->lastname;
 
-?>
+$customer_id = $_GET['customer_id'];
+echo($customer_id);
+$myObj = (object)array();
+$myObj->customer_id = $customer_id;
+$myObj->option = "1";
+$myJSON = json_encode($myObj);
 
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/customer/show_customers.php" );
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+curl_setopt($ch, CURLOPT_POST,           1 );
+curl_setopt($ch, CURLOPT_POSTFIELDS,     $myJSON ); 
+curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+$result1=curl_exec ($ch);
+$result1=curl_exec ($ch);
+$data_customer = json_decode($result1);
+
+$cust_userid = $data_customer->userid;
+$cust_billingname = $data_customer->billingname;
+$cust_placeid = $data_customer->placeid;
+$cust_firstname = $data_customer->firstname;
+$cust_lastname = $data_customer->lastname;
+$cust_contactno1 = $data_customer->contactno1;
+$cust_contactno2 = $data_customer->contactno2;
+$cust_address = $data_customer->address;
+$cust_city = $data_customer->city;
+$cust_state = $data_customer->state;
+$cust_pincode = $data_customer->pincode;
+$cust_email = $data_customer->email;
+
+?>
 	<header class="header1">
 		<!-- Header desktop -->
 		<div class="container-menu-header">
@@ -195,7 +216,7 @@ $lastname = $data->data->lastname;
 	</header>
 
 
-
+<br><br>
 <div class="wrapper">
 
     <!-- Main content -->
@@ -212,7 +233,7 @@ $lastname = $data->data->lastname;
 		            <div class="col-md-10">
 		            	<div class="form-group">
 	                		<label for="exampleInputEmail1">Customer Id</label>
-		                    <input type="email" class="form-control" style="width: 10%;" id="exampleInputEmail1" disabled="disabled" value="1">
+		                    <input type="email" class="form-control" style="width: 10%;" id="exampleInputEmail1" disabled="disabled" value="<?php echo $customer_id ?>">
 	                	</div>
 
 		            </div>
@@ -228,19 +249,19 @@ $lastname = $data->data->lastname;
 	            	<div class="col-md-6">
 	                	<div class="form-group">
 	                		<label for="exampleInputEmail1">Billing Name</label>
-		                    <input type="text" class="form-control" style="width: 100%;" id="billing_name" placeholder="Enter Billing Name">
+		                    <input type="text" class="form-control" style="width: 100%;" id="billing_name" placeholder="Enter Billing Name" value="<?php echo $cust_billingname ?>">
 	                	</div>
 	                	<div class="row">
 	                		<div class="col-md-6">
 		                	<div class="form-group">
 			                		<label for="exampleInputEmail1">First Name</label>
-				                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="First Name">
+				                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="First Name" value="<?php echo $cust_firstname ?>">
 			               	</div>
 			               	</div>
 			               	<div class="col-md-6">
 							<div class="form-group">
 			                		<label for="exampleInputEmail1">Last Name</label>
-				                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Last Name">
+				                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Last Name" value="<?php echo $cust_lastname ?>">
 			               	</div>
 			               	</div>
 			            </div>
@@ -248,25 +269,25 @@ $lastname = $data->data->lastname;
 	                		<div class="col-md-6">
 		                	<div class="form-group">
 			                		<label for="exampleInputEmail1">Contact No.1</label>
-				                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Contact No.1">
+				                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Contact No.1" value="<?php echo $cust_contactno1 ?>">
 			               	</div>
 			               	</div>
 			               	<div class="col-md-6">
 							<div class="form-group">
 			                		<label for="exampleInputEmail1">Contact No.2</label>
-				                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Contact No.2">
+				                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Contact No.2" value="<?php echo $cust_contactno2 ?>">
 			               	</div>
 			               	</div>
 			            </div>
 			            <div class="form-group">
 	                		<label for="exampleInputEmail1">Email</label>
-		                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Email">
+		                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Email" value="<?php echo $cust_email ?>">
 	                	</div>
 	                </div>
 	                <div class="col-md-6">
 						<div class="form-group">
 	                       	<label>Place</label>
-	                        <select class="form-control" style="width: 50%;">
+	                        <select class="form-control" style="width: 50%;" value="<?php echo $cust_placeid ?>">
 		                        <option>option 1</option>
 		                        <option>option 2</option>
 		                        <option>option 3</option>
@@ -276,25 +297,25 @@ $lastname = $data->data->lastname;
                       	</div>
 		            	<div class="form-group">
 	                		<label for="exampleInputEmail1">Address</label>
-		                    <input type="textarea" class="form-control" style="width: 80%;" id="exampleInputEmail1" placeholder="Enter Address">
+		                    <input type="textarea" class="form-control" style="width: 80%;" id="exampleInputEmail1" placeholder="Enter Address" value="<?php echo $cust_address ?>">
 	                	</div>
 	                	<div class="row">
 	                		<div class="col-md-5">
 	                			<div class="form-group">
 			                		<label for="exampleInputEmail1">City</label>
-				                    <input type="text" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Enter City">
+				                    <input type="text" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Enter City" value="<?php echo $cust_city ?>">
 			                	</div>	                	
 	                		</div>
 	                		<div class="col-md-5">
 	                			<div class="form-group">
 			                		<label for="exampleInputEmail1">State</label>
-				                    <input type="text" class="form-control" style="width: 92%;" id="exampleInputEmail1" placeholder="Enter State">
+				                    <input type="text" class="form-control" style="width: 92%;" id="exampleInputEmail1" placeholder="Enter State" value="<?php echo $cust_state ?>">
 			                	</div>	
 	                		</div>
 	                	</div>
 	                	<div class="form-group">
 	                		<label for="exampleInputEmail1">Pincode</label>
-		                    <input type="text" class="form-control" style="width: 40%;" id="exampleInputEmail1" placeholder="Enter Pincode">
+		                    <input type="text" class="form-control" style="width: 40%;" id="exampleInputEmail1" placeholder="Enter Pincode" value="<?php echo $cust_pincode ?>">
 	                	</div>
 	                	
 	                </div>

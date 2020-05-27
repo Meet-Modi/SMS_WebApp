@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Advanced form elements</title>
+  <title>SDE | Customers</title>
   	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -193,6 +193,7 @@ $lastname = $data->data->lastname;
 		</div>
 	</header>
 
+<br><br>
 <div id="response"></div>
 
 <div class="wrapper">
@@ -319,9 +320,8 @@ $(document).ready(function(){
 		    contentType : 'application/json',
 		    data : form_data,
 		    success : function(result){
-			    $('#response').html("<br><br><div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Added Successfully</div>");
-		    	//$('#response').html("<div><br><br>" + form_data + "<br><br></div>");	    		
-		        // store jwt to cookie
+			    $('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Added Successfully</div>");
+			    add_customer_form.find('input').val('');
 		    },
 		    error: function(xhr, status, error){
 //		    	alert(error);

@@ -48,7 +48,16 @@
 <body>
 
 <?php
-$jwt_token = $_GET["jwt"];
+$cookie_name = "jwt_token";
+if(isset($_COOKIE[$cookie_name])) { 
+	echo "Cookie named '" . $cookie_name . "' is set!";
+	$jwt_token = $_COOKIE[$cookie_name]; 
+} 
+else{
+	header("Location: ../../index.html");
+	exit();
+}		
+
 //echo($jwt_token);
 $myObj = (object)array();
 $myObj->jwt = $jwt_token;
@@ -196,7 +205,7 @@ $data_customer = json_decode($result);
 						</thead>
 						<tbody>
 						<?php
-
+							$row=1;
 							foreach ($data_customer as $stand) {
 				                // Output a row
 				                echo "<tr>";
@@ -212,8 +221,9 @@ $data_customer = json_decode($result);
 				                echo "<td>".$stand->city."</td>";
 				                echo "<td>".$stand->state."</td>";
 				                echo "<td>".$stand->pincode."</td>";
-				              echo "<td><div class='row'><button class='w-size0 bg10 bo-rad-10 hov1' style='border: none;'>Update</button><button href='ViewCustomer.html?customer_id=" . $stand->customerid . "'class='w-size0 bg9 bo-rad-10 hov0' style='border: none;'>View</button></div></td>";
+				              echo "<td><div class='row'><button class='w-size0 bg10 bo-rad-10 hov1' style='border: none;'>Update</button><a href='ViewCustomer.html?customer_id=" . $row . "'class='w-size0 bg10 bo-rad-10 hov1' style='border: none;'>View/Update</a></div></td>";
 				                echo "</tr>";
+				                $row = $row + 1;
 				            }
 						?>
 						</tbody>

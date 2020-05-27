@@ -70,6 +70,10 @@
 				</div>
 			</div>
             </div>
+
+<form style="display: hidden" action="views/Dashboard/index.html" method="POST" id="form">
+  <input type="hidden" id="jwt_token" name="jwt_token" value=""/>
+</form>
 <!--===============================================================================================-->	
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
@@ -324,7 +328,9 @@ $(document).ready(function(){
 
 	    var jwt = getCookie('jwt');
 	    $.post("api/employee/validate_token.php", JSON.stringify({ jwt:jwt })).done(function(result) {
-			window.location = 'http://localhost/SMS_WebApp/views/Dashboard/index.html?jwt=' + jwt;
+//			window.location = 'http://localhost/SMS_WebApp/views/Dashboard/index.html?jwt=' + jwt;
+			$("#jwt_token").val(jwt);
+			$("#form").submit();			
 	    })
 
 	 
