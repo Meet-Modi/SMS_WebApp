@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 28, 2020 at 05:15 PM
+-- Generation Time: May 28, 2020 at 06:51 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -136,7 +136,8 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`customerid`, `userid`, `billingname`, `placeid`, `firstname`, `lastname`, `contactno1`, `contactno2`, `address`, `city`, `state`, `pincode`, `email`) VALUES
-(1, 'jinesh@example.com', 'SBI_CTM', '', 'ABC', 'XYZ', '123456', '654321', 'MAHADEVNAGAR TEKRA', 'Ahmedabad', 'GUJARAT', '382418', 'ABC@XYZ.com');
+(1, 'jinesh@example.com', 'SBI_CTM', '1', 'ABC', 'XYZ', '123456', '654321', 'MAHADEVNAGAR TEKRA', 'Ahmedabad', 'GUJARAT', '382418', 'ABC@XYZ.com'),
+(2, 'jinesh@example.com', 'SBI-CTM', '2', 'GHI', 'PQR', '456456456', '323323323', 'aasdfgdv', 'ahmedabad', 'gujarat', '654321', 'XYZ@ABC.com');
 
 -- --------------------------------------------------------
 
@@ -195,7 +196,8 @@ CREATE TABLE `place` (
 --
 
 INSERT INTO `place` (`placeid`, `placetype`) VALUES
-('', 'BANK');
+('1', 'BANK'),
+('2', 'HOME/RESIDENCE');
 
 -- --------------------------------------------------------
 
@@ -292,7 +294,7 @@ ALTER TABLE `complain_type`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customerid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `customerid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `product`

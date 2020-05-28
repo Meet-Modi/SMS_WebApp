@@ -45,7 +45,7 @@ if(
     !empty($user->contact_lname) &&
     !empty($user->contact_no1) &&
     !empty($user->contact_no2) &&
-    $user->updateCustomer()
+    $user->updateCustomer($place)
 ){
     //$user->update($user_fname,$user_lname,$place)
     // set response code

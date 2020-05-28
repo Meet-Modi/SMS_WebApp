@@ -130,7 +130,7 @@ class Customer{
 		return json_encode($json_output);
 	}
 
-	function updateCustomer() {
+	function updateCustomer($place) {
 
 		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
 		$this->billing_name=htmlspecialchars(strip_tags($this->billing_name));
@@ -144,21 +144,35 @@ class Customer{
 		$this->pincode=htmlspecialchars(strip_tags($this->pincode));
 		$this->email=htmlspecialchars(strip_tags($this->email));
 
-		$query = "UPDATE ". $this->table_name ;
-		$query .= " SET billingname = '". $this->billing_name ."', firstname = '". $this->contact_fname ."', lastname = '". $this->contact_lname ."',";
-		$query .= " contactno1 = '". $this->contact_no1 ."', contactno2 = '". $this->contact_no2 ."', address = '". $this->address ."',";
-		$query .= " city = '". $this->city ."', state = '". $this->state ."', pincode = '". $this->pincode ."', email = '". $this->email ."'";
-		$query .= " WHERE customerid = '". $this->customer_id ."'";
+		$place=htmlspecialchars(strip_tags($place));
+
+		$query2 = "SELECT placeid FROM place WHERE placetype = '" . $place ."'";
+			// prepare the query
+		$result2 = $this->conn->query($query2);
+
+		if ($result2->num_rows > 0) {
+			$row2 = $result2->fetch_assoc();
+			$this->place_id = $row2['placeid'];
+
+			$query = "UPDATE ". $this->table_name ;
+			$query .= " SET billingname = '". $this->billing_name ."', placeid= '". $this->place_id . "', firstname = '". $this->contact_fname ."', lastname = '". $this->contact_lname ."',";
+			$query .= " contactno1 = '". $this->contact_no1 ."', contactno2 = '". $this->contact_no2 ."', address = '". $this->address ."',";
+			$query .= " city = '". $this->city ."', state = '". $this->state ."', pincode = '". $this->pincode ."', email = '". $this->email ."'";
+			$query .= " WHERE customerid = '". $this->customer_id ."'";
 		
 		// echo($query);
 
-		if ($this->conn->query($query) === TRUE) {
-			//echo("3rd query executed");
-			return true;
-		} else {
-			//echo "Error: " . $query2 . "<br>" . $this->conn->error;
+			if ($this->conn->query($query) === TRUE) {
+				//echo("3rd query executed");
+				return true;
+			} else {
+				//echo "Error: " . $query2 . "<br>" . $this->conn->error;
+				return false;
+			} 
+		}
+		else{
 			return false;
-		} 
+		}
 	}
 }
 
