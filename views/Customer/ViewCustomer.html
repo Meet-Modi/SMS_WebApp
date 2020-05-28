@@ -135,6 +135,7 @@ $data_customer = json_decode($result1);
 $cust_userid = $data_customer->userid;
 $cust_billingname = $data_customer->billingname;
 $cust_placeid = $data_customer->placeid;
+//$cust_placeid = $data_customer->placeid;
 $cust_firstname = $data_customer->firstname;
 $cust_lastname = $data_customer->lastname;
 $cust_contactno1 = $data_customer->contactno1;
@@ -217,6 +218,7 @@ $cust_email = $data_customer->email;
 
 
 <br><br>
+
 <div id="response"></div>
 <div class="wrapper">
 
@@ -304,12 +306,21 @@ $cust_email = $data_customer->email;
 						<div class="form-group">
 	                       	<label>Place</label>
 	                        <select class="form-control" id="place" name="place_type" style="width: 50%;" value="<?php echo $cust_placeid ?>">
-		                        <option>BANK</option>
-		                        <option>option 2</option>
-		                        <option>option 3</option>
-		                        <option>option 4</option>
-		                        <option>option 5</option>
-	                        </select>
+	                        <?php $placetype = array("BANK", "HOME/RESIDENCE", "CORPORATE");
+	                        	  $placeid = array("1","2","3");
+	                        	  $flag = 0;
+	                        	  foreach ($placeid as $current) {
+	                        	  	$flag=5;
+	                        	  	if($current == $cust_placeid){
+	                        	  		echo "<option selected>".$placetype[(int)$current - 1]."</option>";
+	                        	  		$flag = 1;
+	                        	  	}
+	                        	  	else{
+				                    echo "<option>".$placetype[(int)$current - 1]."</option>";
+	                        	  }
+	                        	}
+	                        ?>
+		                    </select>
                       	</div>
 		            	<div class="form-group">
 	                		<label for="exampleInputEmail1">Address</label>
@@ -342,7 +353,10 @@ $cust_email = $data_customer->email;
 
 </div>
 <!-- ./wrapper -->
-
+<?php  
+echo($result1);
+echo($placetype[(int)$current - 1]);
+?>
 <!-- jQuery -->
 
 
