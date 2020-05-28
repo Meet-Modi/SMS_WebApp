@@ -1,6 +1,12 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="main.css">
+<style>
+.sansserif {
+  font-family: Arial, Helvetica, sans-serif;
+}
+</style>
+
 </head>
 <body>
 <?php
@@ -13,7 +19,7 @@ if(isset($_COOKIE[$cookie_name])) {
 <div class="lds-ellipsis centered"><div></div><div></div><div></div><div></div></div>
 <br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br>
-<div style="text-align: center;">   Logging out ... </div>
+<div class="sansserif" style="text-align: center;">   Logging out ... </div>
 <?php header("Refresh: 2;url=../../index.html");
 ?>
 </body>
