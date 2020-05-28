@@ -87,8 +87,17 @@ class Customer{
 		$result1 = $this->conn->query($query1);
 
 		if($result1->num_rows>0) {
-			$row = $result1->fetch_assoc();		
-			$json_output = $row;
+			$row1 = $result1->fetch_assoc();
+			$placeid = $row1['placeid'];
+			$query2 = "SELECT placetype FROM place WHERE placeid = '". $placeid ."'";
+			// prepare the query
+			$result2 = $this->conn->query($query2);
+			if($result2->num_rows>0) {
+				$row2 = $result2->fetch_assoc();
+				$json_output = $row1 + $row2;
+			}else{
+				return "Place not exist";
+			}
 		}else{
 			return "customer not found";
 		}
@@ -100,13 +109,24 @@ class Customer{
 		$query1 = "SELECT * FROM ". $this->table_name;
 		// prepare the query
 		$result1 = $this->conn->query($query1);
-
+		
 		$json_output = array();
-
-		while($row = $result1->fetch_assoc()) {			
-			$json_output[] = $row;
+		if($result1->num_rows>0) {
+			while($row1 = $result1->fetch_assoc()) {			
+				$placeid = $row1['placeid'];
+				$query2 = "SELECT placetype FROM place WHERE placeid = '". $placeid ."'";
+				// prepare the query
+				$result2 = $this->conn->query($query2);
+				if($result2->num_rows>0) {
+					$row2 = $result2->fetch_assoc();
+					$json_output[] = $row1 + $row2;
+				}else{
+					return "Place not exist";
+				}
+			}
+		}else{
+			return "customer not found";
 		}
-
 		return json_encode($json_output);
 	}
 
