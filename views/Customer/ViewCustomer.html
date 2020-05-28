@@ -217,6 +217,7 @@ $cust_email = $data_customer->email;
 
 
 <br><br>
+<div id="response"></div>
 <div class="wrapper">
 
     <!-- Main content -->
@@ -224,6 +225,7 @@ $cust_email = $data_customer->email;
       <div class="container-fluid">
         <!-- SELECT2 EXAMPLE -->
         <div class="card card-default">
+			<form id="update_customer_form" method="POST">
         	<div class="card-header">
         		<h3 class="card-title">View Customer</h3>
         	</div>
@@ -233,7 +235,7 @@ $cust_email = $data_customer->email;
 		            <div class="col-md-10">
 		            	<div class="form-group">
 	                		<label for="exampleInputEmail1">Customer Id</label>
-		                    <input type="email" class="form-control" style="width: 10%;" id="exampleInputEmail1" disabled="disabled" value="<?php echo $customer_id ?>">
+		                    <input type="text" class="form-control" style="width: 10%;" id="customerid" name="customer_id" readOnly="readOnly" value="<?php echo $customer_id ?>">
 	                	</div>
 
 		            </div>
@@ -241,27 +243,41 @@ $cust_email = $data_customer->email;
 		            	<br>
 		            	<br>
 	                	<div>
-               	    		<button type="submit" class="btn btn-primary">Update</button>
+							<input type="submit" value="Update" class="btn btn-primary" style="float: right;">
+               	    		<!--<button type="submit" class="btn btn-primary">Update</button>-->
 	                	</div>
 		            </div>
 	            </div>
           		<div class="row">
 	            	<div class="col-md-6">
+						<label for="inquiry_user">Inquiry received from</label>
+	            		<div class="row">
+	                		<div class="col-md-6">
+		                	<div class="form-group">
+			                    <input type="text" class="form-control" name="user_fname" style="width: 100%;" id="user_fname" value= "<?php echo($firstname) ?>" >
+			               	</div>
+			               	</div>
+			               	<div class="col-md-6">
+							<div class="form-group">
+				                <input type="text" class="form-control" name="user_lname" style="width: 100%;" id="user_lname" value="<?php echo($lastname) ?>" >
+			               	</div>
+			               	</div>
+			            </div>
 	                	<div class="form-group">
 	                		<label for="exampleInputEmail1">Billing Name</label>
-		                    <input type="text" class="form-control" style="width: 100%;" id="billing_name" placeholder="Enter Billing Name" value="<?php echo $cust_billingname ?>">
+		                    <input type="text" class="form-control" style="width: 100%;" id="billing_name" name="billing_name" placeholder="Enter Billing Name" value="<?php echo $cust_billingname ?>">
 	                	</div>
 	                	<div class="row">
 	                		<div class="col-md-6">
 		                	<div class="form-group">
 			                		<label for="exampleInputEmail1">First Name</label>
-				                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="First Name" value="<?php echo $cust_firstname ?>">
+				                    <input type="text" class="form-control" style="width: 100%;" id="first_name" name="contact_fname" placeholder="First Name" value="<?php echo $cust_firstname ?>">
 			               	</div>
 			               	</div>
 			               	<div class="col-md-6">
 							<div class="form-group">
 			                		<label for="exampleInputEmail1">Last Name</label>
-				                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Last Name" value="<?php echo $cust_lastname ?>">
+				                    <input type="text" class="form-control" style="width: 100%;" id="last_name" name="contact_lname" placeholder="Last Name" value="<?php echo $cust_lastname ?>">
 			               	</div>
 			               	</div>
 			            </div>
@@ -269,26 +285,26 @@ $cust_email = $data_customer->email;
 	                		<div class="col-md-6">
 		                	<div class="form-group">
 			                		<label for="exampleInputEmail1">Contact No.1</label>
-				                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Contact No.1" value="<?php echo $cust_contactno1 ?>">
+				                    <input type="text" class="form-control" style="width: 100%;" id="Co_no_1" name="contact_no1" placeholder="Contact No.1" value="<?php echo $cust_contactno1 ?>">
 			               	</div>
 			               	</div>
 			               	<div class="col-md-6">
 							<div class="form-group">
 			                		<label for="exampleInputEmail1">Contact No.2</label>
-				                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Contact No.2" value="<?php echo $cust_contactno2 ?>">
+				                    <input type="text" class="form-control" style="width: 100%;" id="Co_no_2" name="contact_no2" placeholder="Contact No.2" value="<?php echo $cust_contactno2 ?>">
 			               	</div>
 			               	</div>
 			            </div>
 			            <div class="form-group">
 	                		<label for="exampleInputEmail1">Email</label>
-		                    <input type="email" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Email" value="<?php echo $cust_email ?>">
+		                    <input type="email" class="form-control" style="width: 100%;" id="email" name="email" placeholder="Email" value="<?php echo $cust_email ?>">
 	                	</div>
 	                </div>
 	                <div class="col-md-6">
 						<div class="form-group">
 	                       	<label>Place</label>
-	                        <select class="form-control" style="width: 50%;" value="<?php echo $cust_placeid ?>">
-		                        <option>option 1</option>
+	                        <select class="form-control" id="place" name="place_type" style="width: 50%;" value="<?php echo $cust_placeid ?>">
+		                        <option>BANK</option>
 		                        <option>option 2</option>
 		                        <option>option 3</option>
 		                        <option>option 4</option>
@@ -297,37 +313,89 @@ $cust_email = $data_customer->email;
                       	</div>
 		            	<div class="form-group">
 	                		<label for="exampleInputEmail1">Address</label>
-		                    <input type="textarea" class="form-control" style="width: 80%;" id="exampleInputEmail1" placeholder="Enter Address" value="<?php echo $cust_address ?>">
+		                    <input type="textarea" class="form-control" style="width: 80%;" id="address" name="address" placeholder="Enter Address" value="<?php echo $cust_address ?>">
 	                	</div>
 	                	<div class="row">
 	                		<div class="col-md-5">
 	                			<div class="form-group">
 			                		<label for="exampleInputEmail1">City</label>
-				                    <input type="text" class="form-control" style="width: 100%;" id="exampleInputEmail1" placeholder="Enter City" value="<?php echo $cust_city ?>">
+				                    <input type="text" class="form-control" style="width: 100%;" id="city" name="city" placeholder="Enter City" value="<?php echo $cust_city ?>">
 			                	</div>	                	
 	                		</div>
 	                		<div class="col-md-5">
 	                			<div class="form-group">
 			                		<label for="exampleInputEmail1">State</label>
-				                    <input type="text" class="form-control" style="width: 92%;" id="exampleInputEmail1" placeholder="Enter State" value="<?php echo $cust_state ?>">
+				                    <input type="text" class="form-control" style="width: 92%;" id="state" name="state" placeholder="Enter State" value="<?php echo $cust_state ?>">
 			                	</div>	
 	                		</div>
 	                	</div>
 	                	<div class="form-group">
 	                		<label for="exampleInputEmail1">Pincode</label>
-		                    <input type="text" class="form-control" style="width: 40%;" id="exampleInputEmail1" placeholder="Enter Pincode" value="<?php echo $cust_pincode ?>">
+		                    <input type="text" class="form-control" style="width: 40%;" id="pincode" name="pincode" placeholder="Enter Pincode" value="<?php echo $cust_pincode ?>">
 	                	</div>
 	                	
 	                </div>
-	               
-	            </div>
-			</div>    
+				</form>
+	        </div>
+		</div>    
 
 
 </div>
 <!-- ./wrapper -->
 
 <!-- jQuery -->
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+	console.log("READY");
+    $("#update_customer_form").submit(function(){
+	  	console.log("INSIDE");
+  	    var update_customer_form=$(this);
+	    var form_data=JSON.stringify(update_customer_form.serializeObject());
+	    // submit form data to api
+		alert(form_data);
+		$.ajax({
+		    url: "http://localhost/SMS_WebApp/api/customer/update_customer.php",
+		    type : "POST",
+		    contentType : 'application/json',
+		    data : form_data,
+			
+		    success : function(result){
+			    $('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Updated Successfully</div>");
+			    //add_customer_form.find('input').val('');
+		    },
+		    error: function(xhr, status, error){
+				alert(error);
+			    // on error, tell the user login has failed & empty the input boxes
+			}
+		});
+	    return false;
+  	});
+
+
+	$.fn.serializeObject = function(){
+	 
+	    var o = {};
+	    var a = this.serializeArray();
+	    $.each(a, function() {
+	        if (o[this.name] !== undefined) {
+	            if (!o[this.name].push) {
+	                o[this.name] = [o[this.name]];
+	            }
+	            o[this.name].push(this.value || '');
+	        } else {
+	            o[this.name] = this.value || '';
+	        }
+	    });
+	    return o;
+	};
+
+});
+</script>
+
 <script src="Addcust_files/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="Addcust_files/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

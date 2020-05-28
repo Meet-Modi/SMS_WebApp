@@ -10,6 +10,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // files needed to connect to database
 include_once '../config/database.php';
 include_once '../objects/customer.php';
+include_once '../objects/ownership.php';
  
 // get database connection
 $database = new Database();
@@ -17,6 +18,7 @@ $db = $database->getConnection();
   
 // instantiate product object
 $user = new Customer($db);
+$owner = new Owner($db);
  
 // get posted data
 $json = file_get_contents("php://input");
@@ -68,7 +70,9 @@ else{
 if($data->option==1) {
     $user->customer_id = $data->customer_id;
     $json_data = $user->showCustomer();
+    $json_product = $owner->showProduct();
     echo($json_data);
+    echo($json_product);
 }
 else{
     $json_data = $user->showAllCustomer();
