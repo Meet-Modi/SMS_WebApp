@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2020 at 11:01 AM
+-- Generation Time: May 28, 2020 at 05:15 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -131,6 +131,13 @@ CREATE TABLE `customer` (
   `email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`customerid`, `userid`, `billingname`, `placeid`, `firstname`, `lastname`, `contactno1`, `contactno2`, `address`, `city`, `state`, `pincode`, `email`) VALUES
+(1, 'jinesh@example.com', 'SBI_CTM', '', 'ABC', 'XYZ', '123456', '654321', 'MAHADEVNAGAR TEKRA', 'Ahmedabad', 'GUJARAT', '382418', 'ABC@XYZ.com');
+
 -- --------------------------------------------------------
 
 --
@@ -144,6 +151,34 @@ CREATE TABLE `employee` (
   `password` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`userid`, `firstname`, `lastname`, `password`) VALUES
+('jinesh@example.com', 'Jinesh', 'Patel', '$2y$10$/MQxZYe2UguG.ZXXhu/YWukn6no5M5b5lxZ65lKB.jfZILnFQuwCu');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ownership`
+--
+
+CREATE TABLE `ownership` (
+  `customerid` int(11) NOT NULL,
+  `productid` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ownership`
+--
+
+INSERT INTO `ownership` (`customerid`, `productid`, `quantity`) VALUES
+(1, 1, 5),
+(1, 2, 5),
+(1, 2, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -154,6 +189,35 @@ CREATE TABLE `place` (
   `placeid` varchar(5) NOT NULL,
   `placetype` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `place`
+--
+
+INSERT INTO `place` (`placeid`, `placetype`) VALUES
+('', 'BANK');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product`
+--
+
+CREATE TABLE `product` (
+  `productid` int(11) NOT NULL,
+  `productcompany` varchar(30) NOT NULL,
+  `producttype` varchar(30) NOT NULL,
+  `capacity` float NOT NULL,
+  `rating` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`productid`, `productcompany`, `producttype`, `capacity`, `rating`) VALUES
+(1, 'HITACHI', 'SPLIT', 1, 3.5),
+(2, 'DAIKIN', 'WINDOW', 4, 4);
 
 --
 -- Indexes for dumped tables
@@ -190,10 +254,23 @@ ALTER TABLE `employee`
   ADD PRIMARY KEY (`userid`);
 
 --
+-- Indexes for table `ownership`
+--
+ALTER TABLE `ownership`
+  ADD KEY `customerid` (`customerid`),
+  ADD KEY `productid` (`productid`);
+
+--
 -- Indexes for table `place`
 --
 ALTER TABLE `place`
   ADD PRIMARY KEY (`placeid`);
+
+--
+-- Indexes for table `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`productid`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -215,7 +292,24 @@ ALTER TABLE `complain_type`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customerid` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `customerid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `product`
+--
+ALTER TABLE `product`
+  MODIFY `productid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `ownership`
+--
+ALTER TABLE `ownership`
+  ADD CONSTRAINT `ownership_ibfk_1` FOREIGN KEY (`customerid`) REFERENCES `customer` (`customerid`),
+  ADD CONSTRAINT `ownership_ibfk_2` FOREIGN KEY (`productid`) REFERENCES `product` (`productid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
