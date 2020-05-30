@@ -41,6 +41,42 @@ class Product{
 
 	}
 
+	function showAllProduct(){
+		
+		$query1 = "SELECT * FROM " . $this->table_name;
+		
+		$result1 = $this->conn->query($query1);
+
+		$json_output = array();
+
+		if($result1->num_rows>0) {
+			//echo("IN IF");
+			while($row1 = $result1->fetch_assoc()){
+				$json_output[] = $row1;
+				/*$product_type_id = $row1['producttypeid'];
+				$query2 = "SELECT producttype FROM product_type WHERE producttypeid = '" . $product_type_id . "'";
+
+				$result2 = $this->conn->query($query2);
+
+				if($result2->num_rows>0) {
+					//echo("IN IF");
+					$row2 = $result1->fetch_assoc();
+					$json_output[] = $row1 + $row2;
+				}else{
+					//echo("NOT");
+					return "Product type not found";
+				}*/
+			}	
+			return json_encode($json_output);	
+		}else{
+			//echo("NOT");
+			return "Product not found";
+		}
+
+		return json_encode($json_output);
+
+	}
+
 }
 
 
