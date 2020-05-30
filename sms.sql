@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 28, 2020 at 06:51 PM
+-- Generation Time: May 30, 2020 at 09:38 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -137,7 +137,7 @@ CREATE TABLE `customer` (
 
 INSERT INTO `customer` (`customerid`, `userid`, `billingname`, `placeid`, `firstname`, `lastname`, `contactno1`, `contactno2`, `address`, `city`, `state`, `pincode`, `email`) VALUES
 (1, 'jinesh@example.com', 'SBI_CTM', '1', 'ABC', 'XYZ', '123456', '654321', 'MAHADEVNAGAR TEKRA', 'Ahmedabad', 'GUJARAT', '382418', 'ABC@XYZ.com'),
-(2, 'jinesh@example.com', 'SBI-CTM', '2', 'GHI', 'PQR', '456456456', '323323323', 'aasdfgdv', 'ahmedabad', 'gujarat', '654321', 'XYZ@ABC.com');
+(2, 'jinesh@example.com', 'SBI', '2', 'GHI', 'PQR', '456456456', '323323323', 'aasdfgdv', 'ahmedabad', 'gujarat', '654321', 'XYZ@ABC.com');
 
 -- --------------------------------------------------------
 
@@ -179,6 +179,51 @@ INSERT INTO `ownership` (`customerid`, `productid`, `quantity`) VALUES
 (1, 1, 5),
 (1, 2, 5),
 (1, 2, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment`
+--
+
+CREATE TABLE `payment` (
+  `paymentid` int(11) NOT NULL,
+  `customerid` int(11) NOT NULL,
+  `invoiceno` varchar(20) NOT NULL,
+  `paymentmodeid` int(11) NOT NULL,
+  `receiveddate` date NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `amount` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `payment`
+--
+
+INSERT INTO `payment` (`paymentid`, `customerid`, `invoiceno`, `paymentmodeid`, `receiveddate`, `status`, `amount`) VALUES
+(1, 1, '123465', 1, '2020-05-29', 'Pending', 5000),
+(2, 2, '789456', 2, '2020-05-29', 'PAID', 8000),
+(3, 2, '789213', 2, '2020-04-29', 'Pending', 4000),
+(4, 2, '7894456', 2, '2020-04-29', 'Pending', 4000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_mode`
+--
+
+CREATE TABLE `payment_mode` (
+  `paymentmodeid` int(11) NOT NULL,
+  `paymentmode` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `payment_mode`
+--
+
+INSERT INTO `payment_mode` (`paymentmodeid`, `paymentmode`) VALUES
+(1, 'CHEQUE'),
+(2, 'CASH');
 
 -- --------------------------------------------------------
 
@@ -263,6 +308,21 @@ ALTER TABLE `ownership`
   ADD KEY `productid` (`productid`);
 
 --
+-- Indexes for table `payment`
+--
+ALTER TABLE `payment`
+  ADD PRIMARY KEY (`paymentid`),
+  ADD UNIQUE KEY `invoiceno` (`invoiceno`),
+  ADD KEY `paymentmodeid` (`paymentmodeid`),
+  ADD KEY `payment_ibfk_1` (`customerid`);
+
+--
+-- Indexes for table `payment_mode`
+--
+ALTER TABLE `payment_mode`
+  ADD PRIMARY KEY (`paymentmodeid`);
+
+--
 -- Indexes for table `place`
 --
 ALTER TABLE `place`
@@ -297,6 +357,18 @@ ALTER TABLE `customer`
   MODIFY `customerid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `payment`
+--
+ALTER TABLE `payment`
+  MODIFY `paymentid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `payment_mode`
+--
+ALTER TABLE `payment_mode`
+  MODIFY `paymentmodeid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
@@ -312,6 +384,12 @@ ALTER TABLE `product`
 ALTER TABLE `ownership`
   ADD CONSTRAINT `ownership_ibfk_1` FOREIGN KEY (`customerid`) REFERENCES `customer` (`customerid`),
   ADD CONSTRAINT `ownership_ibfk_2` FOREIGN KEY (`productid`) REFERENCES `product` (`productid`);
+
+--
+-- Constraints for table `payment`
+--
+ALTER TABLE `payment`
+  ADD CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`customerid`) REFERENCES `customer` (`customerid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
