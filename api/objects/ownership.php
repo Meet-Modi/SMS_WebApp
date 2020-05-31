@@ -74,7 +74,7 @@ class Ownership{
 				$product_id = $row1['productid'];
 				$quantity = $row1['quantity'];
 	
-				$query2 = "SELECT productcompany, producttype, capacity, rating FROM product";
+				$query2 = "SELECT productcompany, producttype, capacity, rating, modelno FROM product";
 				$query2 .= " WHERE productid='" . $product_id . "'";
 				
 				$result2 = $this->conn->query($query2);
@@ -93,6 +93,5 @@ class Ownership{
 		}		
 	}
 }
-
 
 ?>

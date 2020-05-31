@@ -28,7 +28,6 @@ class Customer{
 	
 	function create($user_fname, $user_lname, $place) {
 
-		//$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
 		$this->billing_name=htmlspecialchars(strip_tags($this->billing_name));
 		$this->contact_fname=htmlspecialchars(strip_tags($this->contact_fname));
 		$this->contact_lname=htmlspecialchars(strip_tags($this->contact_lname));
@@ -47,18 +46,15 @@ class Customer{
 		$query1 = "SELECT userid FROM employee WHERE firstname = '" . $firstname . "' AND lastname = '" . $lastname ."'";
 		// prepare the query
 		$result1 = $this->conn->query($query1);
-//		echo("*1st query executed");
 
 		if ($result1->num_rows > 0) {
 			$row = $result1->fetch_assoc();
 			$this->user_id = $row['userid'];
-//			echo("echo in if 1");
 
 			$query2 = "SELECT placeid FROM place WHERE placetype = '" . $place_type ."'";
 			// prepare the query
 			$result2 = $this->conn->query($query2);
 			if ($result2->num_rows > 0) {
-//				echo("in if 2");
 				$row = $result2->fetch_assoc();
 				$this->place_id = $row['placeid'];
 				$query3 = "INSERT INTO ". $this->table_name ;
@@ -68,10 +64,8 @@ class Customer{
 				$query3 .= "'".$this->address."','".$this->city."','".$this->state."','".$this->pincode."','".$this->email."');";
 
 				if ($this->conn->query($query3) === TRUE) {
-					//echo("3rd query executed");
 					return true;
 				} else {
-					//echo "Error: " . $query2 . "<br>" . $this->conn->error;
 					return false;
 				} 
 			}	
@@ -83,14 +77,12 @@ class Customer{
 	function showCustomer() {
 		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
 		$query1 = "SELECT * FROM ". $this->table_name ." WHERE customerid = '". $this->customer_id ."'";
-		// prepare the query
 		$result1 = $this->conn->query($query1);
 
 		if($result1->num_rows>0) {
 			$row1 = $result1->fetch_assoc();
 			$placeid = $row1['placeid'];
 			$query2 = "SELECT placetype FROM place WHERE placeid = '". $placeid ."'";
-			// prepare the query
 			$result2 = $this->conn->query($query2);
 			if($result2->num_rows>0) {
 				$row2 = $result2->fetch_assoc();
@@ -147,7 +139,6 @@ class Customer{
 		$place=htmlspecialchars(strip_tags($place));
 
 		$query2 = "SELECT placeid FROM place WHERE placetype = '" . $place ."'";
-			// prepare the query
 		$result2 = $this->conn->query($query2);
 
 		if ($result2->num_rows > 0) {
@@ -160,13 +151,10 @@ class Customer{
 			$query .= " city = '". $this->city ."', state = '". $this->state ."', pincode = '". $this->pincode ."', email = '". $this->email ."'";
 			$query .= " WHERE customerid = '". $this->customer_id ."'";
 		
-		// echo($query);
 
 			if ($this->conn->query($query) === TRUE) {
-				//echo("3rd query executed");
 				return true;
 			} else {
-				//echo "Error: " . $query2 . "<br>" . $this->conn->error;
 				return false;
 			} 
 		}
@@ -174,7 +162,33 @@ class Customer{
 			return false;
 		}
 	}
+
+	function deleteCustomer() {
+		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
+		$query1 = "SELECT * FROM ". $this->table_name ." WHERE customerid = '". $this->customer_id ."'";
+		$result1 = $this->conn->query($query1);
+
+		if($result1->num_rows>0) {
+			$row1 = $result1->fetch_assoc();
+			$placeid = $row1['placeid'];
+			$query2 = "SELECT placetype FROM place WHERE placeid = '". $placeid ."'";
+			$result2 = $this->conn->query($query2);
+			if($result2->num_rows>0) {
+				$row2 = $result2->fetch_assoc();
+				$json_output = $row1 + $row2;
+			}else{
+				return "Place not exist";
+			}
+		}else{
+			return "customer not found";
+		}
+
+		return json_encode($json_output);
+	}
+
 }
 
 
 ?>
+
+
