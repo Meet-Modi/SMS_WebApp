@@ -85,14 +85,6 @@
 
 </head>
 
-
-
-
-
-
-
-
-
 <body>
   <div id="Product_Details"></div>
   <input type="button" value="   +   " onClick="addProductForm('Product_Details');">
@@ -106,7 +98,9 @@
   
       var newdiv = document.createElement('product-' + counter);
 
-      var productform = "<section class='products'> \
+      var productform = "    <button type='button' class='collapsible'>\
+      </button> \
+      <section class='products'> \
       <div class='product-form-" + (counter) + "'> \
         <div class='card card-default'> \
           <form id='product-form-" + (counter) + "' method='POST'> \
@@ -214,7 +208,22 @@
 
 
   </script>
-
+  <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    }
+    </script>
 
 </body>
 </html>
