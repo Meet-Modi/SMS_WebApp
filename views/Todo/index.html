@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>NavBar</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/themify/themify-icons.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/elegant-font/html-css/style.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+<!--	<link rel="stylesheet" type="text/css" href="css/materialize.css"> -->
+<!--===============================================================================================-->
+
+
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/css/bootstrap-grid.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body class="animsition">
+<?php
+$cookie_name = "jwt_token";
+	
+	if(isset($_COOKIE[$cookie_name])) { 
+		echo "Cookie named '" . $cookie_name . "' is set!";
+		$jwt_token = $_COOKIE[$cookie_name]; 
+	} 
+	else{
+		header("Location: ../../index.html");
+		exit();
+	}		
+	
+	$myObj = (object)array();
+	$myObj->jwt = $jwt_token;
+	$myJSON = json_encode($myObj);
+	
+$ch = curl_init();
+
+curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/employee/validate_token.php" );
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+curl_setopt($ch, CURLOPT_POST,           1 );
+curl_setopt($ch, CURLOPT_POSTFIELDS,     $myJSON ); 
+curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+
+$result=curl_exec ($ch);
+$data = json_decode($result);
+$userid = $data->data->userid;
+$firstname = $data->data->firstname;
+$lastname = $data->data->lastname;
+
+?>
+
+	<!-- Header -->
+	<header class="header1">
+		<!-- Header desktop -->
+		<div class="container-menu-header">
+			<div class="wrap_header">
+				<!-- Logo -->
+				<a href="index.php" class="logo">
+					<img src="images/icons/logo.jpeg" alt="IMG-LOGO">
+				</a>
+
+				<!-- Menu -->
+				<div class="wrap_menu">
+					<nav class="menu">
+						<ul class="main_menu">
+							<li>
+								<a href="../AMC/index.html">AMC</a>
+							</li>
+							<li>
+								<a href="../Customer/index.html">Customer</a>
+							</li>
+							<li>
+								<a href="../Complaint/index.html">Complaint</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+
+				<!-- Header Icon -->
+				<div class="header-icons">
+					<a href="../todo/index.html" class="header-wrapicon1 dis-block">
+						<img src="images/icons/todo.jpg" class="header-icon1" alt="ICON">
+					</a>
+
+					<span class="linedivide1"></span>
+
+					<div class="header-wrapicon2">
+						<img src="images/icons/icon-header-01.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+
+						<!-- Header cart noti -->
+						<div class="header-cart header-dropdown">
+							<ul class="header-cart-wrapitem">
+								<li class="header-cart-item">
+									<div class="header-cart-item-txt">
+										<a href="#" class="header-cart-item-name">
+											Userid : <?php echo($userid); ?>
+										</a>
+									</div>
+									<div class="header-cart-item-txt">
+										<a href="#" class="header-cart-item-name">
+											Name : <?php echo($firstname." ".$lastname); ?>
+										</a>
+									</div>
+								</li>					
+							</ul>
+							<div class="header-cart-buttons">
+								<!-- Button -->
+								<a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									Logout
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+  <div class="container" style="float: left; width: 45%;">
+
+    <div class="calendar-wrapper z-depth-3" style="border:1px solid black;">
+
+      <div class="header-background">
+        <div class="calendar-header" style="border:1px solid black;">
+
+          <a class="prev-button" id="prev" style="height: 30px; color: #000;">
+            <i class="material-icons" style="color: #000;">keyboard_arrow_left</i>
+          </a>
+          <a class="next-button" id="next">
+            <i class="material-icons" style="color: #000;">keyboard_arrow_right</i>
+          </a>
+
+          <div class="row header-title">
+
+            <div class="header-text">
+              <h5 id="month-name"></h5>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="calendar-content"  style="border:1px solid black;">
+        <div id="calendar-table" class="calendar-cells">
+
+          <div id="table-header">
+            <div class="row">
+              <div class="col">Mon</div>
+              <div class="col">Tue</div>
+              <div class="col">Wed</div>
+              <div class="col">Thu</div>
+              <div class="col">Fri</div>
+              <div class="col">Sat</div>
+              <div class="col">Sun</div>
+            </div>
+          </div>
+
+          <div id="table-body" class="">
+
+          </div>
+
+        </div>
+      </div>
+
+      <!--<div class="calendar-footer">
+        <div class="emptyForm" id="emptyForm">
+          <h4 id="emptyFormTitle">No events now</h4>
+          <a class="addEvent" id="changeFormButton">Add new</a>
+        </div>
+        <div class="addForm" id="addForm">
+          <h4>Add new event</h4>
+
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="eventTitleInput" type="text" class="validate">
+              <label for="eventTitleInput">Title</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="eventDescInput" type="text" class="validate">
+              <label for="eventDescInput">Description</label>
+            </div>
+          </div>
+
+          <div class="addEventButtons">
+            <a class="waves-effect waves-light btn blue lighten-2" id="addEventButton">Add</a>
+            <a class="waves-effect waves-light btn grey lighten-2" id="cancelAdd">Cancel</a>
+          </div>
+
+        </div>-->
+      </div>
+
+    </div>
+
+  </div>
+
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
+	<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/select2/select2.min.js"></script>
+	<script type="text/javascript">
+		$(".selection-1").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect1')
+		});
+
+		$(".selection-2").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect2')
+		});
+	</script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/daterangepicker/moment.min.js"></script>
+	<script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/slick/slick.min.js"></script>
+	<script type="text/javascript" src="js/slick-custom.js"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
+	<script type="text/javascript">
+		$('.block2-btn-addcart').each(function(){
+			var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
+			$(this).on('click', function(){
+				swal(nameProduct, "is added to cart !", "success");
+			});
+		});
+
+		$('.block2-btn-addwishlist').each(function(){
+			var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
+			$(this).on('click', function(){
+				swal(nameProduct, "is added to wishlist !", "success");
+			});
+		});
+	</script>
+
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/noui/nouislider.min.js"></script>
+	<script type="text/javascript">
+		/*[ No ui ]
+	    ===========================================================*/
+	    var filterBar = document.getElementById('filter-bar');
+
+	    noUiSlider.create(filterBar, {
+	        start: [ 50, 200 ],
+	        connect: true,
+	        range: {
+	            'min': 50,
+	            'max': 200
+	        }
+	    });
+
+	    var skipValues = [
+	    document.getElementById('value-lower'),
+	    document.getElementById('value-upper')
+	    ];
+
+	    filterBar.noUiSlider.on('update', function( values, handle ) {
+	        skipValues[handle].innerHTML = Math.round(values[handle]) ;
+	    });
+	</script>
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+  crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+<script>
+$(".button-collapse").sideNav();
+</script>
+
+<!-- partial -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script><script  src="./script.js"></script>
+
+
+
+</body>
+</html>
