@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 31, 2020 at 06:24 PM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.3.0
+-- Generation Time: Jun 04, 2020 at 01:57 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -47,7 +46,7 @@ INSERT INTO `admin` (`admin_id`, `password`) VALUES
 --
 
 CREATE TABLE `amc` (
-  `amcid` varchar(20) NOT NULL,
+  `amcid` int(20) NOT NULL,
   `customerid` varchar(20) NOT NULL,
   `amctypeid` varchar(5) NOT NULL,
   `fromdate` date NOT NULL,
@@ -56,14 +55,6 @@ CREATE TABLE `amc` (
   `totalservices` int(11) NOT NULL,
   `amount` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `amc`
---
-
-INSERT INTO `amc` (`amcid`, `customerid`, `amctypeid`, `fromdate`, `period`, `quantity`, `totalservices`, `amount`) VALUES
-('1', '1', '1', '2020-01-01', 8, 6, 16, 24000),
-('2', '2', '3', '2019-01-12', 2, 4, 4, 8000);
 
 -- --------------------------------------------------------
 
@@ -97,6 +88,33 @@ CREATE TABLE `complaint` (
   `remarks` varchar(50) NOT NULL,
   `status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `complaintreport`
+--
+
+CREATE TABLE `complaintreport` (
+  `complaintid` int(20) NOT NULL,
+  `amcid` int(20) NOT NULL,
+  `customerid` int(20) NOT NULL,
+  `date` date NOT NULL,
+  `natureofcomplaint` varchar(100) NOT NULL,
+  `defectobserved` varchar(1000) NOT NULL,
+  `actiontaken` varchar(1000) NOT NULL,
+  `partsreplaced` varchar(1000) NOT NULL,
+  `remarks` varchar(1000) NOT NULL,
+  `linevoltage` float NOT NULL,
+  `grilltemp` float NOT NULL,
+  `current` float NOT NULL,
+  `roomtemp` float NOT NULL,
+  `timefrom` datetime NOT NULL,
+  `timeto` datetime NOT NULL,
+  `mechanicremarks` varchar(1000) NOT NULL,
+  `mechanicname` varchar(100) NOT NULL,
+  `customerremarks` varchar(1000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -157,7 +175,8 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`userid`, `firstname`, `lastname`, `password`) VALUES
-('jinesh@example.com', 'Jinesh', 'Patel', '$2y$10$/MQxZYe2UguG.ZXXhu/YWukn6no5M5b5lxZ65lKB.jfZILnFQuwCu');
+('jinesh@example.com', 'Jinesh', 'Patel', '$2y$10$/MQxZYe2UguG.ZXXhu/YWukn6no5M5b5lxZ65lKB.jfZILnFQuwCu'),
+('meet1@example.com', 'Meet', 'Modi', '$2y$10$/5AAgPc5LfHUTk75iD2YrOcjAtX1OE7nxE/6qEd2c/7aMpGXIie9y');
 
 -- --------------------------------------------------------
 
@@ -288,6 +307,14 @@ ALTER TABLE `complaint`
   ADD PRIMARY KEY (`complaintid`);
 
 --
+-- Indexes for table `complaintreport`
+--
+ALTER TABLE `complaintreport`
+  ADD PRIMARY KEY (`complaintid`),
+  ADD KEY `amcid` (`amcid`),
+  ADD KEY `customerid` (`customerid`);
+
+--
 -- Indexes for table `complain_type`
 --
 ALTER TABLE `complain_type`
@@ -345,9 +372,21 @@ ALTER TABLE `product`
 --
 
 --
+-- AUTO_INCREMENT for table `amc`
+--
+ALTER TABLE `amc`
+  MODIFY `amcid` int(20) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `complaint`
 --
 ALTER TABLE `complaint`
+  MODIFY `complaintid` int(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `complaintreport`
+--
+ALTER TABLE `complaintreport`
   MODIFY `complaintid` int(20) NOT NULL AUTO_INCREMENT;
 
 --
@@ -383,6 +422,13 @@ ALTER TABLE `product`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `complaintreport`
+--
+ALTER TABLE `complaintreport`
+  ADD CONSTRAINT `complaintreport_ibfk_1` FOREIGN KEY (`amcid`) REFERENCES `amc` (`amcid`),
+  ADD CONSTRAINT `complaintreport_ibfk_2` FOREIGN KEY (`customerid`) REFERENCES `customer` (`customerid`);
 
 --
 -- Constraints for table `ownership`
