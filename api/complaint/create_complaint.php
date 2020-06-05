@@ -25,7 +25,6 @@ $data = json_decode($json);
 $user->complaint_id = $data->complaint_id;
 $user->remarks = $data->remarks;
 $user->status = $data->status;
-
 $billing_name = $data->billing_name;
 $complaint_type = $data->complaint_type;
 
