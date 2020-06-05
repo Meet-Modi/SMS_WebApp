@@ -11,7 +11,6 @@ class Complaint{
 	public $complaint_id;
 	public $customer_id;
 	public $complaint_type_id;
-	public $remarks;
 	public $status;
 
 	public function __construct($db){
