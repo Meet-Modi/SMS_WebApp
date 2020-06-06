@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 04, 2020 at 01:57 PM
+-- Generation Time: Jun 06, 2020 at 04:32 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.6
 
@@ -56,6 +56,13 @@ CREATE TABLE `amc` (
   `amount` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `amc`
+--
+
+INSERT INTO `amc` (`amcid`, `customerid`, `amctypeid`, `fromdate`, `period`, `quantity`, `totalservices`, `amount`) VALUES
+(1, '1', '1', '0000-00-00', 12, 6, 64, 6400);
+
 -- --------------------------------------------------------
 
 --
@@ -84,23 +91,40 @@ INSERT INTO `amc_type` (`amctypeid`, `amctype`) VALUES
 CREATE TABLE `complaint` (
   `complaintid` int(20) NOT NULL,
   `customerid` int(20) NOT NULL,
+  `amcid` int(20) NOT NULL,
+  `date` date NOT NULL,
   `complainttypeid` int(5) NOT NULL,
-  `remarks` varchar(50) NOT NULL,
   `status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `complaint`
+--
+
+INSERT INTO `complaint` (`complaintid`, `customerid`, `amcid`, `date`, `complainttypeid`, `status`) VALUES
+(26, 1, 1, '2020-05-19', 1, 'OPEN'),
+(27, 1, 1, '2020-05-06', 1, 'OPEN'),
+(28, 1, 1, '2020-05-07', 1, 'OPEN'),
+(30, 1, 1, '2020-05-08', 1, 'OPEN'),
+(31, 1, 1, '2020-05-09', 1, 'OPEN'),
+(32, 1, 1, '2020-05-10', 1, 'OPEN'),
+(33, 1, 1, '2020-05-11', 1, 'OPEN'),
+(34, 1, 1, '2020-05-12', 1, 'OPEN'),
+(36, 1, 1, '2020-05-13', 1, 'OPEN'),
+(38, 1, 1, '2020-05-14', 1, 'OPEN'),
+(39, 1, 1, '2020-05-15', 1, 'OPEN'),
+(40, 1, 1, '2020-05-16', 1, 'OPEN'),
+(41, 1, 1, '2020-05-17', 1, 'OPEN'),
+(43, 1, 1, '2020-05-18', 1, 'OPEN');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `complaintreport`
+-- Table structure for table `complaint_report`
 --
 
-CREATE TABLE `complaintreport` (
+CREATE TABLE `complaint_report` (
   `complaintid` int(20) NOT NULL,
-  `amcid` int(20) NOT NULL,
-  `customerid` int(20) NOT NULL,
-  `date` date NOT NULL,
-  `natureofcomplaint` varchar(100) NOT NULL,
   `defectobserved` varchar(1000) NOT NULL,
   `actiontaken` varchar(1000) NOT NULL,
   `partsreplaced` varchar(1000) NOT NULL,
@@ -116,16 +140,31 @@ CREATE TABLE `complaintreport` (
   `customerremarks` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `complaint_report`
+--
+
+INSERT INTO `complaint_report` (`complaintid`, `defectobserved`, `actiontaken`, `partsreplaced`, `remarks`, `linevoltage`, `grilltemp`, `current`, `roomtemp`, `timefrom`, `timeto`, `mechanicremarks`, `mechanicname`, `customerremarks`) VALUES
+(41, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', ''),
+(43, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `complain_type`
+-- Table structure for table `complaint_type`
 --
 
-CREATE TABLE `complain_type` (
-  `complaintypeid` int(5) NOT NULL,
-  `complaintype` varchar(30) NOT NULL
+CREATE TABLE `complaint_type` (
+  `complainttypeid` int(5) NOT NULL,
+  `complainttype` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `complaint_type`
+--
+
+INSERT INTO `complaint_type` (`complainttypeid`, `complainttype`) VALUES
+(1, 'ICE FORMATION');
 
 -- --------------------------------------------------------
 
@@ -304,27 +343,30 @@ ALTER TABLE `amc`
 -- Indexes for table `complaint`
 --
 ALTER TABLE `complaint`
-  ADD PRIMARY KEY (`complaintid`);
-
---
--- Indexes for table `complaintreport`
---
-ALTER TABLE `complaintreport`
   ADD PRIMARY KEY (`complaintid`),
+  ADD UNIQUE KEY `customerid` (`customerid`,`amcid`,`date`,`complainttypeid`) USING BTREE,
   ADD KEY `amcid` (`amcid`),
-  ADD KEY `customerid` (`customerid`);
+  ADD KEY `complainttypeid` (`complainttypeid`);
 
 --
--- Indexes for table `complain_type`
+-- Indexes for table `complaint_report`
 --
-ALTER TABLE `complain_type`
-  ADD PRIMARY KEY (`complaintypeid`);
+ALTER TABLE `complaint_report`
+  ADD UNIQUE KEY `complaintid` (`complaintid`);
+
+--
+-- Indexes for table `complaint_type`
+--
+ALTER TABLE `complaint_type`
+  ADD PRIMARY KEY (`complainttypeid`),
+  ADD UNIQUE KEY `complainttype` (`complainttype`);
 
 --
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
-  ADD PRIMARY KEY (`customerid`);
+  ADD PRIMARY KEY (`customerid`),
+  ADD KEY `userid` (`userid`);
 
 --
 -- Indexes for table `employee`
@@ -375,25 +417,19 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `amc`
 --
 ALTER TABLE `amc`
-  MODIFY `amcid` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `amcid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `complaint`
 --
 ALTER TABLE `complaint`
-  MODIFY `complaintid` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `complaintid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
--- AUTO_INCREMENT for table `complaintreport`
+-- AUTO_INCREMENT for table `complaint_type`
 --
-ALTER TABLE `complaintreport`
-  MODIFY `complaintid` int(20) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `complain_type`
---
-ALTER TABLE `complain_type`
-  MODIFY `complaintypeid` int(5) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `complaint_type`
+  MODIFY `complainttypeid` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -424,11 +460,24 @@ ALTER TABLE `product`
 --
 
 --
--- Constraints for table `complaintreport`
+-- Constraints for table `complaint`
 --
-ALTER TABLE `complaintreport`
-  ADD CONSTRAINT `complaintreport_ibfk_1` FOREIGN KEY (`amcid`) REFERENCES `amc` (`amcid`),
-  ADD CONSTRAINT `complaintreport_ibfk_2` FOREIGN KEY (`customerid`) REFERENCES `customer` (`customerid`);
+ALTER TABLE `complaint`
+  ADD CONSTRAINT `complaint_ibfk_1` FOREIGN KEY (`amcid`) REFERENCES `amc` (`amcid`),
+  ADD CONSTRAINT `complaint_ibfk_2` FOREIGN KEY (`complainttypeid`) REFERENCES `complaint_type` (`complainttypeid`),
+  ADD CONSTRAINT `complaint_ibfk_3` FOREIGN KEY (`customerid`) REFERENCES `customer` (`customerid`);
+
+--
+-- Constraints for table `complaint_report`
+--
+ALTER TABLE `complaint_report`
+  ADD CONSTRAINT `complaint_report_ibfk_1` FOREIGN KEY (`complaintid`) REFERENCES `complaint` (`complaintid`);
+
+--
+-- Constraints for table `customer`
+--
+ALTER TABLE `customer`
+  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `employee` (`userid`);
 
 --
 -- Constraints for table `ownership`
