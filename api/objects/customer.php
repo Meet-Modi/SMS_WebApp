@@ -186,6 +186,22 @@ class Customer{
 		return json_encode($json_output);
 	}
 
+	public static function getCustomerIdFromBillingName($billing_name, $db){
+		$billing_name=htmlspecialchars(strip_tags($billing_name));
+
+		$query = "SELECT customerid FROM customer WHERE billingname = '" . $billing_name ."'";
+		$result = $db->query($query);
+
+		if ($result->num_rows > 0) {
+			$row = $result->fetch_assoc();
+			$customer_id = $row['customerid'];
+			return $customer_id;
+		}
+		else{
+			return false;
+		}
+	}
+
 }
 
 
