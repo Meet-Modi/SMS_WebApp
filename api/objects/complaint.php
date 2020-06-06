@@ -28,7 +28,6 @@ class Complaint{
 		$query .= "(customerid, amcid, date, complainttypeid, status) VALUES";
 		$query .= "('". $this->customer_id ."','". $this->amc_id ."','".$this->date."','". $this->complaint_type_id ."',";
 		$query .= "'". $this->status ."')";
-//		echo($query);
 		if ($this->conn->query($query) === TRUE) {
 			return true;
 		} 
@@ -37,6 +36,29 @@ class Complaint{
 		} 
 	}
 
+	public static function getAllComplaints($db){
+		$query = "SELECT * FROM complaint";
+		$result = $db->query($query);
+
+		$output = array();
+
+		while($row = $result->fetch_assoc()) {			
+			$output[] = $row;
+		}
+		return json_encode($output);		
+	}
+	
+	public static function getComplaintById($complaint_id,$db){
+		$query = "SELECT * FROM ". $this->table_name ." WHERE complaintid='".$complaint_id."'";
+		$result = $db->query($query);
+
+		$output = array();
+
+		while($row = $result->fetch_assoc()) {			
+			$output[] = $row;
+		}
+		return json_encode($output);
+	}
 
 	public static function getComplaintid($customer_id,$amc_id,$date,$complaint_type_id,$db){
 
@@ -56,7 +78,32 @@ class Complaint{
 			echo json_encode(array("message" => "Complaint not found."));
 			return false;
  		}
+	}
 
+	function updateComplaintById(){
+
+		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
+		$this->amc_id=htmlspecialchars(strip_tags($this->amc_id));
+		$this->date=htmlspecialchars(strip_tags($this->date));
+		$this->complaint_type_id=htmlspecialchars(strip_tags($this->complaint_type_id));
+
+		$query = "UPDATE complaint SET customerid='".$this->customer_id."',amcid='".$this->amc_id."',";
+		$query .= " date='".$this->date."',complainttypeid='".$this->complaint_type_id."',";
+		$query .= "status='".$this->status."' WHERE complaintid='".$this->complaint_id."'";
+		if ($this->conn->query($query) === TRUE) {
+			return true;
+		} else {
+			return false;
+		} 
+	}
+
+	function deleteComplaintById(){
+		$query = "DELETE FROM complaint WHERE complaintid='".$this->complaint_id."'";
+		if ($this->conn->query($query) === TRUE) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
 ?>

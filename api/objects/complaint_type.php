@@ -28,11 +28,11 @@
         public static function getAllComplaintTypes($db){
             $query = "SELECT complainttype FROM complaint_type";
             $result = $db->query($query);
-            $json_output = array();
+            $output = array();
             while($row = $result->fetch_assoc()) {			
-                $json_output[] = $row;
+                $output[] = $row;
             }
-            return json_encode($json_output);
+            return $output;
         }
 
         public static function getComplaintTypeIdByType($complaint_type,$db){

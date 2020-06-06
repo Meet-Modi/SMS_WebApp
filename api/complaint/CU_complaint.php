@@ -42,20 +42,43 @@ $complaint->mechanic_remarks=$data->mechanic_remarks;
 $complaint->mechanic_name=$data->mechanic_name;
 $complaint->customer_remarks=$data->customer_remarks;
 
-if(
-    !empty($complaint->customer_id) &&
-    !empty($complaint->amc_id) &&
-    !empty($complaint->date) &&
-    !empty($complaint->complaint_type_id) &&
-    !empty($complaint->status) &&
-    $complaint->createReport()
-   ){
-        http_response_code(200);    
-        echo json_encode(array("message" => "Complaint was added."));
-    }
-else{
-        http_response_code(400);    
-        echo json_encode(array("message" => "Complaint unable to add."));
+switch($data->operation){
+    case "C":
+        if(
+            !empty($complaint->customer_id) &&
+            !empty($complaint->amc_id) &&
+            !empty($complaint->date) &&
+            !empty($complaint->complaint_type_id) &&
+            !empty($complaint->status) &&
+            $complaint->createReport()
+           ){
+                http_response_code(200);    
+                echo json_encode(array("message" => "Complaint was added."));
+            }
+        else{
+                http_response_code(400);    
+                echo json_encode(array("message" => "Complaint unable to add."));
+        }
+    break;
+
+    case "U":
+        $complaint->complaint_id = Complaint::getComplaintid($complaint->customer_id,$complaint->amc_id,$complaint->date,$complaint->complaint_type_id,$db);
+        if(
+            !empty($complaint->customer_id) && !empty($complaint->amc_id) && !empty($complaint->date) &&
+            !empty($complaint->complaint_type_id) && !empty($complaint->status) &&
+            $complaint->updateComplaintReportById()
+           ){
+                http_response_code(200);    
+                echo json_encode(array("message" => "Complaint was updated."));
+            }
+        else{
+                http_response_code(400);    
+                echo json_encode(array("message" => "Complaint unable to update."));
+        }
+    break;
 }
+
+
+
 
 ?>
