@@ -16,7 +16,7 @@ $database = new Database();
 $db = $database->getConnection();
   
 // instantiate product object
-$user = new Complaint($db);
+$complaint = new Complaint($db);
  
 // get posted data
 $json = file_get_contents("php://input");
@@ -66,12 +66,12 @@ else{
 }*/
 
 if($data->option=="1") {
-    $user->complaint_id = $data->complaint_id;
-    $json_data = $user->showComplain();
+    $complaint->complaint_id = $data->complaint_id;
+    $json_data = $complaint->showComplain();
     echo($json_data);
 }
 else{
-    $json_data = $user->showAllComplain();
+    $json_data = $complaint->showAllComplain();
     echo($json_data);
 }
 

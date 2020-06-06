@@ -21,7 +21,6 @@ class Complaint{
 
     function create($billing_name,$complaint_type) {
 
-//		$this->complaint_id=htmlspecialchars(strip_tags($this->complaint_id));
 		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
 		$this->amc_id=htmlspecialchars(strip_tags($this->amc_id));
 		$this->date=htmlspecialchars(strip_tags($this->date));
@@ -41,18 +40,19 @@ class Complaint{
 			$this->customer_id = $row['customerid'];
 			//echo("echo in if 1");
 
-			$query2 = "SELECT complaintypeid FROM complain_type WHERE complaintype = '". $complaint_type ."'";
+			$query2 = "SELECT complainttypeid FROM complaint_type WHERE complainttype = '". $complaint_type ."'";
+			//echo($query2);
 			// prepare the query
 			$result2 = $this->conn->query($query2);
 			if ($result2->num_rows > 0) {
 			//	echo("echo in if 2");
 				$row = $result2->fetch_assoc();
-				$this->complaint_type_id = $row['complaintypeid'];
+				$this->complaint_type_id = $row['complainttypeid'];
 				$query3 = "INSERT INTO ". $this->table_name ;
 				$query3 .= "(customerid, amcid, date, complainttypeid, status) VALUES";
 				$query3 .= "('". $this->customer_id ."','". $this->amc_id ."','".$this->date."','". $this->complaint_type_id ."',";
 				$query3 .= "'". $this->status ."')";
-
+				echo($query3);
 				if ($this->conn->query($query3) === TRUE) {
 					//echo("3rd query executed");
 					return true;
@@ -62,6 +62,7 @@ class Complaint{
 				} 
 			}	
 		} else {
+			echo("echo else");
 			return false;
 		}
 	}
@@ -116,7 +117,21 @@ class Complaint{
 			return false;
 		} 
 	}
-    
+	
+	function getComplaintid(){
+		
+		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
+		$this->amc_id=htmlspecialchars(strip_tags($this->amc_id));
+		$this->date=htmlspecialchars(strip_tags($this->date));
+		$this->complaint_type_id=htmlspecialchars(strip_tags($this->complaint_type_id));
+
+		$query = "SELECT complaintid FROM complaint WHERE customerid='".$this->customer_id."'";
+		$query .= "AND amcid='".$this->amc_id."' AND date='".$this->date."' AND complainttypeid='".$this->complaint_type_id."'";
+		echo($query);
+	}
+
+
+
 }
 
 ?>
