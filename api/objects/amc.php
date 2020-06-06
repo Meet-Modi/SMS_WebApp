@@ -21,7 +21,7 @@ class AMC{
     	$this->conn = $db;
 	}
 	
-	function create($billing_name, $amc_type) {
+	function createAmc($billing_name, $amc_type) {
 
 		$this->amc_id=htmlspecialchars(strip_tags($this->amc_id));
 		$this->from_date=htmlspecialchars(strip_tags($this->from_date));
