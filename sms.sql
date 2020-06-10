@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2020 at 04:32 PM
+-- Generation Time: Jun 10, 2020 at 05:39 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.6
 
@@ -53,15 +53,17 @@ CREATE TABLE `amc` (
   `period` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `totalservices` int(11) NOT NULL,
-  `amount` float NOT NULL
+  `amount` float NOT NULL,
+  `prevdate` date DEFAULT NULL,
+  `nextdate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `amc`
 --
 
-INSERT INTO `amc` (`amcid`, `customerid`, `amctypeid`, `fromdate`, `period`, `quantity`, `totalservices`, `amount`) VALUES
-(1, '1', '1', '0000-00-00', 12, 6, 64, 6400);
+INSERT INTO `amc` (`amcid`, `customerid`, `amctypeid`, `fromdate`, `period`, `quantity`, `totalservices`, `amount`, `prevdate`, `nextdate`) VALUES
+(5, '1', '1', '2020-05-03', 4, 5, 12, 18000, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -102,20 +104,7 @@ CREATE TABLE `complaint` (
 --
 
 INSERT INTO `complaint` (`complaintid`, `customerid`, `amcid`, `date`, `complainttypeid`, `status`) VALUES
-(26, 1, 1, '2020-05-19', 1, 'OPEN'),
-(27, 1, 1, '2020-05-06', 1, 'OPEN'),
-(28, 1, 1, '2020-05-07', 1, 'OPEN'),
-(30, 1, 1, '2020-05-08', 1, 'OPEN'),
-(31, 1, 1, '2020-05-09', 1, 'OPEN'),
-(32, 1, 1, '2020-05-10', 1, 'OPEN'),
-(33, 1, 1, '2020-05-11', 1, 'OPEN'),
-(34, 1, 1, '2020-05-12', 1, 'OPEN'),
-(36, 1, 1, '2020-05-13', 1, 'OPEN'),
-(38, 1, 1, '2020-05-14', 1, 'OPEN'),
-(39, 1, 1, '2020-05-15', 1, 'OPEN'),
-(40, 1, 1, '2020-05-16', 1, 'OPEN'),
-(41, 1, 1, '2020-05-17', 1, 'OPEN'),
-(43, 1, 1, '2020-05-18', 1, 'OPEN');
+(57, 1, 5, '2020-05-21', 1, 'OPEN');
 
 -- --------------------------------------------------------
 
@@ -145,8 +134,7 @@ CREATE TABLE `complaint_report` (
 --
 
 INSERT INTO `complaint_report` (`complaintid`, `defectobserved`, `actiontaken`, `partsreplaced`, `remarks`, `linevoltage`, `grilltemp`, `current`, `roomtemp`, `timefrom`, `timeto`, `mechanicremarks`, `mechanicname`, `customerremarks`) VALUES
-(41, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', ''),
-(43, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '');
+(57, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -329,6 +317,21 @@ INSERT INTO `product` (`productid`, `modelno`, `productcompany`, `producttype`, 
 (5, 'ABD-322F', 'DAIKIN', 'SPLIT', 5, 2),
 (6, 'ABZ322F', 'DAIKIN', 'SPLIT', 5, 2);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `service`
+--
+
+CREATE TABLE `service` (
+  `serviceid` int(11) NOT NULL,
+  `amcid` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `handledby` varchar(30) NOT NULL,
+  `remarks` varchar(50) NOT NULL,
+  `status` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Indexes for dumped tables
 --
@@ -337,7 +340,8 @@ INSERT INTO `product` (`productid`, `modelno`, `productcompany`, `producttype`, 
 -- Indexes for table `amc`
 --
 ALTER TABLE `amc`
-  ADD PRIMARY KEY (`amcid`);
+  ADD PRIMARY KEY (`amcid`),
+  ADD UNIQUE KEY `customerid` (`customerid`,`amctypeid`,`fromdate`,`period`,`quantity`,`totalservices`,`amount`) USING BTREE;
 
 --
 -- Indexes for table `complaint`
@@ -410,6 +414,13 @@ ALTER TABLE `product`
   ADD UNIQUE KEY `modelno` (`modelno`);
 
 --
+-- Indexes for table `service`
+--
+ALTER TABLE `service`
+  ADD PRIMARY KEY (`serviceid`),
+  ADD KEY `amcid` (`amcid`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -417,13 +428,13 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `amc`
 --
 ALTER TABLE `amc`
-  MODIFY `amcid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `amcid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `complaint`
 --
 ALTER TABLE `complaint`
-  MODIFY `complaintid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `complaintid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `complaint_type`
@@ -456,6 +467,12 @@ ALTER TABLE `product`
   MODIFY `productid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `service`
+--
+ALTER TABLE `service`
+  MODIFY `serviceid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -464,8 +481,8 @@ ALTER TABLE `product`
 --
 ALTER TABLE `complaint`
   ADD CONSTRAINT `complaint_ibfk_1` FOREIGN KEY (`amcid`) REFERENCES `amc` (`amcid`),
-  ADD CONSTRAINT `complaint_ibfk_2` FOREIGN KEY (`complainttypeid`) REFERENCES `complaint_type` (`complainttypeid`),
-  ADD CONSTRAINT `complaint_ibfk_3` FOREIGN KEY (`customerid`) REFERENCES `customer` (`customerid`);
+  ADD CONSTRAINT `complaint_ibfk_2` FOREIGN KEY (`customerid`) REFERENCES `customer` (`customerid`),
+  ADD CONSTRAINT `complaint_ibfk_3` FOREIGN KEY (`complainttypeid`) REFERENCES `complaint_type` (`complainttypeid`);
 
 --
 -- Constraints for table `complaint_report`
@@ -491,6 +508,12 @@ ALTER TABLE `ownership`
 --
 ALTER TABLE `payment`
   ADD CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`customerid`) REFERENCES `customer` (`customerid`);
+
+--
+-- Constraints for table `service`
+--
+ALTER TABLE `service`
+  ADD CONSTRAINT `service_ibfk_1` FOREIGN KEY (`amcid`) REFERENCES `amc` (`amcid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

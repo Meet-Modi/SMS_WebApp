@@ -60,11 +60,9 @@
         
         public static function getComplaintReportById($complaint_id,$db){
             $json_output = Complaint::getComplaintById($complaint_id,$db);
-            echo($json_output);
             $output = json_decode($json_output);
 
             $query = "SELECT * FROM complaint_report WHERE complaintid='".$complaint_id."'";
-            echo($query);
             $result = $db->query($query);
             if($result->num_rows>0) {
                 $row = $result->fetch_assoc();		
