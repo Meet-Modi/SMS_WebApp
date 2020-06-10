@@ -55,9 +55,9 @@ class Complaint{
 		$output = array();
 
 		while($row = $result->fetch_assoc()) {			
-			$output[] = $row;
+			$output = $row;
 		}
-		return json_encode($output);
+		return $output;
 	}
 
 	public static function getComplaintid($customer_id,$amc_id,$date,$complaint_type_id,$db){
