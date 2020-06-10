@@ -39,8 +39,8 @@ switch($data->operation){
         }
     break;
     case "R":
-        $json_data = Complaint_type::getAllComplaintTypes();
-        echo($json_data);
+        $output_data = Complaint_type::getAllComplaintTypes();
+        echo(json_encode($output_data);
     break;
     case "U":
         if(

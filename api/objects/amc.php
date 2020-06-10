@@ -21,8 +21,10 @@ class AMC{
     	$this->conn = $db;
 	}
 	
-	function create($billing_name, $amc_type) {
+	function createAmc() {
 
+		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
+		$this->amc_type_id=htmlspecialchars(strip_tags($this->amc_type_id));
 		$this->amc_id=htmlspecialchars(strip_tags($this->amc_id));
 		$this->from_date=htmlspecialchars(strip_tags($this->from_date));
 		$this->period=htmlspecialchars(strip_tags($this->period));
@@ -30,75 +32,64 @@ class AMC{
 		$this->total_services=htmlspecialchars(strip_tags($this->total_services));
 		$this->amount=htmlspecialchars(strip_tags($this->amount));
 
-		$billing_name=htmlspecialchars(strip_tags($billing_name));
-		$amc_type=htmlspecialchars(strip_tags($amc_type));
-
-		$query1 = "SELECT customerid FROM customer WHERE billingname = '" . $billing_name . "'";
-		// prepare the query
-		$result1 = $this->conn->query($query1);
-		//echo("1st query executed");
-
-		if ($result1->num_rows > 0) {
-			$row = $result1->fetch_assoc();
-			$this->customer_id = $row['customerid'];
-			//echo("echo in if 1");
-
-			$query2 = "SELECT amctypeid FROM amc_type WHERE amctype = '" . $amc_type . "'";
-			// prepare the query
-			$result2 = $this->conn->query($query2);
-			if ($result2->num_rows > 0) {
-				$row = $result2->fetch_assoc();
-				$this->amc_type_id = $row['amctypeid'];
-				//echo ("echo in if 2");
-				$query3 = "INSERT INTO ". $this->table_name;
-				$query3 .= "(amcid, customerid, amctypeid, fromdate, period, quantity, totalservices, amount) VALUES";
-				$query3 .= "('".$this->amc_id."','".$this->customer_id."','".$this->amc_type_id."','".$this->from_date."',";
-				$query3 .= "'".$this->period."','".$this->quantity."','".$this->total_services."','".$this->amount."');";
-
-				if ($this->conn->query($query3) === TRUE) {
-					//echo("3rd query executed");
-					return true;
-				} else {
-					//echo "Error: " . $query2 . "<br>" . $this->conn->error;
-					return false;
-				} 
-			}	
+		$query = "INSERT INTO ". $this->table_name;
+		$query .= "(amcid, customerid, amctypeid, fromdate, period, quantity, totalservices, amount) VALUES";
+		$query .= "('".$this->amc_id."','".$this->customer_id."','".$this->amc_type_id."','".$this->from_date."',";
+		$query .= "'".$this->period."','".$this->quantity."','".$this->total_services."','".$this->amount."');";
+		if ($this->conn->query($query) === TRUE) {
+			return true;
 		} else {
+			return false;
+		} 
+	}
+
+	public static function getAmcById($amc_id,$db) {
+		$this->amc_id=htmlspecialchars(strip_tags($this->amc_id));
+		$query = "SELECT * FROM ". $this->table_name ." WHERE amcid = '". $this->amc_id ."'";
+		$result= $db->query($query);
+
+		if($result->num_rows>0) {
+			$row = $result->fetch_assoc();		
+			$json_output = $row;
+			return json_encode($json_output);
+		}else{
 			return false;
 		}
 	}
 
-	function showAMC() {
-		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
-		$query1 = "SELECT * FROM ". $this->table_name ." WHERE amcid = '". $this->amc_id ."'";
-		// prepare the query
-		$result1 = $this->conn->query($query1);
-
-		if($result1->num_rows>0) {
-			$row = $result1->fetch_assoc();		
-			$json_output = $row;
-		}else{
-			return "amc not found";
-		}
-
-		return json_encode($json_output);
-	}
-
-	function showAllAMC() {
-		$query1 = "SELECT * FROM ". $this->table_name;
-		// prepare the query
-		$result1 = $this->conn->query($query1);
-
+	public static function getAllAmc($db) {
+		$query = "SELECT * FROM ". $this->table_name;
+		$result = $db->query($query1);
 		$json_output = array();
-
 		while($row = $result1->fetch_assoc()) {			
 			$json_output[] = $row;
 		}
-
 		return json_encode($json_output);
 	}
 
-	function updateAMC() {
+	public static function getAmcId($customer_id,$amc_type_id,$from_date,$period,$quantity,$total_services,$db){
+		$customer_id=htmlspecialchars(strip_tags($customer_id));
+		$amc_type_id=htmlspecialchars(strip_tags($amc_type_id));
+		$from_date=htmlspecialchars(strip_tags($from_date));
+		$period=htmlspecialchars(strip_tags($period));
+		$quantity=htmlspecialchars(strip_tags($quantity));
+		$total_services=htmlspecialchars(strip_tags($total_services));
+
+		$query = "SELECT amcid FROM amc WHERE customerid='".$customer_id."'";
+		$query .= " AND amctypeid='".$amc_type_id."' AND fromdate='".$from_date."' AND period='".$period."'";
+		$query .= " AND quantity='".$quantity."' AND totalservices='".$total_services."'";
+		echo($query);
+		$result = $db->query($query);
+		if($result->num_rows>0) {
+			$row = $result->fetch_assoc();		
+			$output = $row['amcid'];
+			return $output;
+		}else{
+			echo json_encode(array("message" => "amc not found."));
+			return false;
+ 		}
+	}
+	function updateAmcById() {
 
 		$this->amc_id=htmlspecialchars(strip_tags($this->amc_id));
 		$this->from_date=htmlspecialchars(strip_tags($this->from_date));
@@ -112,13 +103,9 @@ class AMC{
 		$query .= " totalservices = '". $this->total_services ."', amount = '". $this->amount ."'";
 		$query .= " WHERE amcid = '". $this->amc_id ."'";
 		
-		// echo($query);
-
 		if ($this->conn->query($query) === TRUE) {
-			//echo("3rd query executed");
 			return true;
 		} else {
-			//echo "Error: " . $query2 . "<br>" . $this->conn->error;
 			return false;
 		} 
 	}
