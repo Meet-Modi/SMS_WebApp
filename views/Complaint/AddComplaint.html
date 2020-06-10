@@ -87,24 +87,16 @@
 <body class="hold-transition sidebar-mini animsition">
     <?php
     $cookie_name = "jwt_token";
-    if(isset($_GET['jwt'])){
-        $jwt_token = $_GET["jwt"];
-        $cookie_name = "jwt_token"; 
-        $cookie_value = $jwt_token;
-        // 86400 = 1 day 
-        setcookie($cookie_name, $cookie_value, time() + 3600, "/"); 
-    }
-    else{
-        if(isset($_COOKIE[$cookie_name])) { 
-            echo "Cookie named '" . $cookie_name . "' is set!";
-            $jwt_token = $_COOKIE[$cookie_name]; 
-        } 
-        else{
-            header("Location: ../../index.html");
-            exit();
-        }		
-    }
-    
+	
+	if(isset($_COOKIE[$cookie_name])) { 
+		echo "Cookie named '" . $cookie_name . "' is set!";
+		$jwt_token = $_COOKIE[$cookie_name]; 
+	} 
+	else{
+		header("Location: ../../index.html");
+		exit();
+	}		
+	    
     $myObj = (object)array();
     $myObj->jwt = $jwt_token;
     $myJSON = json_encode($myObj);
@@ -243,6 +235,7 @@
                             </div>
                         </div>
                         <br>
+                        
                         <div class="card-body" id="complaintreport" style="border-top-style: groove; border-width: 2px;">
                             <div class="row">
                                 <div class="col-md-4">
@@ -462,6 +455,6 @@
                 
                 
                 
-            </body>
-            </html>
+</body>
+</html>
             
