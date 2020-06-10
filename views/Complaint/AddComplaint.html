@@ -192,7 +192,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-default">
-                    <form id="add_customer_form" method="POST">
+                    <form id="add_complaint_form" method="POST">
                         <div class="card-header">
                             <h3 class="card-title">New Complaint</h3>
                             <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
@@ -206,18 +206,18 @@
                                         <input type="text" class="form-control" style="width: 100%;" required="required" id="billing_name" name="billing_name" placeholder="Enter Billing Name">
                                     </div>
                                     <div class="form-group">
-                                        <label for="fromdate">Date</label>
-                                        <input type="date" class="form-control" style="width: 70%;" id="fromdate" placeholder="Email" name="from_date">
+                                        <label for="date">Date</label>
+                                        <input type="date" class="form-control" style="width: 70%;" id="date" placeholder="" name="date">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="billing_name">AMC ID</label>
-                                        <input type="text" class="form-control" style="width: 50%;" id="billing_name" name="billing_name" placeholder="Enter AMC-ID">
+                                        <label for="amc_id">AMC ID</label>
+                                        <input type="text" class="form-control" style="width: 50%;" id="amc_id" name="amc_id" placeholder="Enter AMC-ID">
                                     </div>
                                     <div class="form-group">
-                                        <label for="amctype">Complaint Type</label>
-                                        <select name="amc_type" id="amctype" class="form-control" style="width: 85%;">
+                                        <label for="complaint_type">Complaint Type</label>
+                                        <select name="complaint_type" id="complaint_type" class="form-control" style="width: 85%;">
                                             <option>ICE FORMATION</option>
                                             <option>option 2</option>
                                             <option>option 3</option>
@@ -228,8 +228,12 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="fromdate">Status</label>
-                                        <input type="text" class="form-control" style="width:25%;" id="fromdate" value="OPEN" name="from_date">
+                                        <label for="status">Status</label>
+                                        <input type="text" class="form-control" style="width:25%;" id="status" value="OPEN" name="status">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="operation"></label>
+                                        <input type="hidden" class="form-control" style="width:25%;" id="operation" value="C" name="operation">
                                     </div>
                                 </div>
                             </div>
@@ -240,20 +244,20 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="fromdate">Assigned to Mechanic</label>
-                                        <input type="text" class="form-control" style="width:40%;" id="fromdate" value="OPEN" name="from_date">
+                                        <label for="mechanic_name">Assigned to Mechanic</label>
+                                        <input type="text" class="form-control" style="width:40%;" id="mechanic_name" value="OPEN" name="mechanic_name">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="fromdate" style="position: relative;left: 50px;">Time From</label>
-                                        <input type="datetime-local" class="form-control" style="position: relative;left: 50px; width:80%;" id="fromdate" value="OPEN" name="from_date">
+                                        <label for="time_from" style="position: relative;left: 50px;">Time From</label>
+                                        <input type="datetime-local" class="form-control" style="position: relative;left: 50px; width:80%;" id="time_from" value="OPEN" name="time_from">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="fromdate">Time To</label>
-                                        <input type="datetime-local" class="form-control" style="width:80%;" id="fromdate" value="OPEN" name="from_date">
+                                        <label for="time_to">Time To</label>
+                                        <input type="datetime-local" class="form-control" style="width:80%;" id="time_to" value="OPEN" name="time_to">
                                     </div>
                                 </div>
                             </div>
@@ -262,14 +266,14 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="fromdate">Line Voltage</label>
-                                                <input type="number" class="form-control" style="width:45%;" id="fromdate" value="OPEN" name="from_date">
+                                                <label for="line_voltage">Line Voltage</label>
+                                                <input type="number" class="form-control" style="width:45%;" id="line_voltage" value="OPEN" name="line_voltage">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="fromdate">Grill Temperature</label>
-                                                <input type="number" class="form-control" style="width:45%;" id="fromdate" value="OPEN" name="from_date">
+                                                <label for="grill_temp">Grill Temperature</label>
+                                                <input type="number" class="form-control" style="width:45%;" id="grill_temp" value="OPEN" name="grill_temp">
                                             </div>        
                                         </div>
                                     </div>
@@ -278,14 +282,14 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="fromdate">Current</label>
-                                                <input type="number" class="form-control" style="width:45%;" id="fromdate" value="OPEN" name="from_date">
+                                                <label for="current">Current</label>
+                                                <input type="number" class="form-control" style="width:45%;" id="current" value="OPEN" name="current">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="fromdate">Room Temperature</label>
-                                                <input type="number" class="form-control" style="width:45%;" id="fromdate" value="OPEN" name="from_date">
+                                                <label for="room_temp">Room Temperature</label>
+                                                <input type="number" class="form-control" style="width:45%;" id="room_temp" value="OPEN" name="room_temp">
                                             </div>        
                                         </div>
                                     </div>
@@ -294,28 +298,28 @@
                             <div class="row">
                                 <div class="col-md-4">                                    
                                     <div class="form-group">
-                                        <label for="fromdate">Defect Observed</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="fromdate" value="OPEN" name="from_date"></textarea>
+                                        <label for="defect_observed">Defect Observed</label>
+                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="defect_observed" value="OPEN" name="defect_observed"></textarea>
                                     </div>                                    
                                     <div class="form-group">
-                                        <label for="fromdate">Remarks</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="fromdate" value="OPEN" name="from_date"></textarea>
+                                        <label for="remarks">Remarks</label>
+                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="remarks" value="OPEN" name="remarks"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-4">                 
                                     <div class="form-group">
-                                        <label for="fromdate">Action Taken</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="fromdate" value="OPEN" name="from_date"></textarea>
+                                        <label for="action_taken">Action Taken</label>
+                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="action_taken" value="OPEN" name="action_taken"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="fromdate">Part Replaced</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="fromdate" value="OPEN" name="from_date"></textarea>
+                                        <label for="parts_replaced">Part Replaced</label>
+                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="parts_replaced" value="OPEN" name="parts_replaced"></textarea>
                                     </div>                                    
                                     <div class="form-group">
-                                        <label for="fromdate">Customer Remarks</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="fromdate" value="OPEN" name="from_date"></textarea>
+                                        <label for="customer_remarks">Customer Remarks</label>
+                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="customer_remarks" value="OPEN" name="customer_remarks"></textarea>
                                     </div>
                                 </div>
                             </div>    
@@ -335,19 +339,22 @@
                 <script>
                     $(document).ready(function(){
                         console.log("READY");
-                        $("#add_customer_form").submit(function(){
+                        $("#add_complaint_form").submit(function(){
                             console.log("INSIDE");
                             var add_customer_form=$(this);
                             var form_data=JSON.stringify(add_customer_form.serializeObject());
+                            alert(form_data);
+
                             // submit form data to api
                             $.ajax({
-                                url: "http://localhost/SMS_WebApp/api/customer/create_customer.php",
+                                url: "http://localhost/SMS_WebApp/api/complaint/CU_complaint.php",
                                 type : "POST",
                                 contentType : 'application/json',
                                 data : form_data,
                                 success : function(result){
+                                    console.log("DONE");
                                     $('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Added Successfully</div>");
-                                    add_customer_form.find('input').val('');
+                                    //add_customer_form.find('input').val('');
                                 },
                                 error: function(xhr, status, error){
                                     //		    	alert(error);
