@@ -235,14 +235,14 @@
 							<div class="row">
 								<div class="col-md-3">
 									<div class="form-group">
-										<label for="exampleInputEmail1">AMC Id</label>
+										<label for="amcid">AMC Id</label>
 										<input type="text" class="form-control" style="width: 40%;" id="amcid" name="amc_id" readOnly="readOnly" value="<?php echo $customer_id ?>">
 									</div>
 									
                                 </div>
                                 <div class="col-md-3">
 									<div class="form-group">
-										<label for="exampleInputEmail1">Customer Id</label>
+										<label for="customerid">Customer Id</label>
 										<input type="text" class="form-control" style="width: 40%;" id="customerid" name="customer_id" readOnly="readOnly" value="<?php echo $customer_id ?>">
 									</div>
 									
@@ -259,19 +259,19 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label for="exampleInputEmail1">Billing Name</label>
+										<label for="billingname">Billing Name</label>
 										<input type="text" class="form-control" style="width: 100%;" id="billing_name" name="billing_name" placeholder="Enter Billing Name" value="<?php echo $cust_billingname ?>">
 									</div>
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
-												<label for="exampleInputEmail1">First Name</label>
+												<label for="firstname">First Name</label>
 												<input type="text" class="form-control" style="width: 100%;" id="first_name" name="contact_fname" placeholder="First Name" value="<?php echo $cust_firstname ?>">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
-												<label for="exampleInputEmail1">Last Name</label>
+												<label for="lastname">Last Name</label>
 												<input type="text" class="form-control" style="width: 100%;" id="last_name" name="contact_lname" placeholder="Last Name" value="<?php echo $cust_lastname ?>">
 											</div>
 										</div>
@@ -279,20 +279,19 @@
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
-												<label for="exampleInputEmail1">Contact No.1</label>
-												<input type="text" class="form-control" style="width: 100%;" id="Co_no_1" name="contact_no1" placeholder="Contact No.1" value="<?php echo $cust_contactno1 ?>">
+												<label for="exampleInputEmail1">From Date</label>
+										<input type="date" class="form-control" style="width: 100%;" id="fromdate" name="from_date" placeholder="Email" value="<?php echo $cust_email ?>">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
-												<label for="exampleInputEmail1">Contact No.2</label>
-												<input type="text" class="form-control" style="width: 100%;" id="Co_no_2" name="contact_no2" placeholder="Contact No.2" value="<?php echo $cust_contactno2 ?>">
+												<label for="period">Period (in years)</label>
+												<input type="text" class="form-control" style="width: 100%;" id="period" name="period" placeholder="Period (In Years)" value="<?php echo $cust_contactno2 ?>">
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="exampleInputEmail1">From Date</label>
-										<input type="date" class="form-control" style="width: 100%;" id="fromdate" name="from_date" placeholder="Email" value="<?php echo $cust_email ?>">
+										
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -315,27 +314,23 @@
 											?>
 										</select>
 									</div>
-									<div class="form-group">
-										<label for="exampleInputEmail1">Address</label>
-										<input type="textarea" class="form-control" style="width: 80%;" id="address" name="address" placeholder="Enter Address" value="<?php echo $cust_address ?>">
-									</div>
 									<div class="row">
 										<div class="col-md-5">
 											<div class="form-group">
-												<label for="exampleInputEmail1">City</label>
-												<input type="text" class="form-control" style="width: 100%;" id="city" name="city" placeholder="Enter City" value="<?php echo $cust_city ?>">
+												<label for="quantity">Quantity</label>
+												<input type="text" class="form-control" style="width: 100%;" id="quantity" name="quantity" placeholder="Enter City" value="<?php echo $cust_city ?>">
 											</div>	                	
 										</div>
 										<div class="col-md-5">
 											<div class="form-group">
-												<label for="exampleInputEmail1">State</label>
-												<input type="text" class="form-control" style="width: 92%;" id="state" name="state" placeholder="Enter State" value="<?php echo $cust_state ?>">
+												<label for="totalservices">No. of Services</label>
+												<input type="text" class="form-control" style="width: 92%;" id="totalservices" name="total_services" placeholder="Enter State" value="<?php echo $cust_state ?>">
 											</div>	
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="exampleInputEmail1">Pincode</label>
-										<input type="text" class="form-control" style="width: 40%;" id="pincode" name="pincode" placeholder="Enter Pincode" value="<?php echo $cust_pincode ?>">
+										<label for="amount">Amount</label>
+										<input type="text" class="form-control" style="width: 40%;" id="amount" name="amount" placeholder="Enter Pincode" value="<?php echo $cust_pincode ?>">
 									</div>
 									
 								</div>
