@@ -49,7 +49,7 @@ class Complaint{
 	}
 	
 	public static function getComplaintById($complaint_id,$db){
-		$query = "SELECT * FROM ". $this->table_name ." WHERE complaintid='".$complaint_id."'";
+		$query = "SELECT * FROM complaint WHERE complaintid='".$complaint_id."'";
 		$result = $db->query($query);
 
 		$output = array();

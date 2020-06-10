@@ -32,7 +32,7 @@ switch($data->operation){
         }
         else{
             $complaint_id = $data->complaint_id;
-            $json_output_data = $complaint->getComplaintReportById($complaint_id,$db);
+            $json_output_data = ComplaintReport::getComplaintReportById($complaint_id,$db);
             echo($json_output_data);
         }
     break;

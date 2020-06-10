@@ -130,12 +130,13 @@
 	curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
 	$result1=curl_exec ($ch);
 	$result1=curl_exec ($ch);
-	$data_complaint = json_decode($result1);
+    echo($result1);
+    $data_complaint = json_decode($result1);
 	
     $customer_id = $data_complaint->customer_id;
     $amc_id = $data_complaint->amc_id;
     $date = $data_complaint->date;
-    $complaint_type_id = $data_complaint->complaint_type_id
+    $complaint_type_id = $data_complaint->complaint_type_id;
     $complaint_status = $data_complaint->status;
     $defect_observed=$data_complaint->defect_observed;
     $action_taken=$data_complaint->action_taken;
