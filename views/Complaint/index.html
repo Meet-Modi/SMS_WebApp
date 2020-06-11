@@ -56,8 +56,7 @@ if(isset($_COOKIE[$cookie_name])) {
 else{
 	header("Location: ../../index.html");
 	exit();
-}		
-
+}	
 //echo($jwt_token);
 $myObj = (object)array();
 $myObj->jwt = $jwt_token;

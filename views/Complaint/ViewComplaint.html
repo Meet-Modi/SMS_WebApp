@@ -132,27 +132,25 @@
 	$result1=curl_exec ($ch);
     echo($result1);
     $data_complaint = json_decode($result1);
-	
-    $customer_id = $data_complaint->customer_id;
-    $amc_id = $data_complaint->amc_id;
-    $date = $data_complaint->date;
-    $complaint_type_id = $data_complaint->complaint_type_id;
-    $complaint_status = $data_complaint->status;
-    $defect_observed=$data_complaint->defect_observed;
-    $action_taken=$data_complaint->action_taken;
-    $parts_replaced=$data_complaint->parts_replaced;
-    $remarks=$data_complaint->remarks;
-    $line_voltage=$data_complaint->line_voltage;
-    $grill_temp=$data_complaint->grill_temp;
-    $current=$data_complaint->current;
-    $room_temp=$data_complaint->room_temp;
-    $time_from=$data_complaint->time_from;
-    $time_to=$data_complaint->time_to;
-    $mechanic_remarks=$data_complaint->mechanic_remarks;
-    $mechanic_name=$data_complaint->mechanic_name;
-    $customer_remarks=$data_complaint->customer_remarks;
-       
     
+    $customer_id = $data_complaint->customerid;
+    $amc_id = $data_complaint->amcid;
+    $date = $data_complaint->date;
+    $complaint_type_id = $data_complaint->complainttypeid;
+    $complaint_status = $data_complaint->status;
+    $defect_observed=$data_complaint->defectobserved;
+    $action_taken=$data_complaint->actiontaken;
+    $parts_replaced=$data_complaint->partsreplaced;
+    $remarks=$data_complaint->remarks;
+    $line_voltage=$data_complaint->linevoltage;
+    $grill_temp=$data_complaint->grilltemp;
+    $current=$data_complaint->current;
+    $room_temp=$data_complaint->roomtemp;
+    $time_from=$data_complaint->timefrom;
+    $time_to=$data_complaint->timeto;
+    $mechanic_remarks=$data_complaint->mechanicremarks;
+    $mechanic_name=$data_complaint->mechanicname;
+    $customer_remarks=$data_complaint->customerremarks;
     
     ?>
     <header class="header1">
@@ -231,10 +229,10 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-default">
-                    <form id="add_customer_form" method="POST">
+                    <form id="view_complaint_form" method="POST">
                         <div class="card-header">
                             <h3 class="card-title">View Complaint</h3>
-                            <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
+                            <input type="submit" value="Update" class="btn btn-primary" style="float: right;">
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body" id="complaint">
@@ -242,21 +240,21 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="billing_name">Billing Name</label>
-                                        <input type="text" class="form-control" style="width: 100%;" required="required" id="billing_name" name="billing_name" placeholder="Enter Billing Name">
+                                        <input type="text" class="form-control" style="width: 100%;" required="required" id="billing_name" name="billing_name" value="<?php echo($customer_id); ?>">
                                     </div>
                                     <div class="form-group">
                                         <label for="fromdate">Date</label>
-                                        <input type="date" class="form-control" style="width: 70%;" id="fromdate" placeholder="Email" name="from_date">
+                                        <input type="date" class="form-control" style="width: 70%;" id="date" placeholder="date" name="date" value="<?php echo($date); ?>">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="billing_name">AMC ID</label>
-                                        <input type="text" class="form-control" style="width: 50%;" id="billing_name" name="billing_name" placeholder="Enter AMC-ID">
+                                        <label for="amc_id">AMC ID</label>
+                                        <input type="text" class="form-control" style="width: 50%;" id="amc_id" name="amc_id" placeholder="Enter AMC-ID" value="<?php echo($amc_id); ?>">
                                     </div>
                                     <div class="form-group">
                                         <label for="amctype">Complaint Type</label>
-                                        <select name="amc_type" id="amctype" class="form-control" style="width: 85%;">
+                                        <select name="complaint_type" id="complaint_type" class="form-control" style="width: 85%;">
                                             <option>ICE FORMATION</option>
                                             <option>option 2</option>
                                             <option>option 3</option>
@@ -268,7 +266,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="fromdate">Status</label>
-                                        <input type="text" class="form-control" style="width:25%;" id="fromdate" value="OPEN" name="from_date">
+                                        <input type="text" class="form-control" style="width:25%;" id="status" value="<?php echo($complaint_status); ?>" name="status">
                                     </div>
                                 </div>
                             </div>
@@ -279,19 +277,19 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="fromdate">Assigned to Mechanic</label>
-                                        <input type="text" class="form-control" style="width:40%;" id="fromdate" value="OPEN" name="from_date">
+                                        <input type="text" class="form-control" style="width:40%;" id="mechanic_name" value="<?php echo($mechanic_name); ?>" name="mechanic_name">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="fromdate">Time From</label>
-                                        <input type="datetime-local" class="form-control" style="width:80%;" id="fromdate" value="OPEN" name="from_date">
+                                        <input type="datetime-local" class="form-control" style="width:80%;" id="time_from" value="<?php echo($time_from); ?>" name="time_from">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="fromdate">Time To</label>
-                                        <input type="datetime-local" class="form-control" style="width:80%;" id="fromdate" value="OPEN" name="from_date">
+                                        <input type="datetime-local" class="form-control" style="width:80%;" id="time_to" value="<?php echo($time_to); ?>" name="time_to">
                                     </div>
                                 </div>
                             </div>
@@ -301,13 +299,13 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="fromdate">Line Voltage</label>
-                                                <input type="number" class="form-control" style="width:45%;" id="fromdate" value="OPEN" name="from_date">
+                                                <input type="number" class="form-control" style="width:45%;" id="line_voltage" value="<?php echo($line_voltage); ?>" name="line_voltage">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="fromdate">Grill Temperature</label>
-                                                <input type="number" class="form-control" style="width:45%;" id="fromdate" value="OPEN" name="from_date">
+                                                <input type="number" class="form-control" style="width:45%;" id="grill_temp" value="<?php echo($grill_temp); ?>" name="grill_temp">
                                             </div>        
                                         </div>
                                     </div>
@@ -317,13 +315,13 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="fromdate">Current</label>
-                                                <input type="number" class="form-control" style="width:45%;" id="fromdate" value="OPEN" name="from_date">
+                                                <input type="number" class="form-control" style="width:45%;" id="current" value="<?php echo($current); ?>" name="current">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="fromdate">Room Temperature</label>
-                                                <input type="number" class="form-control" style="width:45%;" id="fromdate" value="OPEN" name="from_date">
+                                                <input type="number" class="form-control" style="width:45%;" id="room_temp" value="<?php echo($room_temp); ?>" name="room_temp">
                                             </div>        
                                         </div>
                                     </div>
@@ -333,30 +331,38 @@
                                 <div class="col-md-4">                                    
                                     <div class="form-group">
                                         <label for="fromdate">Defect Observed</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="fromdate" value="OPEN" name="from_date"></textarea>
+                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="defect_observed" name="defect_observed"><?php echo($defect_observed); ?></textarea>
                                     </div>                                    
                                     <div class="form-group">
                                         <label for="fromdate">Remarks</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="fromdate" value="OPEN" name="from_date"></textarea>
+                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="remarks" name="remarks"><?php echo($remarks); ?></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-4">                 
                                     <div class="form-group">
                                         <label for="fromdate">Action Taken</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="fromdate" value="OPEN" name="from_date"></textarea>
+                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="action_taken" name="action_taken"><?php echo($action_taken); ?></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="fromdate">Part Replaced</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="fromdate" value="OPEN" name="from_date"></textarea>
-                                    </div>                                    
+                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="parts_replaced" name="parts_replaced"><?php echo($parts_replaced); ?></textarea>
+                                    </div>  
+                                    <div class="form-group">
+                                        <label for="fromdate">Mechanic Remarks</label>
+                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="mechanic_remarks" name="mechanic_remarks"><?php echo($mechanic_remarks); ?></textarea>
+                                    </div>                                  
                                     <div class="form-group">
                                         <label for="fromdate">Customer Remarks</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="fromdate" value="OPEN" name="from_date"></textarea>
+                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="customer_remarks" name="customer_remarks"><?php echo($customer_remarks); ?></textarea>
                                     </div>
                                 </div>
-                            </div>    
+                            </div>   
+                            <div class="form-group">
+                                <label for="operation"></label>
+                                <input type="hidden" class="form-control" style="width:25%;" id="operation" value="U" name="operation">
+                            </div> 
                         </div>
 
                     </form>               
@@ -364,6 +370,7 @@
             </div>    
         </section>
     </div>
+   
                 <!-- ./wrapper -->
                 
                 <!-- jQuery -->
@@ -371,55 +378,53 @@
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                 
                 <script>
-                    $(document).ready(function(){
-                        console.log("READY");
-                        $("#add_customer_form").submit(function(){
-                            console.log("INSIDE");
-                            var add_customer_form=$(this);
-                            var form_data=JSON.stringify(add_customer_form.serializeObject());
-                            // submit form data to api
-                            $.ajax({
-                                url: "http://localhost/SMS_WebApp/api/customer/create_customer.php",
-                                type : "POST",
-                                contentType : 'application/json',
-                                data : form_data,
-                                success : function(result){
-                                    $('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Added Successfully</div>");
-                                    add_customer_form.find('input').val('');
-                                },
-                                error: function(xhr, status, error){
-                                    //		    	alert(error);
-                                    // on error, tell the user login has failed & empty the input boxes
-                                }
-                            });
-                            return false;
-                        });
-                        
-                        
-                        $.fn.serializeObject = function(){
-                            
-                            var o = {};
-                            var a = this.serializeArray();
-                            $.each(a, function() {
-                                if (o[this.name] !== undefined) {
-                                    if (!o[this.name].push) {
-                                        o[this.name] = [o[this.name]];
-                                    }
-                                    o[this.name].push(this.value || '');
-                                } else {
-                                    o[this.name] = this.value || '';
-                                }
-                            });
-                            return o;
-                        };
-                        
-                        
-                        
-                        
-                        
-                    });
-                </script>
-                
+					$(document).ready(function(){
+						console.log("READY");
+						$("#view_complaint_form").submit(function(){
+							console.log("INSIDE");
+							var update_customer_form=$(this);
+							var form_data=JSON.stringify(update_customer_form.serializeObject());
+							// submit form data to api
+							console.log(form_data);
+							$.ajax({
+								url: "http://localhost/SMS_WebApp/api/complaint/CU_complaint.php",
+								type : "POST",
+								contentType : 'application/json',
+								data : form_data,
+								
+								success : function(result){
+									$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Updated Successfully</div>");
+									//add_customer_form.find('input').val('');
+								},
+								error: function(xhr, status, error){
+									alert(error);
+									// on error, tell the user login has failed & empty the input boxes
+								}
+							});
+							return false;
+						});
+						
+						
+						$.fn.serializeObject = function(){
+							
+							var o = {};
+							var a = this.serializeArray();
+							$.each(a, function() {
+								if (o[this.name] !== undefined) {
+									if (!o[this.name].push) {
+										o[this.name] = [o[this.name]];
+									}
+									o[this.name].push(this.value || '');
+								} else {
+									o[this.name] = this.value || '';
+								}
+							});
+							return o;
+						};
+						
+					});
+				</script>
+				
                 <script src="Addcust_files/plugins/jquery/jquery.min.js"></script>
                 <!-- Bootstrap 4 -->
                 <script src="Addcust_files/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -494,5 +499,5 @@
                 
                 
             </body>
-            </html>
+        </html>
             
