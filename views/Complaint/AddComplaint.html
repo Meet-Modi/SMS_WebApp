@@ -185,8 +185,7 @@
             </div>
         </div>
     </header>
-    <br><br>
-    <div id="response"></div>
+    <br><div id="response"></div>
     
     <div class="wrapper">
         <section class="content">
@@ -305,6 +304,7 @@
                                         <label for="remarks">Remarks</label>
                                         <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="remarks" value="OPEN" name="remarks"></textarea>
                                     </div>
+                                    
                                 </div>
                                 <div class="col-md-4">                 
                                     <div class="form-group">
@@ -316,7 +316,12 @@
                                     <div class="form-group">
                                         <label for="parts_replaced">Part Replaced</label>
                                         <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="parts_replaced" value="OPEN" name="parts_replaced"></textarea>
-                                    </div>                                    
+                                    </div>   
+                                    <div class="form-group">
+                                        <label for="fromdate">Mechanic Remarks</label>
+                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="mechanic_remarks" name="mechanic_remarks"></textarea>
+                                    </div>                                  
+                                  
                                     <div class="form-group">
                                         <label for="customer_remarks">Customer Remarks</label>
                                         <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="customer_remarks" value="OPEN" name="customer_remarks"></textarea>
@@ -330,6 +335,9 @@
             </div>    
         </section>
     </div>
+
+    
+    
                 <!-- ./wrapper -->
                 
                 <!-- jQuery -->
@@ -343,7 +351,7 @@
                             console.log("INSIDE");
                             var add_customer_form=$(this);
                             var form_data=JSON.stringify(add_customer_form.serializeObject());
-                            alert(form_data);
+                            console.log(form_data);
 
                             // submit form data to api
                             $.ajax({
@@ -357,7 +365,7 @@
                                     //add_customer_form.find('input').val('');
                                 },
                                 error: function(xhr, status, error){
-                                    //		    	alert(error);
+                                    alert(error);
                                     // on error, tell the user login has failed & empty the input boxes
                                 }
                             });

@@ -222,7 +222,7 @@
             </div>
         </div>
     </header>
-    <br><br>
+    <br>
     <div id="response"></div>
     
     <div class="wrapper">
@@ -283,13 +283,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="fromdate">Time From</label>
-                                        <input type="datetime-local" class="form-control" style="width:80%;" id="time_from" value="<?php echo($time_from); ?>" name="time_from">
+                                        <input type="datetime-local" class="form-control" style="width:80%;" id="time_from" value="<?php echo(date('Y-m-d\TH:i:s', strtotime($time_from))); ?>" name="time_from">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="fromdate">Time To</label>
-                                        <input type="datetime-local" class="form-control" style="width:80%;" id="time_to" value="<?php echo($time_to); ?>" name="time_to">
+                                        <input type="datetime-local" class="form-control" style="width:80%;" id="time_to" value="<?php echo(date('Y-m-d\TH:i:s', strtotime($time_to))); ?>" name="time_to">
                                     </div>
                                 </div>
                             </div>
@@ -483,7 +483,7 @@
                             swal(nameProduct, "is added to cart !", "success");
                         });
                     });
-                    
+          
                     $('.block2-btn-addwishlist').each(function(){
                         var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
                         $(this).on('click', function(){
@@ -491,13 +491,10 @@
                         });
                     });
                 </script>
-                
-                
+               
                 <!--===============================================================================================-->
                 <script src="js/main.js"></script>
-                
-                
-                
+       
             </body>
         </html>
             
