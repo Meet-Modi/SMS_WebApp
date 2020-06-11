@@ -114,36 +114,30 @@
 	$firstname = $data->data->firstname;
 	$lastname = $data->data->lastname;
 	
-	$customer_id = $_GET['customer_id'];
-	echo($customer_id);
+	$amc_id = $_GET['amc_id'];
 	$myObj = (object)array();
-	$myObj->customer_id = $customer_id;
-	$myObj->option = "1";
+	$myObj->amc_id = $amc_id;
+	$myObj->operation = "R";
 	$myJSON = json_encode($myObj);
 	
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/customer/show_customers.php" );
+	curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/amc/RD_amc.php" );
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
 	curl_setopt($ch, CURLOPT_POST,           1 );
 	curl_setopt($ch, CURLOPT_POSTFIELDS,     $myJSON ); 
 	curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
 	$result1=curl_exec ($ch);
 	$result1=curl_exec ($ch);
-	$data_customer = json_decode($result1);
+	$data_amc = json_decode($result1);
 	
-	$cust_userid = $data_customer->userid;
-	$cust_billingname = $data_customer->billingname;
-	$cust_placeid = $data_customer->placeid;
-	$cust_placetype = $data_customer->placetype;
-	$cust_firstname = $data_customer->firstname;
-	$cust_lastname = $data_customer->lastname;
-	$cust_contactno1 = $data_customer->contactno1;
-	$cust_contactno2 = $data_customer->contactno2;
-	$cust_address = $data_customer->address;
-	$cust_city = $data_customer->city;
-	$cust_state = $data_customer->state;
-	$cust_pincode = $data_customer->pincode;
-	$cust_email = $data_customer->email;
+	$amc_id = $data_amc->amcid;
+	$customer_id = $data_amc->customerid;
+	$amc_type_id = $data_amc->amctypeid;
+	$from_date = $data_amc->fromdate;
+	$period = $data_amc->period;
+	$quantity = $data_amc->quantity;
+	$total_services = $data_amc->totalservices;
+	$amount = $data_amc->amount;
 	
 	?>
 	<header class="header1">
@@ -177,7 +171,7 @@
 					<a href="../todo/index.html" class="header-wrapicon1 dis-block">
 						<img src="images/icons/todo.jpg" class="header-icon1" alt="ICON">
 					</a>
-				
+					
 					<span class="linedivide1"></span>
 					
 					<div class="header-wrapicon2">
@@ -226,7 +220,7 @@
 			<div class="container-fluid">
 				<!-- SELECT2 EXAMPLE -->
 				<div class="card card-default">
-					<form id="update_customer_form" method="POST">
+					<form id="update_amc_form" method="POST">
 						<div class="card-header">
 							<h3 class="card-title">View AMC</h3>
 						</div>
@@ -236,11 +230,11 @@
 								<div class="col-md-3">
 									<div class="form-group">
 										<label for="amcid">AMC Id</label>
-										<input type="text" class="form-control" style="width: 40%;" id="amcid" name="amc_id" readOnly="readOnly" value="<?php echo $customer_id ?>">
+										<input type="text" class="form-control" style="width: 40%;" id="amcid" name="amc_id" readOnly="readOnly" value="<?php echo $amc_id ?>">
 									</div>
 									
-                                </div>
-                                <div class="col-md-3">
+								</div>
+								<div class="col-md-3">
 									<div class="form-group">
 										<label for="customerid">Customer Id</label>
 										<input type="text" class="form-control" style="width: 40%;" id="customerid" name="customer_id" readOnly="readOnly" value="<?php echo $customer_id ?>">
@@ -260,35 +254,25 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="billingname">Billing Name</label>
-										<input type="text" class="form-control" style="width: 100%;" id="billing_name" name="billing_name" placeholder="Enter Billing Name" value="<?php echo $cust_billingname ?>">
-									</div>
-									<div class="row">
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="firstname">First Name</label>
-												<input type="text" class="form-control" style="width: 100%;" id="first_name" name="contact_fname" placeholder="First Name" value="<?php echo $cust_firstname ?>">
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="lastname">Last Name</label>
-												<input type="text" class="form-control" style="width: 100%;" id="last_name" name="contact_lname" placeholder="Last Name" value="<?php echo $cust_lastname ?>">
-											</div>
-										</div>
+										<input type="text" class="form-control" style="width: 100%;" id="billing_name" name="billing_name" placeholder="Enter Billing Name" value="<?php echo(''); ?>">
 									</div>
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="exampleInputEmail1">From Date</label>
-										<input type="date" class="form-control" style="width: 100%;" id="fromdate" name="from_date" placeholder="Email" value="<?php echo $cust_email ?>">
+												<input type="date" class="form-control" style="width: 100%;" id="fromdate" name="from_date" placeholder="Email" value="<?php echo($from_date); ?>">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="period">Period (in years)</label>
-												<input type="text" class="form-control" style="width: 100%;" id="period" name="period" placeholder="Period (In Years)" value="<?php echo $cust_contactno2 ?>">
+												<input type="text" class="form-control" style="width: 100%;" id="period" name="period" placeholder="Period (In Years)" value="<?php echo($period); ?>">
 											</div>
 										</div>
+									</div>
+									<div class="form-group">
+										<label for="amount">Amount</label>
+										<input type="text" class="form-control" style="width: 40%;" id="amount" name="amount" placeholder="Enter Pincode" value="<?php echo($amount); ?>">
 									</div>
 									<div class="form-group">
 										
@@ -298,7 +282,7 @@
 									<div class="form-group">
 										<label>AMC Type</label>
 										<select class="form-control" id="amctype" name="amc_type" style="width: 50%;" value="<?php echo $cust_placeid ?>">
-											<?php $placetype = array("BANK", "HOME/RESIDENCE", "CORPORATE");
+											<?php $placetype = array("PREVENTIVE", "", "WARRENTY");
 											$placeid = array("1","2","3");
 											$flag = 0;
 											foreach ($placeid as $current) {
@@ -318,21 +302,20 @@
 										<div class="col-md-5">
 											<div class="form-group">
 												<label for="quantity">Quantity</label>
-												<input type="text" class="form-control" style="width: 100%;" id="quantity" name="quantity" placeholder="Enter City" value="<?php echo $cust_city ?>">
+												<input type="text" class="form-control" style="width: 100%;" id="quantity" name="quantity" placeholder="Enter City" value="<?php echo($quantity); ?>">
 											</div>	                	
 										</div>
 										<div class="col-md-5">
 											<div class="form-group">
 												<label for="totalservices">No. of Services</label>
-												<input type="text" class="form-control" style="width: 92%;" id="totalservices" name="total_services" placeholder="Enter State" value="<?php echo $cust_state ?>">
+												<input type="text" class="form-control" style="width: 92%;" id="totalservices" name="total_services" placeholder="Enter State" value="<?php echo($total_services) ?>">
 											</div>	
 										</div>
-									</div>
-									<div class="form-group">
-										<label for="amount">Amount</label>
-										<input type="text" class="form-control" style="width: 40%;" id="amount" name="amount" placeholder="Enter Pincode" value="<?php echo $cust_pincode ?>">
-									</div>
-									
+										<div class="form-group">
+											<label for="operation"></label>
+											<input type="hidden" class="form-control" style="width:25%;" id="operation" value="U" name="operation">
+										</div> 
+									</div>									
 								</div>
 							</div>
 						</div>
@@ -341,233 +324,226 @@
 			</div>
 		</section>    				
 	</div>
-				<!-- ./wrapper -->
-				<?php  
-				echo($result1);
-				echo($placetype[(int)$current - 1]);
-				?>
-				<!-- jQuery -->
-				
-				
-				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-				
-				<script>
-					$(document).ready(function(){
-						console.log("READY");
-						$("#update_customer_form").submit(function(){
-							console.log("INSIDE");
-							var update_customer_form=$(this);
-							var form_data=JSON.stringify(update_customer_form.serializeObject());
-							// submit form data to api
-							alert(form_data);
-							$.ajax({
-								url: "http://localhost/SMS_WebApp/api/customer/update_customer.php",
-								type : "POST",
-								contentType : 'application/json',
-								data : form_data,
-								
-								success : function(result){
-									$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Updated Successfully</div>");
-									//add_customer_form.find('input').val('');
-								},
-								error: function(xhr, status, error){
-									alert(error);
-									// on error, tell the user login has failed & empty the input boxes
-								}
-							});
-							return false;
-						});
-						
-						
-						$.fn.serializeObject = function(){
-							
-							var o = {};
-							var a = this.serializeArray();
-							$.each(a, function() {
-								if (o[this.name] !== undefined) {
-									if (!o[this.name].push) {
-										o[this.name] = [o[this.name]];
-									}
-									o[this.name].push(this.value || '');
-								} else {
-									o[this.name] = this.value || '';
-								}
-							});
-							return o;
-						};
-						
-					});
-				</script>
-				
-				<script src="Addcust_files/plugins/jquery/jquery.min.js"></script>
-				<!-- Bootstrap 4 -->
-				<script src="Addcust_files/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-				<!-- Select2 -->
-				<script src="Addcust_files/plugins/select2/js/select2.full.min.js"></script>
-				<!-- Bootstrap4 Duallistbox -->
-				<script src="Addcust_files/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-				<!-- InputMask -->
-				<script src="Addcust_files/plugins/moment/moment.min.js"></script>
-				<script src="Addcust_files/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
-				<!-- date-range-picker -->
-				<script src="Addcust_files/plugins/daterangepicker/daterangepicker.js"></script>
-				<!-- bootstrap color picker -->
-				<script src="Addcust_files/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-				<!-- Tempusdominus Bootstrap 4 -->
-				<script src="Addcust_files/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-				<!-- Bootstrap Switch -->
-				<script src="Addcust_files/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-				<!-- AdminLTE App -->
-				<script src="Addcust_files/dist/js/adminlte.min.js"></script>
-				<!-- AdminLTE for demo purposes -->
-				<script src="Addcust_files/dist/js/demo.js"></script>
-				<!-- Page script -->
-				<script>
-					$(function () {
-						//Initialize Select2 Elements
-						$('.select2').select2()
-						
-						//Initialize Select2 Elements
-						$('.select2bs4').select2({
-							theme: 'bootstrap4'
-						})
-						
-						//Datemask dd/mm/yyyy
-						$('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-						//Datemask2 mm/dd/yyyy
-						$('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
-						//Money Euro
-						$('[data-mask]').inputmask()
-						
-						//Date range picker
-						$('#reservationdate').datetimepicker({
-							format: 'L'
-						});
-						//Date range picker
-						$('#reservation').daterangepicker()
-						//Date range picker with time picker
-						$('#reservationtime').daterangepicker({
-							timePicker: true,
-							timePickerIncrement: 30,
-							locale: {
-								format: 'MM/DD/YYYY hh:mm A'
-							}
-						})
-						//Date range as a button
-						$('#daterange-btn').daterangepicker(
-						{
-							ranges   : {
-								'Today'       : [moment(), moment()],
-								'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-								'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
-								'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-								'This Month'  : [moment().startOf('month'), moment().endOf('month')],
-								'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-							},
-							startDate: moment().subtract(29, 'days'),
-							endDate  : moment()
-						},
-						function (start, end) {
-							$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-						}
-						)
-						
-						//Timepicker
-						$('#timepicker').datetimepicker({
-							format: 'LT'
-						})
-						
-						//Bootstrap Duallistbox
-						$('.duallistbox').bootstrapDualListbox()
-						
-						//Colorpicker
-						$('.my-colorpicker1').colorpicker()
-						//color picker with addon
-						$('.my-colorpicker2').colorpicker()
-						
-						$('.my-colorpicker2').on('colorpickerChange', function(event) {
-							$('.my-colorpicker2 .fa-square').css('color', event.color.toString());
-						});
-						
-						$("input[data-bootstrap-switch]").each(function(){
-							$(this).bootstrapSwitch('state', $(this).prop('checked'));
-						});
-						
-					})
-				</script>
-				
-				<!--===============================================================================================-->
-				<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
-				<!--===============================================================================================-->
-				<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
-				<!--===============================================================================================-->
-				<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
-				<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
-				<!--===============================================================================================-->
-				<script type="text/javascript" src="vendor/select2/select2.min.js"></script>
-				<script type="text/javascript">
-					$(".selection-1").select2({
-						minimumResultsForSearch: 20,
-						dropdownParent: $('#dropDownSelect1')
-					});
+	
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	
+	<script>
+		$(document).ready(function(){
+			console.log("READY");
+			$("#update_amc_form").submit(function(){
+				console.log("INSIDE");
+				var update_customer_form=$(this);
+				var form_data=JSON.stringify(update_customer_form.serializeObject());
+				// submit form data to api
+				console.log(form_data);
+				$.ajax({
+					url: "http://localhost/SMS_WebApp/api/amc/CU_amc.php",
+					type : "POST",
+					contentType : 'application/json',
+					data : form_data,
 					
-					$(".selection-2").select2({
-						minimumResultsForSearch: 20,
-						dropdownParent: $('#dropDownSelect2')
-					});
-				</script>
-				<!--===============================================================================================-->
-				<script type="text/javascript" src="vendor/daterangepicker/moment.min.js"></script>
-				<script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
-				<!--===============================================================================================-->
-				<script type="text/javascript" src="vendor/slick/slick.min.js"></script>
-				<script type="text/javascript" src="js/slick-custom.js"></script>
-				<!--===============================================================================================-->
-				<script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
-				<script type="text/javascript">
-					$('.block2-btn-addcart').each(function(){
-						var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
-						$(this).on('click', function(){
-							swal(nameProduct, "is added to cart !", "success");
-						});
-					});
-					
-					$('.block2-btn-addwishlist').each(function(){
-						var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
-						$(this).on('click', function(){
-							swal(nameProduct, "is added to wishlist !", "success");
-						});
-					});
-				</script>
-				
-				<!--===============================================================================================-->
-				<script type="text/javascript" src="vendor/noui/nouislider.min.js"></script>
-				<script type="text/javascript">
-					/*[ No ui ]
-					===========================================================*/
-					var filterBar = document.getElementById('filter-bar');
-					
-					noUiSlider.create(filterBar, {
-						start: [ 50, 200 ],
-						connect: true,
-						range: {
-							'min': 50,
-							'max': 200
-						}
-					});
-					
-					var skipValues = [
-					document.getElementById('value-lower'),
-					document.getElementById('value-upper')
-					];
-					
-					filterBar.noUiSlider.on('update', function( values, handle ) {
-						skipValues[handle].innerHTML = Math.round(values[handle]) ;
-					});
-				</script>
-				<!--===============================================================================================-->
-				<script src="js/main.js"></script>
-				
-			</body>
-			</html>
+					success : function(result){
+						$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Updated Successfully</div>");
+						//add_customer_form.find('input').val('');
+					},
+					error: function(xhr, status, error){
+						alert(error);
+						// on error, tell the user login has failed & empty the input boxes
+					}
+				});
+				return false;
+			});
 			
+			
+			$.fn.serializeObject = function(){
+				
+				var o = {};
+				var a = this.serializeArray();
+				$.each(a, function() {
+					if (o[this.name] !== undefined) {
+						if (!o[this.name].push) {
+							o[this.name] = [o[this.name]];
+						}
+						o[this.name].push(this.value || '');
+					} else {
+						o[this.name] = this.value || '';
+					}
+				});
+				return o;
+			};
+			
+		});
+	</script>
+	
+	<script src="Addcust_files/plugins/jquery/jquery.min.js"></script>
+	<!-- Bootstrap 4 -->
+	<script src="Addcust_files/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Select2 -->
+	<script src="Addcust_files/plugins/select2/js/select2.full.min.js"></script>
+	<!-- Bootstrap4 Duallistbox -->
+	<script src="Addcust_files/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+	<!-- InputMask -->
+	<script src="Addcust_files/plugins/moment/moment.min.js"></script>
+	<script src="Addcust_files/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+	<!-- date-range-picker -->
+	<script src="Addcust_files/plugins/daterangepicker/daterangepicker.js"></script>
+	<!-- bootstrap color picker -->
+	<script src="Addcust_files/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+	<!-- Tempusdominus Bootstrap 4 -->
+	<script src="Addcust_files/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+	<!-- Bootstrap Switch -->
+	<script src="Addcust_files/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="Addcust_files/dist/js/adminlte.min.js"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script src="Addcust_files/dist/js/demo.js"></script>
+	<!-- Page script -->
+	<script>
+		$(function () {
+			//Initialize Select2 Elements
+			$('.select2').select2()
+			
+			//Initialize Select2 Elements
+			$('.select2bs4').select2({
+				theme: 'bootstrap4'
+			})
+			
+			//Datemask dd/mm/yyyy
+			$('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+			//Datemask2 mm/dd/yyyy
+			$('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+			//Money Euro
+			$('[data-mask]').inputmask()
+			
+			//Date range picker
+			$('#reservationdate').datetimepicker({
+				format: 'L'
+			});
+			//Date range picker
+			$('#reservation').daterangepicker()
+			//Date range picker with time picker
+			$('#reservationtime').daterangepicker({
+				timePicker: true,
+				timePickerIncrement: 30,
+				locale: {
+					format: 'MM/DD/YYYY hh:mm A'
+				}
+			})
+			//Date range as a button
+			$('#daterange-btn').daterangepicker(
+			{
+				ranges   : {
+					'Today'       : [moment(), moment()],
+					'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+					'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+					'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+					'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+					'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+				},
+				startDate: moment().subtract(29, 'days'),
+				endDate  : moment()
+			},
+			function (start, end) {
+				$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+			}
+			)
+			
+			//Timepicker
+			$('#timepicker').datetimepicker({
+				format: 'LT'
+			})
+			
+			//Bootstrap Duallistbox
+			$('.duallistbox').bootstrapDualListbox()
+			
+			//Colorpicker
+			$('.my-colorpicker1').colorpicker()
+			//color picker with addon
+			$('.my-colorpicker2').colorpicker()
+			
+			$('.my-colorpicker2').on('colorpickerChange', function(event) {
+				$('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+			});
+			
+			$("input[data-bootstrap-switch]").each(function(){
+				$(this).bootstrapSwitch('state', $(this).prop('checked'));
+			});
+			
+		})
+	</script>
+	
+	<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+	<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
+	<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/select2/select2.min.js"></script>
+	<script type="text/javascript">
+		$(".selection-1").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect1')
+		});
+		
+		$(".selection-2").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect2')
+		});
+	</script>
+	<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/daterangepicker/moment.min.js"></script>
+	<script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
+	<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/slick/slick.min.js"></script>
+	<script type="text/javascript" src="js/slick-custom.js"></script>
+	<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
+	<script type="text/javascript">
+		$('.block2-btn-addcart').each(function(){
+			var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
+			$(this).on('click', function(){
+				swal(nameProduct, "is added to cart !", "success");
+			});
+		});
+		
+		$('.block2-btn-addwishlist').each(function(){
+			var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
+			$(this).on('click', function(){
+				swal(nameProduct, "is added to wishlist !", "success");
+			});
+		});
+	</script>
+	
+	<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/noui/nouislider.min.js"></script>
+	<script type="text/javascript">
+		/*[ No ui ]
+		===========================================================*/
+		var filterBar = document.getElementById('filter-bar');
+		
+		noUiSlider.create(filterBar, {
+			start: [ 50, 200 ],
+			connect: true,
+			range: {
+				'min': 50,
+				'max': 200
+			}
+		});
+		
+		var skipValues = [
+		document.getElementById('value-lower'),
+		document.getElementById('value-upper')
+		];
+		
+		filterBar.noUiSlider.on('update', function( values, handle ) {
+			skipValues[handle].innerHTML = Math.round(values[handle]) ;
+		});
+	</script>
+	<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+	
+</body>
+</html>

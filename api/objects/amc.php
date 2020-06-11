@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 class AMC{
 
-	//database connection and table name
+	//database connection and table name 
 	private $conn;
 	private $table_name = "amc";
 
@@ -44,8 +44,8 @@ class AMC{
 	}
 
 	public static function getAmcById($amc_id,$db) {
-		$this->amc_id=htmlspecialchars(strip_tags($this->amc_id));
-		$query = "SELECT * FROM ". $this->table_name ." WHERE amcid = '". $this->amc_id ."'";
+		$amc_id=htmlspecialchars(strip_tags($amc_id));
+		$query = "SELECT * FROM amc WHERE amcid = '". $amc_id ."'";
 		$result= $db->query($query);
 
 		if($result->num_rows>0) {
@@ -58,10 +58,10 @@ class AMC{
 	}
 
 	public static function getAllAmc($db) {
-		$query = "SELECT * FROM ". $this->table_name;
-		$result = $db->query($query1);
+		$query = "SELECT * FROM amc";
+		$result = $db->query($query);
 		$json_output = array();
-		while($row = $result1->fetch_assoc()) {			
+		while($row = $result->fetch_assoc()) {			
 			$json_output[] = $row;
 		}
 		return json_encode($json_output);
@@ -78,7 +78,6 @@ class AMC{
 		$query = "SELECT amcid FROM amc WHERE customerid='".$customer_id."'";
 		$query .= " AND amctypeid='".$amc_type_id."' AND fromdate='".$from_date."' AND period='".$period."'";
 		$query .= " AND quantity='".$quantity."' AND totalservices='".$total_services."'";
-		echo($query);
 		$result = $db->query($query);
 		if($result->num_rows>0) {
 			$row = $result->fetch_assoc();		
@@ -102,7 +101,6 @@ class AMC{
 		$query .= " SET fromdate = '". $this->from_date ."', period = '". $this->period ."', quantity = '". $this->quantity ."',";
 		$query .= " totalservices = '". $this->total_services ."', amount = '". $this->amount ."'";
 		$query .= " WHERE amcid = '". $this->amc_id ."'";
-		
 		if ($this->conn->query($query) === TRUE) {
 			return true;
 		} else {
