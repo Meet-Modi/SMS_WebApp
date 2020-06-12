@@ -154,8 +154,10 @@ function showEvents() {
          }
          else{
             for(var i = 0;i < totalrows;i++){
-               rowhtml += "<tr><td>"+ result[i].serviceid +"</td><td>"+ result[i].amcid +"</td><td>"+ result[i].date +"</td><td>"+ result[i].handledby +"</td><td>"+ result[i].status +"</td></tr>";
+               rowhtml += "<tr><td>"+ result[i].billingname +"</td><td>"+ result[i].firstname + " " + result[i].lastname +"</td><td>"+ result[i].quantity +"</td><td>"+ result[i].status +"</td><td><div class='row'><a href='ViewService.html?service_id=" + result[i].serviceid + "&customer_id=" + result[i].customerid + "'class='w-size0 bg4 bo-rad-23 hov1 trans-0-4' style='border: none;'>View/Update</a></div></td></tr>";
             }
+
+
             console.log(rowhtml);
             service_table.innerHTML = rowhtml;
          }

@@ -60,7 +60,7 @@ class Service{
         $this->remarks=htmlspecialchars(strip_tags($this->remarks));
         $this->status=htmlspecialchars(strip_tags($this->status));        
 
-        $query = "DELETE FROM ".$this->table_name." WHERE serviceid='".$this->service_id."'";
+        $query = "DELETE FROM '".$this->table_name."' WHERE serviceid='".$this->service_id."'";
         if ($this->conn->query($query) === TRUE) {
             return true;
         } 
@@ -70,7 +70,7 @@ class Service{
     }
     public static function getAllServiceByDate($db,$date){
         $date=htmlspecialchars(strip_tags($date));
-        $query = "SELECT * FROM service WHERE date = '".$date."'";
+        $query = "SELECT customer.customerid,customer.billingname, customer.firstname, customer.lastname, a.quantity, a.status,a.serviceid FROM customer INNER JOIN (SELECT amc.customerid, amc.quantity, service.status,service.serviceid FROM amc INNER JOIN service ON amc.amcid=(SELECT service.amcid WHERE service.date = '".$date."')) as a ON a.customerid = customer.customerid";
         $result = $db->query($query);
 		$output = array();
 		while($row = $result->fetch_assoc()) {			
