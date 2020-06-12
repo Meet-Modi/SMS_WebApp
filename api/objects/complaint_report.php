@@ -69,8 +69,7 @@
                 $output = $output + $row;
             }else{
                 return "complaint not found";
-             }
-    
+            }
             return json_encode($output);          
         }
 
