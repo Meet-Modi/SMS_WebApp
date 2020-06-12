@@ -311,7 +311,8 @@ $(document).ready(function(){
     $("#add_customer_form").submit(function(){
 	  	console.log("INSIDE");
   	    var add_customer_form=$(this);
-	    var form_data=JSON.stringify(add_customer_form.serializeObject());
+		var form_data=JSON.stringify(add_customer_form.serializeObject());
+		console.log(form_data);
 	    // submit form data to api
 		$.ajax({
 		    url: "http://localhost/SMS_WebApp/api/customer/create_customer.php",
@@ -320,10 +321,10 @@ $(document).ready(function(){
 		    data : form_data,
 		    success : function(result){
 			    $('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Added Successfully</div>");
-			    add_customer_form.find('input').val('');
-		    },
+			},
 		    error: function(xhr, status, error){
 //		    	alert(error);
+				$('#response').html("<div class='alert alert-danger'>Unable to add new customer.</div>");
 			    // on error, tell the user login has failed & empty the input boxes
 			}
 		});

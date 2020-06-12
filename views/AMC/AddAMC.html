@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SDE | Customers</title>
+	<title>SDE | AMC</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--===============================================================================================-->
@@ -282,6 +282,7 @@
 							console.log("INSIDE");
 							var add_customer_form=$(this);
 							var form_data=JSON.stringify(add_customer_form.serializeObject());
+							console.log(form_data);
 							// submit form data to api
 							$.ajax({
 								url: "http://localhost/SMS_WebApp/api/amc/CU_amc.php",
@@ -289,11 +290,11 @@
 								contentType : 'application/json',
 								data : form_data,
 								success : function(result){
-									$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Added Successfully</div>");
+									$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> AMC Added Successfully</div>");
 								},
 								error: function(xhr, status, error){
 									//		    	alert(error);
-									// on error, tell the user login has failed & empty the input boxes
+									$('#response').html("<div class='alert alert-danger'>Unable to add AMC.</div>");
 								}
 							});
 							return false;

@@ -117,7 +117,7 @@ class Customer{
 				}
 			}
 		}else{
-			return "customer not found";
+			return json_encode($json_output);
 		}
 		return json_encode($json_output);
 	}

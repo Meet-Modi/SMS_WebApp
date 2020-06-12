@@ -91,9 +91,7 @@ curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain'));
 $result=curl_exec ($ch);
 $result=curl_exec ($ch);
 $data_customer = json_decode($result);
-
-
-
+echo($result);
 ?>
 
 
@@ -206,7 +204,6 @@ $data_customer = json_decode($result);
 						<tbody>
 						<?php
 							foreach ($data_customer as $stand) {
-				                // Output a row
 				                echo "<tr>";
 				                echo "<td>".$stand->customerid."</td>";
 				                echo "<td>".$stand->billingname."</td>";
@@ -220,8 +217,8 @@ $data_customer = json_decode($result);
 				                echo "<td>".$stand->city."</td>";
 				                echo "<td>".$stand->state."</td>";
 				                echo "<td>".$stand->pincode."</td>";
-				              	echo "<td><div class='row'><button class='w-size0 bg10 bo-rad-10 hov1' style='border: none;'>Update</button><a href='ViewCustomer.html?customer_id=" . $stand->customerid . "'class='w-size0 bg10 bo-rad-10 hov1' style='border: none;'>View/Update</a></div></td>";
-				                echo "</tr>";
+				              	echo "<td><div class='row w-size0'><a href='ViewCustomer.html?customer_id=" . $stand->customerid . "'class='w-size0 bg4 bo-rad-23 hov1 trans-0-4' style='border: none;'>View/Update</a></div></td>";
+				                echo "</tr>";										 																		 											
 				            }
 						?>
 						</tbody>
