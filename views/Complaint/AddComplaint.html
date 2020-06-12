@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>SDE | Customers</title>
+    <title>SDE | Complaints</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -185,8 +185,9 @@
             </div>
         </div>
     </header>
-    <br><div id="response"></div>
-    
+    <br>
+    <br>
+    <div id="response"></div>
     <div class="wrapper">
         <section class="content">
             <div class="container-fluid">
@@ -361,13 +362,11 @@
                                 data : form_data,
                                 success : function(result){
                                     console.log("DONE");
-                                    $('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Added Successfully</div>");
-                                    //add_customer_form.find('input').val('');
+                                    $('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Complaint Added Successfully</div>");
                                 },
                                 error: function(xhr, status, error){
-                                    alert(error);
-                                    // on error, tell the user login has failed & empty the input boxes
-                                }
+                            		$('#response').html("<div class='alert alert-danger'>Unable to add Complaint.</div>");
+							    }
                             });
                             return false;
                         });

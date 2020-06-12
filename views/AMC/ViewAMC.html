@@ -348,8 +348,8 @@
 						//add_customer_form.find('input').val('');
 					},
 					error: function(xhr, status, error){
-						alert(error);
-						// on error, tell the user login has failed & empty the input boxes
+						//	alert(error);
+						$('#response').html("<div class='alert alert-danger'>Unable to update AMC.</div>");
 					}
 				});
 				return false;

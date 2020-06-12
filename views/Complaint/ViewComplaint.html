@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>SDE | Customers</title>
+    <title>SDE | Complaint</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -222,7 +222,7 @@
             </div>
         </div>
     </header>
-    <br>
+    
     <div id="response"></div>
     
     <div class="wrapper">
@@ -393,11 +393,11 @@
 								data : form_data,
 								
 								success : function(result){
-									$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Updated Successfully</div>");
+									$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Complaint Updated Successfully</div>");
 									//add_customer_form.find('input').val('');
 								},
 								error: function(xhr, status, error){
-									alert(error);
+									$('#response').html("<div class='alert alert-danger'>Unable to update Complaint.</div>");
 									// on error, tell the user login has failed & empty the input boxes
 								}
 							});
