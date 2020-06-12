@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 12, 2020 at 09:26 AM
+-- Generation Time: Jun 12, 2020 at 06:39 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.6
 
@@ -20,6 +20,22 @@ SET time_zone = "+00:00";
 --
 -- Database: `sms`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_today_service` (IN `param` DATE)  NO SQL
+BEGIN
+DECLARE var integer(20);
+SET var = (SELECT
+    amc.customerid
+FROM amc
+INNER JOIN service ON amc.amcid=(SELECT service.amcid WHERE service.date = param));
+SELECT customer.billingname FROM customer WHERE customer.customerid IN (var);
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -61,7 +77,8 @@ CREATE TABLE `amc` (
 --
 
 INSERT INTO `amc` (`amcid`, `customerid`, `amctypeid`, `fromdate`, `period`, `quantity`, `totalservices`, `amount`) VALUES
-(1, 1, 1, '2020-06-18', 3, 2, 16, 18000);
+(1, 1, 1, '2020-06-18', 3, 2, 16, 18000),
+(2, 2, 1, '2020-06-09', 2, 66, 26, 180);
 
 --
 -- Triggers `amc`
@@ -123,7 +140,8 @@ INSERT INTO `complaint` (`complaintid`, `customerid`, `amcid`, `date`, `complain
 (1, 1, 1, '1999-05-05', 1, 'CLOSED'),
 (2, 1, 1, '0555-05-05', 1, 'OPEN'),
 (3, 1, 1, '2020-06-06', 1, 'OPEN'),
-(4, 1, 1, '2020-06-24', 1, 'OPEN');
+(4, 1, 1, '2020-06-24', 1, 'OPEN'),
+(5, 2, 2, '2020-06-11', 1, 'OPEN');
 
 -- --------------------------------------------------------
 
@@ -156,7 +174,8 @@ INSERT INTO `complaint_report` (`complaintid`, `defectobserved`, `actiontaken`, 
 (1, '', '', '', '', 0, 0, 0, 0, '2020-06-12 12:52:00', '0000-00-00 00:00:00', '', 'OPEN', ''),
 (2, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'OPEN', ''),
 (3, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'OPEN', ''),
-(4, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'OPEN', '');
+(4, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'OPEN', ''),
+(5, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'OPEN', '');
 
 -- --------------------------------------------------------
 
@@ -318,8 +337,8 @@ CREATE TABLE `product` (
 --
 
 CREATE TABLE `service` (
-  `serviceid` int(11) NOT NULL,
-  `amcid` int(11) NOT NULL,
+  `serviceid` int(20) NOT NULL,
+  `amcid` int(20) NOT NULL,
   `date` date NOT NULL,
   `handledby` varchar(30) NOT NULL,
   `remarks` varchar(50) NOT NULL,
@@ -333,7 +352,7 @@ CREATE TABLE `service` (
 INSERT INTO `service` (`serviceid`, `amcid`, `date`, `handledby`, `remarks`, `status`) VALUES
 (1, 1, '2020-08-03', '', '', 'OPEN'),
 (2, 1, '2020-09-18', '', '', 'OPEN'),
-(3, 1, '2020-11-03', '', '', 'OPEN'),
+(3, 1, '2020-08-03', '', '', 'OPEN'),
 (4, 1, '2020-12-19', '', '', 'OPEN'),
 (5, 1, '2021-02-03', '', '', 'OPEN'),
 (6, 1, '2021-03-21', '', '', 'OPEN'),
@@ -346,7 +365,34 @@ INSERT INTO `service` (`serviceid`, `amcid`, `date`, `handledby`, `remarks`, `st
 (13, 1, '2022-02-06', '', '', 'OPEN'),
 (14, 1, '2022-03-24', '', '', 'OPEN'),
 (15, 1, '2022-05-09', '', '', 'OPEN'),
-(16, 1, '2022-06-24', '', '', 'OPEN');
+(16, 1, '2022-06-24', '', '', 'OPEN'),
+(20, 1, '2020-09-18', 'nobody', '', 'OPEN'),
+(21, 2, '2020-07-07', '', '', 'OPEN'),
+(22, 2, '2020-08-03', '', '', 'OPEN'),
+(23, 2, '2020-09-01', '', '', 'OPEN'),
+(24, 2, '2020-09-29', '', '', 'OPEN'),
+(25, 2, '2020-10-27', '', '', 'OPEN'),
+(26, 2, '2020-11-24', '', '', 'OPEN'),
+(27, 2, '2020-12-22', '', '', 'OPEN'),
+(28, 2, '2021-01-19', '', '', 'OPEN'),
+(29, 2, '2021-02-16', '', '', 'OPEN'),
+(30, 2, '2021-03-16', '', '', 'OPEN'),
+(31, 2, '2021-04-13', '', '', 'OPEN'),
+(32, 2, '2021-05-11', '', '', 'OPEN'),
+(33, 2, '2021-06-08', '', '', 'OPEN'),
+(34, 2, '2021-07-06', '', '', 'OPEN'),
+(35, 2, '2021-08-03', '', '', 'OPEN'),
+(36, 2, '2021-08-31', '', '', 'OPEN'),
+(37, 2, '2021-09-28', '', '', 'OPEN'),
+(38, 2, '2021-10-26', '', '', 'OPEN'),
+(39, 2, '2021-11-23', '', '', 'OPEN'),
+(40, 2, '2021-12-21', '', '', 'OPEN'),
+(41, 2, '2022-01-18', '', '', 'OPEN'),
+(42, 2, '2022-02-15', '', '', 'OPEN'),
+(43, 2, '2022-03-15', '', '', 'OPEN'),
+(44, 2, '2022-04-12', '', '', 'OPEN'),
+(45, 2, '2022-05-10', '', '', 'OPEN'),
+(46, 2, '2022-06-07', '', '', 'OPEN');
 
 --
 -- Indexes for dumped tables
@@ -455,7 +501,7 @@ ALTER TABLE `service`
 -- AUTO_INCREMENT for table `amc`
 --
 ALTER TABLE `amc`
-  MODIFY `amcid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `amcid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `amc_type`
@@ -467,7 +513,7 @@ ALTER TABLE `amc_type`
 -- AUTO_INCREMENT for table `complaint`
 --
 ALTER TABLE `complaint`
-  MODIFY `complaintid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `complaintid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `complaint_type`
@@ -509,7 +555,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `service`
 --
 ALTER TABLE `service`
-  MODIFY `serviceid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `serviceid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- Constraints for dumped tables
