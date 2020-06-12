@@ -133,7 +133,42 @@ function showEvents() {
    console.log(selectedDate.getFullYear());
    console.log(selectedDate.toDateString());*/
    var our_date = selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate();
-   console.log(our_date);
+   var service_table = document.getElementById("service_tbody");
+   var obj = { operation : "R", date : our_date};
+   var myJSON = JSON.stringify(obj);
+   console.log(myJSON);
+
+
+   $.ajax({
+      url: "http://localhost/SMS_WebApp/api/service/CRUD_service.php",
+      type : "POST",
+      contentType : 'application/json',
+      data : myJSON,
+      success : function(result){
+         var totalrows = result.length;
+         var rowhtml = "";
+         console.log("First");
+         console.log(result);
+         if(totalrows == 0){
+            service_table.innerHTML = "<tr> <td align='center' colspan='5'>No services Today! </td></tr>";
+         }
+         else{
+            for(var i = 0;i < totalrows;i++){
+               rowhtml += "<tr><td>"+ result[i].serviceid +"</td><td>"+ result[i].amcid +"</td><td>"+ result[i].date +"</td><td>"+ result[i].handledby +"</td><td>"+ result[i].status +"</td></tr>";
+            }
+            console.log(rowhtml);
+            service_table.innerHTML = rowhtml;
+         }
+         
+      },
+      error: function(xhr, status, error){
+         alert(error);
+//         $('#response').html("<div class='alert alert-danger'>Unable to add AMC.</div>");
+      }
+   });
+
+
+
    //sidebarEvents.innerHTML = "";
 
    /*if (objWithDate) {
