@@ -3,7 +3,7 @@ button.print-button {
   height: 30px;
 }
 span.print-icon, span.print-icon::before, span.print-icon::after, button.print-button:hover .print-icon::after {
-  border: solid 4px #333;
+  border: solid 3px #333;
 }
 span.print-icon::after {
   border-width: 2px;
@@ -11,6 +11,7 @@ span.print-icon::after {
 
 button.print-button {
   position: relative;
+  top: 9px;
   padding: 0;
   border: 0;
   
