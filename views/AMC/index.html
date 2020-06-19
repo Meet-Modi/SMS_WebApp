@@ -1,37 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>SDE | AMC</title>
+	<title>SDE | DashBoard</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="images/icons/favicon.png"/>
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="images/icons/logo.png"/>
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/themify/themify-icons.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/elegant-font/html-css/style.css">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/custom.css">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
+	
 	<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
 	<!-- Ionicons -->
 	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -42,319 +27,217 @@
 	<link rel="stylesheet" href="dist/css/adminlte.min.css">
 	<!-- Google Font: Source Sans Pro -->
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	
 </head>
-<body>
+<body class="animsition">
+	<?php
+	$cookie_name = "jwt_token";
+	if(isset($_COOKIE[$cookie_name])) { 
+		echo "Cookie named '" . $cookie_name . "' is set!";
+		$jwt_token = $_COOKIE[$cookie_name]; 
+	} 
+	else{
+		header("Location: ../../index.html");
+		exit();
+	}		
+	
+	$myObj = (object)array();
+	$myObj->jwt = $jwt_token;
+	$myJSON = json_encode($myObj);
+	
+	$ch = curl_init();
+	
+	curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/employee/validate_token.php" );
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt($ch, CURLOPT_POST,           1 );
+	curl_setopt($ch, CURLOPT_POSTFIELDS,     $myJSON ); 
+	curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+	
+	$result=curl_exec ($ch);
+	$data = json_decode($result);
+	$userid = $data->data->userid;
+	$firstname = $data->data->firstname;
+	$lastname = $data->data->lastname;
+	
+	$myObj = (object)array();
+	$myObj->operation = "R";
+	$myObj->R = "";
+	$myJSON = json_encode($myObj);
+	
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/amc/RD_amc.php");
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt($ch, CURLOPT_POST,           1 );
+	curl_setopt($ch, CURLOPT_POSTFIELDS,     $myJSON ); 
+	curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+	$result=curl_exec ($ch);
+	$result=curl_exec ($ch);
+	$data_AMC = json_decode($result);	
+	?>
+	<script>
+        var userid = "<?php echo($userid);?>";
+        var firstname = "<?php echo($firstname);?>";
+        var lastname = "<?php echo($lastname); ?>"; 
+	</script>
+	<div class="header1" id="navbar"></div>
 
-<?php
-$cookie_name = "jwt_token";
-if(isset($_COOKIE[$cookie_name])) { 
-	echo "Cookie named '" . $cookie_name . "' is set!";
-	$jwt_token = $_COOKIE[$cookie_name]; 
-} 
-else{
-	header("Location: ../../index.html");
-	exit();
-}		
-
-//echo($jwt_token);
-$myObj = (object)array();
-$myObj->jwt = $jwt_token;
-$myJSON = json_encode($myObj);
-
-$ch = curl_init();
-
-curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/employee/validate_token.php" );
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-curl_setopt($ch, CURLOPT_POST,           1 );
-curl_setopt($ch, CURLOPT_POSTFIELDS,     $myJSON ); 
-curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
-
-$result=curl_exec ($ch);
-$data = json_decode($result);
-$userid = $data->data->userid;
-$firstname = $data->data->firstname;
-$lastname = $data->data->lastname;
-
-$myObj = (object)array();
-$myObj->operation = "R";
-$myObj->R = "";
-$myJSON = json_encode($myObj);
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/amc/RD_amc.php");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-curl_setopt($ch, CURLOPT_POST,           1 );
-curl_setopt($ch, CURLOPT_POSTFIELDS,     $myJSON ); 
-curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
-$result=curl_exec ($ch);
-$result=curl_exec ($ch);
-$data_AMC = json_decode($result);
-
-
-
-?>
-
-
-	<!-- Header -->
-	<header class="header">
-		<!-- Header desktop -->
-		<div class="container-menu-header">
-			<div class="wrap_header">
-				<!-- Logo -->
-				<a href="../DashBoard/index.html" class="logo">
-					<img src="images/icons/logo.jpeg" alt="IMG-LOGO">
-				</a>
-
-				<!-- Menu -->
-				<div class="wrap_menu">
-					<nav class="menu">
-						<ul class="main_menu">
-							<li>
-								<a href="../AMC/index.html">AMC</a>
-							</li>
-							<li>
-								<a href="../Customer/index.html">Customer</a>
-							</li>
-							<li>
-								<a href="../Complaint/index.html">Complaint</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
-
-				<!-- Header Icon -->
-				<div class="header-icons">
-					<a href="../todo/index.html" class="header-wrapicon1 dis-block">
-						<img src="images/icons/todo.jpg" class="header-icon1" alt="ICON">
-					</a>
-
-					<span class="linedivide1"></span>
-
-					<div class="header-wrapicon2">
-						<img src="images/icons/icon-header-01.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-
-						<!-- Header cart noti -->
-						<div class="header-cart header-dropdown">
-							<ul class="header-cart-wrapitem">
-								<li class="header-cart-item">
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Userid : <?php echo($userid); ?>
-										</a>
-									</div>
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Name : <?php echo($firstname." ".$lastname); ?>
-										</a>
-									</div>
-								</li>
-
-								
-							</ul>
-
-							<div class="header-cart-buttons">
-								<!-- Button -->
-								<a href="../Logout/logout.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-									Logout
-								</a>
+	<div class="wrapper tablepostion">
+		<section class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<a href='AddAMC.html' class='flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4' name="AddEmployee" value="AddEmployee" style="width:20%;">New AMC
+								</a>			
+							</div>
+							<div class="card-body">
+								<table id="example2" class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>AMC ID</th>
+											<th>Customer ID</th>
+											<th>Billing Name</th>
+											<th>AMC Type</th>
+											<th>From Date</th>
+											<th>Period (in years)</th>
+											<th>Quantity</th>
+											<th>No. of Services</th>
+											<th>Amount</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+										foreach ($data_AMC as $stand) {
+											// Output a row
+											echo "<tr>";
+												echo "<td>".$stand->amcid."</td>";
+												echo "<td>".$stand->customerid."</td>";
+												echo "<td></td>";
+												echo "<td>".$stand->amctypeid."</td>";
+												echo "<td>".$stand->fromdate."</td>";
+												echo "<td>".$stand->period."</td>";
+												echo "<td>".$stand->quantity."</td>";
+												echo "<td>".$stand->totalservices."</td>";
+												echo "<td>".$stand->amount."</td>";
+												echo "<td><div class='row'><a href='ViewAMC.html?amc_id=" . $stand->amcid . "'class='w-size0 bg4 bo-rad-23 hov1 trans-0-4' style='border: none;'>View/Update</a></div></td>";
+												echo "</tr>";
+											}
+											?>
+										</tbody>
+										<tfoot>
+											<tr>
+												<th>AMC ID</th>
+												<th>Customer ID</th>
+												<th>Billing Name</th>
+												<th>AMC Type</th>
+												<th>From Date</th>
+												<th>Period (in years)</th>
+												<th>Quantity</th>
+												<th>No. of Services</th>
+												<th>Amount</th>
+												<th>Action</th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</section>
 		</div>
-	</header>
-
-	
 		
-
-<div class="wrapper tablepostion">
-	<br>
-	<br>
-		<!-- Main content -->
-		<section class="content">
-			<div class="container-fluid">
-			<div class="row">
-				<div class="col-12">
-				<div class="card">
-					<div class="card-header">
-						<a href='AddAMC.html' class='flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4' name="AddEmployee" value="AddEmployee" style="width:20%;">New AMC
-						</a>			
-					</div>
-					<div class="card-body">
-					<table id="example2" class="table table-bordered table-hover">
-						<thead>
-                            <tr>
-                                <th>AMC ID</th>
-                                <th>Customer ID</th>
-                                <th>Billing Name</th>
-                                <th>AMC Type</th>
-                                <th>From Date</th>
-                                <th>Period (in years)</th>
-                                <th>Quantity</th>
-                                <th>No. of Services</th>
-                                <th>Amount</th>
-                                <th>Action</th>
-                            </tr>
-						</thead>
-						<tbody>
-						<?php
-							foreach ($data_AMC as $stand) {
-				                // Output a row
-				                echo "<tr>";
-								echo "<td>".$stand->amcid."</td>";
-				                echo "<td>".$stand->customerid."</td>";
-				                echo "<td></td>";
-				                echo "<td>".$stand->amctypeid."</td>";
-				                echo "<td>".$stand->fromdate."</td>";
-				                echo "<td>".$stand->period."</td>";
-				                echo "<td>".$stand->quantity."</td>";
-				                echo "<td>".$stand->totalservices."</td>";
-				                echo "<td>".$stand->amount."</td>";
-				                echo "<td><div class='row'><a href='ViewAMC.html?amc_id=" . $stand->amcid . "'class='w-size0 bg4 bo-rad-23 hov1 trans-0-4' style='border: none;'>View/Update</a></div></td>";
-				                echo "</tr>";
-				            }
-						?>
-						</tbody>
-						<tfoot>
-                            <tr>
-                                <th>AMC ID</th>
-                                <th>Customer ID</th>
-                                <th>Billing Name</th>
-                                <th>AMC Type</th>
-                                <th>From Date</th>
-                                <th>Period (in years)</th>
-                                <th>Quantity</th>
-                                <th>No. of Services</th>
-                                <th>Amount</th>
-                                <th>Action</th>
-                            </tr>
-						</tfoot>
-					</table>
-					</div>
-					<!-- /.card-body -->
-				</div>
-				<!-- /.card -->
-	
-				<!-- /.card -->
-				</div>
-				<!-- /.col -->
-			</div>
-			<!-- /.row -->
-			</div>
-			<!-- /.container-fluid -->
-		</section>
-		<!-- /.content -->
-	</div>
-	<br>
+		
+		
+		<!--===============================================================================================-->
+		<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+		<!--===============================================================================================-->
+		<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+		<!--===============================================================================================-->
+		<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
+		<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+		<!--===============================================================================================-->
+		<script src="js/main.js"></script>
+		<script src="../NavBar/NavBar.js"></script>
+		<!--===============================================================================================-->
+		
+		<!-- jQuery -->
+		<script src="plugins/jquery/jquery.min.js"></script>
+		<!-- Bootstrap 4 -->
+		<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- DataTables -->
+		<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+		<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+		<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+		<!-- AdminLTE App -->
+		<script src="dist/js/adminlte.min.js"></script>
+		<!-- AdminLTE for demo purposes -->
+		<script src="dist/js/demo.js"></script>
+		<!-- page script -->
+		<script>
+			$(function () {
+				$("#example1").DataTable({
+					"responsive": true,
+					"autoWidth": true,
+				});
+				$('#example2').DataTable({
+					"paging": true,
+					"lengthChange": true,
+					"searching": true,
+					"ordering": true,
+					"info": true,
+					"autoWidth": true,
+					"responsive": true,
+				});
+			});
+		</script>
+		
+		<script>
+			$(document).ready(function(){
+				showNavBar(userid,firstname,lastname);
 				
-
-
-<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
-	<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/select2/select2.min.js"></script>
-	<script type="text/javascript">
-		$(".selection-1").select2({
-			minimumResultsForSearch: 20,
-			dropdownParent: $('#dropDownSelect1')
-		});
-
-		$(".selection-2").select2({
-			minimumResultsForSearch: 20,
-			dropdownParent: $('#dropDownSelect2')
-		});
-	</script>
-<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/daterangepicker/moment.min.js"></script>
-	<script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
-<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/slick/slick.min.js"></script>
-	<script type="text/javascript" src="js/slick-custom.js"></script>
-<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
-	<script type="text/javascript">
-		$('.block2-btn-addcart').each(function(){
-			var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
-			$(this).on('click', function(){
-				swal(nameProduct, "is added to cart !", "success");
+				$('.js-show-header-dropdown').on('click', function(){
+					$(this).parent().find('.header-dropdown')
+				});
+				
+				var menu = $('.js-show-header-dropdown');
+				var sub_menu_is_showed = -1;
+				
+				for(var i=0; i<menu.length; i++){
+					$(menu[i]).on('click', function(){ 
+						
+						if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
+							$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+							sub_menu_is_showed = -1;
+						}
+						else {
+							for (var i = 0; i < menu.length; i++) {
+								$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+							}
+							
+							$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+							sub_menu_is_showed = jQuery.inArray( this, menu );
+						}
+					});
+				}
+				
+				$(".js-show-header-dropdown, .header-dropdown").click(function(event){
+					event.stopPropagation();
+				});
+				
+				$(window).on("click", function(){
+					for (var i = 0; i < menu.length; i++) {
+						$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+					}
+					sub_menu_is_showed = -1;
+				});
 			});
-		});
-
-		$('.block2-btn-addwishlist').each(function(){
-			var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
-			$(this).on('click', function(){
-				swal(nameProduct, "is added to wishlist !", "success");
-			});
-		});
-	</script>
-
-<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/noui/nouislider.min.js"></script>
-	<script type="text/javascript">
-		/*[ No ui ]
-	    ===========================================================*/
-	    var filterBar = document.getElementById('filter-bar');
-
-	    noUiSlider.create(filterBar, {
-	        start: [ 50, 200 ],
-	        connect: true,
-	        range: {
-	            'min': 50,
-	            'max': 200
-	        }
-	    });
-
-	    var skipValues = [
-	    document.getElementById('value-lower'),
-	    document.getElementById('value-upper')
-	    ];
-
-	    filterBar.noUiSlider.on('update', function( values, handle ) {
-	        skipValues[handle].innerHTML = Math.round(values[handle]) ;
-	    });
-	</script>
-<!--===============================================================================================-->
-	<script src="js/main.js"></script>
-
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- DataTables -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- page script -->
-<script>
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true,
-      "autoWidth": true,
-    });
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": true,
-	  "responsive": true,
-    });
-  });
-</script>
-
-</body>
-</html>
+		</script>
+		
+	</body>
+	</html>
+	
