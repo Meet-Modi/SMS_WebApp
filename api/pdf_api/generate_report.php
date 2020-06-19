@@ -82,8 +82,6 @@ $pdf->Multicell(120,4,"\nName & sign of Mechanic : \n\n",1,'L');
 $pdf->SetXY(20,168);
 $pdf->Multicell(120,4,"\nCustomer's Remarks : ".$_POST['customer_remarks']."\n\n",1,'L'); 
 
-
-
 $pdf->SetXY(158,40);
 //$pdf->Cell(125,25,"Complaint ID : \n",1);
 $pdf->Multicell(120,3,"\nComplaint ID:                                              Date: 18-06-2020\n",1,'L'); 
