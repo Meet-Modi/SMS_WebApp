@@ -368,6 +368,7 @@
                             <div class="form-group">
                                 <label for="operation"></label>
                                 <input type="hidden" class="form-control" style="width:25%;" id="operation" value="U" name="operation">
+                                <input type="hidden" class="form-control" style="width:0%" id="complaint_id" value="<?php echo($complaint_id); ?>" name="complaint_id">
                             </div> 
                         </div>
 
@@ -387,8 +388,40 @@
 					$(document).ready(function(){
 						console.log("READY");
                         $("#print_button").click(function(){
-                            alert('<?php echo($row); ?>');
-                        
+                            var update_customer_form=$("#view_complaint_form");
+							function redirectPost(url, data) {
+                                var form = document.createElement('form');
+                                document.body.appendChild(form);
+                                form.method = 'post';
+                                form.action = url;
+                                for (var name in data) {
+                                    var input = document.createElement('input');
+                                    input.type = 'hidden';
+                                    input.name = name;
+                                    input.value = data[name];
+                                    form.appendChild(input);
+                                    console.log("{" + name + "," + data[name] + "}");
+                                }
+                                form.submit();
+                            }
+                            var form_data=JSON.stringify(update_customer_form.serializeObject());
+                            redirectPost('http://localhost/SMS_WebApp/api/pdf_api/generate_report.php', update_customer_form.serializeObject());
+                            console.log(form_data);
+                            /*$.ajax({
+								url: "http://localhost/SMS_WebApp/api/pdf_api/generate_report.php",
+								type : "POST",
+								contentType : 'application/json',
+								data : form_data,
+								
+								success : function(result){
+									console.log(result);
+								},
+								error: function(xhr, status, error){
+									$('#response').html("<div class='alert alert-danger'>Unable to print Complaint.</div>");
+									// on error, tell the user login has failed & empty the input boxes
+								}
+							});
+							*/
                         });
                             
 							
