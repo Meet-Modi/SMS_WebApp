@@ -85,7 +85,6 @@
 	</script>
 	<div class="header1" id="navbar"></div>	
 	<div class="wrapper tablepostion">
-		<!-- Main content -->
 		<section class="content">
 			<div class="container-fluid">
 				<div class="row">
@@ -112,137 +111,130 @@
 									</thead>
 									<tbody>
 										<?php
-											foreach ($data_complaint as $stand) {
-												// Output a row
-												echo "<tr>";
-													echo "<td>".$stand->complaintid."</td>";
-													echo "<td>".$stand->customerid."</td>";
-													echo "<td></td>";
-													echo "<td>".$stand->amcid."</td>";
-													echo "<td>".$stand->date."</td>";
-													echo "<td>".$stand->complainttypeid."</td>";
-													echo "<td>".$stand->status."</td>";
-													echo "<td><div class='row'><a href='ViewComplaint.html?complaint_id=" . $stand->complaintid . "'class='w-size0 bg4 bo-rad-23 hov1 trans-0-4' style='border: none;'>View/Update</a></div></td>";
-													echo "</tr>";
-												}
-												?>
-											</tbody>
-											<tfoot>
-												<tr>
-													<th>Complaint ID</th>
-													<th>Customer ID</th>
-													<th>Billing Name</th>
-													<th>AMC ID</th>
-													<th>Date</th>
-													<th>Complaint Type</th>
-													<th>STATUS</th>
-													<th>Action</th>
-												</tr>
-											</tfoot>
-										</table>
-									</div>
-									<!-- /.card-body -->
+										foreach ($data_complaint as $stand) {
+											// Output a row
+											echo "<tr>";
+												echo "<td>".$stand->complaintid."</td>";
+												echo "<td>".$stand->customerid."</td>";
+												echo "<td></td>";
+												echo "<td>".$stand->amcid."</td>";
+												echo "<td>".$stand->date."</td>";
+												echo "<td>".$stand->complainttypeid."</td>";
+												echo "<td>".$stand->status."</td>";
+												echo "<td><div class='row'><a href='ViewComplaint.html?complaint_id=" . $stand->complaintid . "'class='w-size0 bg4 bo-rad-23 hov1 trans-0-4' style='border: none;'>View/Update</a></div></td>";
+												echo "</tr>";
+											}
+											?>
+										</tbody>
+										<tfoot>
+											<tr>
+												<th>Complaint ID</th>
+												<th>Customer ID</th>
+												<th>Billing Name</th>
+												<th>AMC ID</th>
+												<th>Date</th>
+												<th>Complaint Type</th>
+												<th>STATUS</th>
+												<th>Action</th>
+											</tr>
+										</tfoot>
+									</table>
 								</div>
-								<!-- /.card -->
-								
-								<!-- /.card -->
 							</div>
-							<!-- /.col -->
 						</div>
-						<!-- /.row -->
 					</div>
-					<!-- /.container-fluid -->
-				</section>
-				<!-- /.content -->
-			</div>
-			
-			<!-- jQuery -->
-			<script src="plugins/jquery/jquery.min.js"></script>
-			<!-- Bootstrap 4 -->
-			<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-			<!-- DataTables -->
-			<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-			<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-			<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-			<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-			<!-- AdminLTE App -->
-			<script src="dist/js/adminlte.min.js"></script>
-			<!-- AdminLTE for demo purposes -->
-			<script src="dist/js/demo.js"></script>
-			<!-- page script -->
-			<script>
-				$(function () {
-					$("#example1").DataTable({
-						"responsive": true,
-						"autoWidth": true,
-					});
-					$('#example2').DataTable({
-						"paging": true,
-						"lengthChange": true,
-						"searching": true,
-						"ordering": true,
-						"info": true,
-						"autoWidth": true,
-						"responsive": true,
-					});
-				});
-			</script>
-			
-			<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
-	<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="js/main.js"></script>
-	<script src="../NavBar/NavBar.js"></script>
-	<!--===============================================================================================-->
-	
-	<script>
-		$(document).ready(function(){
-			showNavBar(userid,firstname,lastname);
-			
-			$('.js-show-header-dropdown').on('click', function(){
-				$(this).parent().find('.header-dropdown')
-			});
-			
-			var menu = $('.js-show-header-dropdown');
-			var sub_menu_is_showed = -1;
-			
-			for(var i=0; i<menu.length; i++){
-				$(menu[i]).on('click', function(){ 
-					
-					if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
-						$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
-						sub_menu_is_showed = -1;
-					}
-					else {
-						for (var i = 0; i < menu.length; i++) {
-							$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
-						}
-						
-						$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
-						sub_menu_is_showed = jQuery.inArray( this, menu );
-					}
-				});
-			}
-			
-			$(".js-show-header-dropdown, .header-dropdown").click(function(event){
-				event.stopPropagation();
-			});
-			
-			$(window).on("click", function(){
-				for (var i = 0; i < menu.length; i++) {
-					$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
-				}
-				sub_menu_is_showed = -1;
-			});
-			
-		});
-	</script>
-			
-		</body>
-		</html>
+				</div>
+			</section>
+		</div>
 		
+		
+		<!--===============================================================================================-->
+		<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+		<!--===============================================================================================-->
+		<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+		<!--===============================================================================================-->
+		<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
+		<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+		<!--===============================================================================================-->
+		<script src="js/main.js"></script>
+		<script src="../NavBar/NavBar.js"></script>
+		<!--===============================================================================================-->
+		
+		<!-- jQuery -->
+		<script src="plugins/jquery/jquery.min.js"></script>
+		<!-- Bootstrap 4 -->
+		<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- DataTables -->
+		<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+		<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+		<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+		<!-- AdminLTE App -->
+		<script src="dist/js/adminlte.min.js"></script>
+		<!-- AdminLTE for demo purposes -->
+		<script src="dist/js/demo.js"></script>
+		<!-- page script -->
+		<script>
+			$(function () {
+				$("#example1").DataTable({
+					"responsive": true,
+					"autoWidth": true,
+				});
+				$('#example2').DataTable({
+					"paging": true,
+					"lengthChange": true,
+					"searching": true,
+					"ordering": true,
+					"info": true,
+					"autoWidth": true,
+					"responsive": true,
+				});
+			});
+		</script>
+		
+		<script>
+			$(document).ready(function(){
+				showNavBar(userid,firstname,lastname);
+				
+				$('.js-show-header-dropdown').on('click', function(){
+					$(this).parent().find('.header-dropdown')
+				});
+				
+				var menu = $('.js-show-header-dropdown');
+				var sub_menu_is_showed = -1;
+				
+				for(var i=0; i<menu.length; i++){
+					$(menu[i]).on('click', function(){ 
+						
+						if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
+							$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+							sub_menu_is_showed = -1;
+						}
+						else {
+							for (var i = 0; i < menu.length; i++) {
+								$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+							}
+							
+							$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+							sub_menu_is_showed = jQuery.inArray( this, menu );
+						}
+					});
+				}
+				
+				$(".js-show-header-dropdown, .header-dropdown").click(function(event){
+					event.stopPropagation();
+				});
+				
+				$(window).on("click", function(){
+					for (var i = 0; i < menu.length; i++) {
+						$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+					}
+					sub_menu_is_showed = -1;
+				});
+				
+			});
+		</script>
+		
+	</body>
+	</html>
+	

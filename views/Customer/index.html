@@ -16,7 +16,6 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/custom.css">
 	<!--===============================================================================================-->
-	
 	<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
 	<!-- Ionicons -->
 	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -85,7 +84,6 @@
 	<div class="header1" id="navbar"></div>
 	
 	<div class="wrapper tablepostion">
-		<!-- Main content -->
 		<section class="content">
 			<div class="container-fluid">
 				<div class="row">
@@ -161,7 +159,17 @@
 				</div>
 			</section>
 		</div>
-		
+		<!--===============================================================================================-->
+		<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+		<!--===============================================================================================-->
+		<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+		<!--===============================================================================================-->
+		<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
+		<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+		<!--===============================================================================================-->
+		<script src="js/main.js"></script>
+		<script src="../NavBar/NavBar.js"></script>
+		<!--===============================================================================================-->
 		
 		<!-- jQuery -->
 		<script src="plugins/jquery/jquery.min.js"></script>
@@ -194,20 +202,11 @@
 				});
 			});
 		</script>
-		<!--===============================================================================================-->
-		<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
-		<!--===============================================================================================-->
-		<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
-		<!--===============================================================================================-->
-		<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
-		<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
-		<!--===============================================================================================-->
-		<script src="js/main.js"></script>
-		<script src="../NavBar/NavBar.js"></script>
-		<!--===============================================================================================-->
+		
 		<script>
 			$(document).ready(function(){
 				showNavBar(userid,firstname,lastname);
+				
 				$('.js-show-header-dropdown').on('click', function(){
 					$(this).parent().find('.header-dropdown')
 				});
@@ -243,9 +242,10 @@
 					}
 					sub_menu_is_showed = -1;
 				});
+				
 			});
-			
 		</script>
+		
 		
 		
 	</body>
