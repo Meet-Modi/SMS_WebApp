@@ -8,7 +8,7 @@ function showNavBar(userid, firstname, lastname){
     var html = `				
     <div class="container-menu-header">
         <div class="wrap_header">
-            <a href="index.html" class="logo">
+            <a href="../DashBoard/index.html" class="logo">
                 <img src="images/icons/logo.png" alt="IMG-LOGO">
             </a>
             <div class="wrap_menu">
