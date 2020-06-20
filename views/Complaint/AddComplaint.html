@@ -92,285 +92,368 @@
     $firstname = $data->data->firstname;
     $lastname = $data->data->lastname;
     
+    $inArray = (object)array();
+    $inArray->view = "BillingName_AMC";
+    $inJSON = json_encode($inArray);
+    
+    $ch = curl_init();
+    
+    curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/dynamicviews/dropdownviews.php" );
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch, CURLOPT_POST,           1 );
+    curl_setopt($ch, CURLOPT_POSTFIELDS,     $inJSON ); 
+    curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    
+    $result1 =curl_exec ($ch);
+    
+    $inArray2 = (object)array();
+    $inArray2->view = "ViewComplaint";
+    $inJSON2 = json_encode($inArray2);
+    
+    $ch2= curl_init();
+    
+    curl_setopt($ch2, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/dynamicviews/dropdownviews.php" );
+    curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch2, CURLOPT_POST,           1 );
+    curl_setopt($ch2, CURLOPT_POSTFIELDS,     $inJSON2 ); 
+    curl_setopt($ch2, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    
+    $result2 =curl_exec ($ch2);
+    $data2 = json_decode($result2);
+    $name = $data2->mechanic;
+    $complainttype = $data2->complainttype;
+    
     ?>
     <script>
         var userid = "<?php echo($userid);?>";
         var firstname = "<?php echo($firstname);?>";
         var lastname = "<?php echo($lastname); ?>"; 
+        var amcid = "";
+        var billingname = "";
     </script>
-    <div class="header1" id="navbar"></div>
-    <br>
-    <br>
-    <div id="response"></div>
-    <div class="wrapper">
-        <section class="content">
-            <div class="container-fluid">
-                <div class="card card-default">
-                    <form id="add_complaint_form" method="POST">
-                        <div class="card-header">
-                            <h3 class="card-title">New Complaint</h3>
-                            <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body" id="complaint">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="billing_name">Billing Name</label>
-                                        <input type="text" class="form-control" style="width: 100%;" required="required" id="billing_name" name="billing_name" placeholder="Enter Billing Name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="date">Date</label>
-                                        <input type="date" class="form-control" style="width: 70%;" id="date" placeholder="" name="date">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="amc_id">AMC ID</label>
-                                        <input type="text" class="form-control" style="width: 50%;" id="amc_id" name="amc_id" placeholder="Enter AMC-ID">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="complaint_type">Complaint Type</label>
-                                        <select name="complaint_type" id="complaint_type" class="form-control" style="width: 85%;">
-                                            <option>ICE FORMATION</option>
-                                            <option>option 2</option>
-                                            <option>option 3</option>
-                                            <option>option 4</option>
-                                            <option>option 5</option>
-                                        </select>
-                                    </div>    
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="status">Status</label>
-                                        <input type="text" class="form-control" style="width:25%;" id="status" value="OPEN" name="status">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="operation"></label>
-                                        <input type="hidden" class="form-control" style="width:25%;" id="operation" value="C" name="operation">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        
-                        <div class="card-body" id="complaintreport" style="border-top-style: groove; border-width: 2px;">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="mechanic_name">Assigned to Mechanic</label>
-                                        <input type="text" class="form-control" style="width:40%;" id="mechanic_name" value="OPEN" name="mechanic_name">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="time_from">Time From</label>
-                                        <input type="datetime-local" class="form-control" style="width:80%;" id="time_from" value="OPEN" name="time_from">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="time_to">Time To</label>
-                                        <input type="datetime-local" class="form-control" style="width:80%;" id="time_to" value="OPEN" name="time_to">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="line_voltage">Line Voltage</label>
-                                                <input type="number" class="form-control" style="width:45%;" id="line_voltage" value="OPEN" name="line_voltage">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="grill_temp">Grill Temperature</label>
-                                                <input type="number" class="form-control" style="width:45%;" id="grill_temp" value="OPEN" name="grill_temp">
-                                            </div>        
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="current">Current</label>
-                                                <input type="number" class="form-control" style="width:45%;" id="current" value="OPEN" name="current">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="room_temp">Room Temperature</label>
-                                                <input type="number" class="form-control" style="width:45%;" id="room_temp" value="OPEN" name="room_temp">
-                                            </div>        
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">                                    
-                                    <div class="form-group">
-                                        <label for="defect_observed">Defect Observed</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="defect_observed" value="OPEN" name="defect_observed"></textarea>
-                                    </div>                                    
-                                    <div class="form-group">
-                                        <label for="remarks">Remarks</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="remarks" value="OPEN" name="remarks"></textarea>
-                                    </div>
-                                    
-                                </div>
-                                <div class="col-md-4">                 
-                                    <div class="form-group">
-                                        <label for="action_taken">Action Taken</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="action_taken" value="OPEN" name="action_taken"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="parts_replaced">Part Replaced</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="parts_replaced" value="OPEN" name="parts_replaced"></textarea>
-                                    </div>   
-                                    <div class="form-group">
-                                        <label for="fromdate">Mechanic Remarks</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="mechanic_remarks" name="mechanic_remarks"></textarea>
-                                    </div>                                  
-                                    
-                                    <div class="form-group">
-                                        <label for="customer_remarks">Customer Remarks</label>
-                                        <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="customer_remarks" value="OPEN" name="customer_remarks"></textarea>
-                                    </div>
-                                </div>
-                            </div>    
-                        </div>
-                        
-                    </form>               
-                </div>  
-            </div>    
-        </section>
-    </div>
-    
-    
-    
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
-    <script src="Addcust_files/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="Addcust_files/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Select2 -->
-    <script src="Addcust_files/plugins/select2/js/select2.full.min.js"></script>
-    <!-- Bootstrap4 Duallistbox -->
-    <script src="Addcust_files/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-    <!-- InputMask -->
-    <script src="Addcust_files/plugins/moment/moment.min.js"></script>
-    <script src="Addcust_files/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
-    <!-- date-range-picker -->
-    <script src="Addcust_files/plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- bootstrap color picker -->
-    <script src="Addcust_files/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="Addcust_files/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Bootstrap Switch -->
-    <script src="Addcust_files/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="Addcust_files/dist/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="Addcust_files/dist/js/demo.js"></script>
-    <!-- Page script -->
-    <!--===============================================================================================-->
-    <script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
-    <!--===============================================================================================-->
-    <script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
-    <!--===============================================================================================-->
-    <script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
-    <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="js/main.js"></script>
-    <script src="../NavBar/NavBar.js"></script>
-    <!--===============================================================================================-->
     <script>
-        $(document).ready(function(){
-            showNavBar(userid,firstname,lastname);
-			$('.js-show-header-dropdown').on('click', function(){
-				$(this).parent().find('.header-dropdown')
-			});
-			
-			var menu = $('.js-show-header-dropdown');
-			var sub_menu_is_showed = -1;
-			
-			for(var i=0; i<menu.length; i++){
-				$(menu[i]).on('click', function(){ 
-					
-					if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
-						$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
-						sub_menu_is_showed = -1;
-					}
-					else {
-						for (var i = 0; i < menu.length; i++) {
-							$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
-						}
-						
-						$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
-						sub_menu_is_showed = jQuery.inArray( this, menu );
-					}
-				});
-			}
-			
-			$(".js-show-header-dropdown, .header-dropdown").click(function(event){
-				event.stopPropagation();
-			});
-			
-			$(window).on("click", function(){
-				for (var i = 0; i < menu.length; i++) {
-					$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
-				}
-				sub_menu_is_showed = -1;
-			});
-
-            $("#add_complaint_form").submit(function(){
-                console.log("INSIDE");
-                var add_customer_form=$(this);
-                var form_data=JSON.stringify(add_customer_form.serializeObject());
-                console.log(form_data);
-                
-                // submit form data to api
-                $.ajax({
-                    url: "http://localhost/SMS_WebApp/api/complaint/CU_complaint.php",
-                    type : "POST",
-                    contentType : 'application/json',
-                    data : form_data,
-                    success : function(result){
-                        console.log("DONE");
-                        $('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Complaint Added Successfully</div>");
-                    },
-                    error: function(xhr, status, error){
-                        $('#response').html("<div class='alert alert-danger'>Unable to add Complaint.</div>");
-                    }
-                });
-                return false;
-            });
-            
-            
-            $.fn.serializeObject = function(){
-                
-                var o = {};
-                var a = this.serializeArray();
-                $.each(a, function() {
-                    if (o[this.name] !== undefined) {
-                        if (!o[this.name].push) {
-                            o[this.name] = [o[this.name]];
+        var stateObject = <?php echo($result1); ?>;
+        window.onload = function () {
+            var countySel = document.getElementById("billing_name"),
+            stateSel = document.getElementById("amc_id");
+            for (var country in stateObject) {                
+                countySel.options[countySel.options.length] = new Option(country, country);                    
+                /*                    if(country==billingname){
+                    countySel.value = billingname;
+                    stateSel.length = 0; // remove all options bar first
+                    if (this.selectedIndex < 1) return; // done 
+                    var state = stateObject[country];
+                    for (var i = 0; i < state.length; i++) {
+                        stateSel.options[stateSel.options.length] = new Option(state[i], state[i]);
+                        if(state[i]==amcid){
+                            stateSel.value = state[i];
                         }
-                        o[this.name].push(this.value || '');
-                    } else {
-                        o[this.name] = this.value || '';
                     }
+                    
+                }*/
+            }
+            countySel.onchange = function () {
+                var e = document.getElementById("billing_name");
+                console.log(e.selectedIndex);
+                stateSel.length = 0; // remove all options bar first
+                if (this.selectedIndex < 1) return; // done 
+                var state = stateObject[this.value];
+                for (var i = 0; i < state.length; i++) {
+                    stateSel.options[stateSel.options.length] = new Option(state[i], state[i]);
+                    /*                        if(state[i]==amcid){
+                        stateSel.value = state[i];
+                    }
+                    */                }
+                }   
+            }            
+        </script>
+        
+        <div class="header1" id="navbar"></div>
+        <br>
+        <br>
+        <div id="response"></div>
+        <div class="wrapper">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="card card-default">
+                        <form id="add_complaint_form" method="POST">
+                            <div class="card-header">
+                                <h3 class="card-title">New Complaint</h3>
+                                <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body" id="complaint">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="billing_name">Billing Name</label>
+                                            <select class="form-control" style="width: 85%;" required="required" id="billing_name" name="billing_name">
+                                            <option selected="selected">Choose a customer</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="date">Date</label>
+                                            <input type="date" class="form-control" style="width: 70%;" id="date" placeholder="" name="date">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="amc_id">AMC ID</label>
+                                            <select class="form-control" style="width: 70%;" id="amc_id" name="amc_id">
+                                                <option selected="selected">Please choose customer first</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="complaint_type">Complaint Type</label>
+                                            <input list="complaint_type" name="complaint_type" class="form-control" style="width: 85%;">
+                                        <?php
+                                            echo ("<datalist id='complaint_type'>");
+                                            foreach($complainttype as $row){
+                                                echo "<option>".$row->complainttype."</option>";
+                                            }
+                                            echo("</datalist>");
+                                        ?>
+                                        </div>    
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="status">Status</label>
+                                            <input type="text" class="form-control" style="width:25%;" id="status" value="OPEN" name="status">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="operation"></label>
+                                            <input type="hidden" class="form-control" style="width:25%;" id="operation" value="C" name="operation">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            
+                            <div class="card-body" id="complaintreport" style="border-top-style: groove; border-width: 2px;">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="mechanic_name">Assigned to Mechanic</label>
+                                            <input list="mechanic_name" class="form-control" style="width:40%;" name="mechanic_name">                
+                                            <?php
+                                                echo ("<datalist id='mechanic_name'>");
+                                                foreach($name as $row){
+                                                    echo "<option>".$row->name."</option>";
+                                                }
+                                                echo("</datalist>");
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="time_from">Time From</label>
+                                            <input type="datetime-local" class="form-control" style="width:80%;" id="time_from" value="OPEN" name="time_from">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="time_to">Time To</label>
+                                            <input type="datetime-local" class="form-control" style="width:80%;" id="time_to" value="OPEN" name="time_to">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="line_voltage">Line Voltage</label>
+                                                    <input type="number" class="form-control" style="width:45%;" id="line_voltage" value="OPEN" name="line_voltage">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="grill_temp">Grill Temperature</label>
+                                                    <input type="number" class="form-control" style="width:45%;" id="grill_temp" value="OPEN" name="grill_temp">
+                                                </div>        
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="current">Current</label>
+                                                    <input type="number" class="form-control" style="width:45%;" id="current" value="OPEN" name="current">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="room_temp">Room Temperature</label>
+                                                    <input type="number" class="form-control" style="width:45%;" id="room_temp" value="OPEN" name="room_temp">
+                                                </div>        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">                                    
+                                        <div class="form-group">
+                                            <label for="defect_observed">Defect Observed</label>
+                                            <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="defect_observed" value="OPEN" name="defect_observed"></textarea>
+                                        </div>                                    
+                                        <div class="form-group">
+                                            <label for="remarks">Remarks</label>
+                                            <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="remarks" value="OPEN" name="remarks"></textarea>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-md-4">                 
+                                        <div class="form-group">
+                                            <label for="action_taken">Action Taken</label>
+                                            <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="action_taken" value="OPEN" name="action_taken"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="parts_replaced">Part Replaced</label>
+                                            <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="parts_replaced" value="OPEN" name="parts_replaced"></textarea>
+                                        </div>   
+                                        <div class="form-group">
+                                            <label for="fromdate">Mechanic Remarks</label>
+                                            <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="mechanic_remarks" name="mechanic_remarks"></textarea>
+                                        </div>                                  
+                                        
+                                        <div class="form-group">
+                                            <label for="customer_remarks">Customer Remarks</label>
+                                            <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="customer_remarks" value="OPEN" name="customer_remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                            
+                        </form>               
+                    </div>  
+                </div>    
+            </section>
+        </div>
+        
+        
+        
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
+        <script src="Addcust_files/plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="Addcust_files/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Select2 -->
+        <script src="Addcust_files/plugins/select2/js/select2.full.min.js"></script>
+        <!-- Bootstrap4 Duallistbox -->
+        <script src="Addcust_files/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+        <!-- InputMask -->
+        <script src="Addcust_files/plugins/moment/moment.min.js"></script>
+        <script src="Addcust_files/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+        <!-- date-range-picker -->
+        <script src="Addcust_files/plugins/daterangepicker/daterangepicker.js"></script>
+        <!-- bootstrap color picker -->
+        <script src="Addcust_files/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="Addcust_files/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+        <!-- Bootstrap Switch -->
+        <script src="Addcust_files/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="Addcust_files/dist/js/adminlte.min.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="Addcust_files/dist/js/demo.js"></script>
+        <!-- Page script -->
+        <!--===============================================================================================-->
+        <script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+        <!--===============================================================================================-->
+        <script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+        <!--===============================================================================================-->
+        <script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
+        <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+        <!--===============================================================================================-->
+        <script src="js/main.js"></script>
+        <script src="../NavBar/NavBar.js"></script>
+        <!--===============================================================================================-->
+        <script>
+            $(document).ready(function(){
+                showNavBar(userid,firstname,lastname);
+                $('.js-show-header-dropdown').on('click', function(){
+                    $(this).parent().find('.header-dropdown')
                 });
-                return o;
-            };            
-        });
-    </script>
+                
+                var menu = $('.js-show-header-dropdown');
+                var sub_menu_is_showed = -1;
+                
+                for(var i=0; i<menu.length; i++){
+                    $(menu[i]).on('click', function(){ 
+                        
+                        if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
+                            $(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+                            sub_menu_is_showed = -1;
+                        }
+                        else {
+                            for (var i = 0; i < menu.length; i++) {
+                                $(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+                            }
+                            
+                            $(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+                            sub_menu_is_showed = jQuery.inArray( this, menu );
+                        }
+                    });
+                }
+                
+                $(".js-show-header-dropdown, .header-dropdown").click(function(event){
+                    event.stopPropagation();
+                });
+                
+                $(window).on("click", function(){
+                    for (var i = 0; i < menu.length; i++) {
+                        $(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+                    }
+                    sub_menu_is_showed = -1;
+                });
+                
+                $("#add_complaint_form").submit(function(){
+                    console.log("INSIDE");
+                    var add_customer_form=$(this);
+                    var form_data=JSON.stringify(add_customer_form.serializeObject());
+                    console.log(form_data);
+                    
+                    // submit form data to api
+                    $.ajax({
+                        url: "http://localhost/SMS_WebApp/api/complaint/CU_complaint.php",
+                        type : "POST",
+                        contentType : 'application/json',
+                        data : form_data,
+                        success : function(result){
+                            console.log("DONE");
+                            $('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Complaint Added Successfully</div>");
+                        },
+                        error: function(xhr, status, error){
+                            $('#response').html("<div class='alert alert-danger'>Unable to add Complaint.</div>");
+                        }
+                    });
+                    return false;
+                });
+                
+                
+                $.fn.serializeObject = function(){
+                    
+                    var o = {};
+                    var a = this.serializeArray();
+                    $.each(a, function() {
+                        if (o[this.name] !== undefined) {
+                            if (!o[this.name].push) {
+                                o[this.name] = [o[this.name]];
+                            }
+                            o[this.name].push(this.value || '');
+                        } else {
+                            o[this.name] = this.value || '';
+                        }
+                    });
+                    return o;
+                };            
+            });
+        </script>
+        
+    </body>
+    </html>
     
-</body>
-</html>
