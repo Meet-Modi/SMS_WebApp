@@ -7,39 +7,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+    <link rel="icon" type="image/png" href="images/icons/logo.png"/>
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/themify/themify-icons.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/elegant-font/html-css/style.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css">
-    <!--===============================================================================================-->
-    
-    
-    <link rel="stylesheet" type="text/css" href="css/custom.css">
-    
     <link rel="stylesheet" type="text/css" href="css/util.css">
-    
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+    <link rel="stylesheet" type="text/css" href="css/custom.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="Addcust_files/plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
@@ -79,7 +56,7 @@
             box-shadow: inset 0 0 0 rgba(0, 0, 0, 0);
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
-
+        
     </style>
     
 </head>
@@ -87,16 +64,16 @@
 <body class="hold-transition sidebar-mini animsition">
     <?php
     $cookie_name = "jwt_token";
-	
-	if(isset($_COOKIE[$cookie_name])) { 
-		echo "Cookie named '" . $cookie_name . "' is set!";
-		$jwt_token = $_COOKIE[$cookie_name]; 
-	} 
-	else{
-		header("Location: ../../index.html");
-		exit();
-	}		
-	    
+    
+    if(isset($_COOKIE[$cookie_name])) { 
+        echo "Cookie named '" . $cookie_name . "' is set!";
+        $jwt_token = $_COOKIE[$cookie_name]; 
+    } 
+    else{
+        header("Location: ../../index.html");
+        exit();
+    }		
+    
     $myObj = (object)array();
     $myObj->jwt = $jwt_token;
     $myJSON = json_encode($myObj);
@@ -116,75 +93,12 @@
     $lastname = $data->data->lastname;
     
     ?>
-    <header class="header1">
-        <!-- Header desktop -->
-        <div class="container-menu-header">
-            <div class="wrap_header">
-                <!-- Logo -->
-                <a href="index.html" class="logo">
-                    <img src="images/icons/logo.jpeg" alt="IMG-LOGO">
-                </a>
-                
-                <!-- Menu -->
-                <div class="wrap_menu">
-                    <nav class="menu">
-                        <ul class="main_menu">
-                            <li>
-                                <a href="../AMC/index.html">AMC</a>
-                            </li>
-                            <li>
-                                <a href="../Customer/index.html">Customer</a>
-                            </li>
-                            <li>
-                                <a href="../Complaint/index.html">Complaint</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-                
-                <!-- Header Icon -->
-                <div class="header-icons">
-                    <a href="../todo/index.html" class="header-wrapicon1 dis-block">
-                        <img src="images/icons/todo.jpg" class="header-icon1" alt="ICON">
-                    </a>
-                    
-                    <span class="linedivide1"></span>
-                    
-                    <div class="header-wrapicon2">
-                        <img src="images/icons/icon-header-01.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-                        
-                        <!-- Header cart noti -->
-                        <div class="header-cart header-dropdown">
-                            <ul class="header-cart-wrapitem">
-                                <li class="header-cart-item">
-                                    <div class="header-cart-item-txt">
-                                        <a href="#" class="header-cart-item-name">
-                                            Userid : <?php echo($userid); ?>
-                                        </a>
-                                    </div>
-                                    <div class="header-cart-item-txt">
-                                        <a href="#" class="header-cart-item-name">
-                                            Name : <?php echo($firstname." ".$lastname); ?>
-                                        </a>
-                                    </div>
-                                </li>
-                                
-                                
-                            </ul>
-                            
-                            <div class="header-cart-buttons">
-                                <!-- Button -->
-                                <a href="../Logout/logout.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-                                    Logout
-                                </a>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+    <script>
+        var userid = "<?php echo($userid);?>";
+        var firstname = "<?php echo($firstname);?>";
+        var lastname = "<?php echo($lastname); ?>"; 
+    </script>
+    <div class="header1" id="navbar"></div>
     <br>
     <br>
     <div id="response"></div>
@@ -322,7 +236,7 @@
                                         <label for="fromdate">Mechanic Remarks</label>
                                         <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="mechanic_remarks" name="mechanic_remarks"></textarea>
                                     </div>                                  
-                                  
+                                    
                                     <div class="form-group">
                                         <label for="customer_remarks">Customer Remarks</label>
                                         <textarea class="form-control" cols="30" rows="3" style="width:100%;" id="customer_remarks" value="OPEN" name="customer_remarks"></textarea>
@@ -330,145 +244,133 @@
                                 </div>
                             </div>    
                         </div>
-
+                        
                     </form>               
                 </div>  
             </div>    
         </section>
     </div>
-
     
     
-                <!-- ./wrapper -->
-                
-                <!-- jQuery -->
-                
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                
-                <script>
-                    $(document).ready(function(){
-                        console.log("READY");
-                        $("#add_complaint_form").submit(function(){
-                            console.log("INSIDE");
-                            var add_customer_form=$(this);
-                            var form_data=JSON.stringify(add_customer_form.serializeObject());
-                            console.log(form_data);
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script src="Addcust_files/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="Addcust_files/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Select2 -->
+    <script src="Addcust_files/plugins/select2/js/select2.full.min.js"></script>
+    <!-- Bootstrap4 Duallistbox -->
+    <script src="Addcust_files/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+    <!-- InputMask -->
+    <script src="Addcust_files/plugins/moment/moment.min.js"></script>
+    <script src="Addcust_files/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- date-range-picker -->
+    <script src="Addcust_files/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- bootstrap color picker -->
+    <script src="Addcust_files/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="Addcust_files/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Bootstrap Switch -->
+    <script src="Addcust_files/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="Addcust_files/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="Addcust_files/dist/js/demo.js"></script>
+    <!-- Page script -->
+    <!--===============================================================================================-->
+    <script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
+    <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="js/main.js"></script>
+    <script src="../NavBar/NavBar.js"></script>
+    <!--===============================================================================================-->
+    <script>
+        $(document).ready(function(){
+            showNavBar(userid,firstname,lastname);
+			$('.js-show-header-dropdown').on('click', function(){
+				$(this).parent().find('.header-dropdown')
+			});
+			
+			var menu = $('.js-show-header-dropdown');
+			var sub_menu_is_showed = -1;
+			
+			for(var i=0; i<menu.length; i++){
+				$(menu[i]).on('click', function(){ 
+					
+					if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
+						$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+						sub_menu_is_showed = -1;
+					}
+					else {
+						for (var i = 0; i < menu.length; i++) {
+							$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+						}
+						
+						$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+						sub_menu_is_showed = jQuery.inArray( this, menu );
+					}
+				});
+			}
+			
+			$(".js-show-header-dropdown, .header-dropdown").click(function(event){
+				event.stopPropagation();
+			});
+			
+			$(window).on("click", function(){
+				for (var i = 0; i < menu.length; i++) {
+					$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+				}
+				sub_menu_is_showed = -1;
+			});
 
-                            // submit form data to api
-                            $.ajax({
-                                url: "http://localhost/SMS_WebApp/api/complaint/CU_complaint.php",
-                                type : "POST",
-                                contentType : 'application/json',
-                                data : form_data,
-                                success : function(result){
-                                    console.log("DONE");
-                                    $('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Complaint Added Successfully</div>");
-                                },
-                                error: function(xhr, status, error){
-                            		$('#response').html("<div class='alert alert-danger'>Unable to add Complaint.</div>");
-							    }
-                            });
-                            return false;
-                        });
-                        
-                        
-                        $.fn.serializeObject = function(){
-                            
-                            var o = {};
-                            var a = this.serializeArray();
-                            $.each(a, function() {
-                                if (o[this.name] !== undefined) {
-                                    if (!o[this.name].push) {
-                                        o[this.name] = [o[this.name]];
-                                    }
-                                    o[this.name].push(this.value || '');
-                                } else {
-                                    o[this.name] = this.value || '';
-                                }
-                            });
-                            return o;
-                        };
-                        
-                        
-                        
-                        
-                        
-                    });
-                </script>
+            $("#add_complaint_form").submit(function(){
+                console.log("INSIDE");
+                var add_customer_form=$(this);
+                var form_data=JSON.stringify(add_customer_form.serializeObject());
+                console.log(form_data);
                 
-                <script src="Addcust_files/plugins/jquery/jquery.min.js"></script>
-                <!-- Bootstrap 4 -->
-                <script src="Addcust_files/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-                <!-- Select2 -->
-                <script src="Addcust_files/plugins/select2/js/select2.full.min.js"></script>
-                <!-- Bootstrap4 Duallistbox -->
-                <script src="Addcust_files/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-                <!-- InputMask -->
-                <script src="Addcust_files/plugins/moment/moment.min.js"></script>
-                <script src="Addcust_files/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
-                <!-- date-range-picker -->
-                <script src="Addcust_files/plugins/daterangepicker/daterangepicker.js"></script>
-                <!-- bootstrap color picker -->
-                <script src="Addcust_files/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-                <!-- Tempusdominus Bootstrap 4 -->
-                <script src="Addcust_files/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-                <!-- Bootstrap Switch -->
-                <script src="Addcust_files/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-                <!-- AdminLTE App -->
-                <script src="Addcust_files/dist/js/adminlte.min.js"></script>
-                <!-- AdminLTE for demo purposes -->
-                <script src="Addcust_files/dist/js/demo.js"></script>
-                <!-- Page script -->
-                <!--===============================================================================================-->
-                <script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
-                <!--===============================================================================================-->
-                <script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
-                <!--===============================================================================================-->
-                <script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
-                <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
-                <!--===============================================================================================-->
-                <script type="text/javascript" src="vendor/select2/select2.min.js"></script>
-                <script type="text/javascript">
-                    $(".selection-1").select2({
-                        minimumResultsForSearch: 20,
-                        dropdownParent: $('#dropDownSelect1')
-                    });
-                    
-                    $(".selection-2").select2({
-                        minimumResultsForSearch: 20,
-                        dropdownParent: $('#dropDownSelect2')
-                    });
-                </script>
-                <!--===============================================================================================-->
-                <script type="text/javascript" src="vendor/daterangepicker/moment.min.js"></script>
-                <script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
-                <!--===============================================================================================-->
-                <script type="text/javascript" src="vendor/slick/slick.min.js"></script>
-                <script type="text/javascript" src="js/slick-custom.js"></script>
-                <!--===============================================================================================-->
-                <script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
-                <script type="text/javascript">
-                    $('.block2-btn-addcart').each(function(){
-                        var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
-                        $(this).on('click', function(){
-                            swal(nameProduct, "is added to cart !", "success");
-                        });
-                    });
-                    
-                    $('.block2-btn-addwishlist').each(function(){
-                        var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
-                        $(this).on('click', function(){
-                            swal(nameProduct, "is added to wishlist !", "success");
-                        });
-                    });
-                </script>
+                // submit form data to api
+                $.ajax({
+                    url: "http://localhost/SMS_WebApp/api/complaint/CU_complaint.php",
+                    type : "POST",
+                    contentType : 'application/json',
+                    data : form_data,
+                    success : function(result){
+                        console.log("DONE");
+                        $('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Complaint Added Successfully</div>");
+                    },
+                    error: function(xhr, status, error){
+                        $('#response').html("<div class='alert alert-danger'>Unable to add Complaint.</div>");
+                    }
+                });
+                return false;
+            });
+            
+            
+            $.fn.serializeObject = function(){
                 
-                
-                <!--===============================================================================================-->
-                <script src="js/main.js"></script>
-                
-                
-                
+                var o = {};
+                var a = this.serializeArray();
+                $.each(a, function() {
+                    if (o[this.name] !== undefined) {
+                        if (!o[this.name].push) {
+                            o[this.name] = [o[this.name]];
+                        }
+                        o[this.name].push(this.value || '');
+                    } else {
+                        o[this.name] = this.value || '';
+                    }
+                });
+                return o;
+            };            
+        });
+    </script>
+    
 </body>
 </html>
-            

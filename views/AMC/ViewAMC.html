@@ -7,39 +7,17 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+	<link rel="icon" type="image/png" href="images/icons/logo.png"/>
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
 	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/themify/themify-icons.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/elegant-font/html-css/style.css">
-	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
 	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css">
-	<!--===============================================================================================-->
-	
-	
-	<link rel="stylesheet" type="text/css" href="css/custom.css">
-	
 	<link rel="stylesheet" type="text/css" href="css/util.css">
-	
-	<!-- Tell the browser to be responsive to screen width -->
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
+	<link rel="stylesheet" type="text/css" href="css/custom.css">
+	<!--===============================================================================================-->
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="Addcust_files/plugins/fontawesome-free/css/all.min.css">
 	<!-- Ionicons -->
@@ -137,116 +115,60 @@
 	$period = $data_amc->period;
 	$quantity = $data_amc->quantity;
 	$total_services = $data_amc->totalservices;
-	$amount = $data_amc->amount;
+	$amount = $data_amc->amount;	
 	
+	$inArray = (object)array();
+	$inArray->view = "ViewAMC";
+	$inJSON = json_encode($inArray);
+	
+	$ch = curl_init();
+	
+	curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/dynamicviews/dropdownviews.php" );
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt($ch, CURLOPT_POST,           1 );
+	curl_setopt($ch, CURLOPT_POSTFIELDS,     $inJSON ); 
+	curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+	
+	$result1 =curl_exec ($ch);
+	$data = json_decode($result1);
+	$amctype = json_decode($data->amctype);
+	$billingname = json_decode($data->billingname);
+
 	?>
-	<header class="header1">
-		<!-- Header desktop -->
-		<div class="container-menu-header">
-			<div class="wrap_header">
-				<!-- Logo -->
-				<a href="index.html" class="logo">
-					<img src="images/icons/logo.jpeg" alt="IMG-LOGO">
-				</a>
-				
-				<!-- Menu -->
-				<div class="wrap_menu">
-					<nav class="menu">
-						<ul class="main_menu">
-							<li>
-								<a href="../AMC/index.html">AMC</a>
-							</li>
-							<li>
-								<a href="../Customer/index.html">Customer</a>
-							</li>
-							<li>
-								<a href="../Complaint/index.html">Complaint</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
-				
-				<!-- Header Icon -->
-				<div class="header-icons">
-					<a href="../todo/index.html" class="header-wrapicon1 dis-block">
-						<img src="images/icons/todo.jpg" class="header-icon1" alt="ICON">
-					</a>
-					
-					<span class="linedivide1"></span>
-					
-					<div class="header-wrapicon2">
-						<img src="images/icons/icon-header-01.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-						
-						<!-- Header cart noti -->
-						<div class="header-cart header-dropdown">
-							<ul class="header-cart-wrapitem">
-								<li class="header-cart-item">
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Userid : <?php echo($userid); ?>
-										</a>
-									</div>
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Name : <?php echo($firstname." ".$lastname); ?>
-										</a>
-									</div>
-								</li>
-								
-								
-							</ul>
-							
-							<div class="header-cart-buttons">
-								<!-- Button -->
-								<a href="../Logout/logout.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-									Logout
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
-	
-	
+	<script>
+		var userid = "<?php echo($userid);?>";
+		var firstname = "<?php echo($firstname);?>";
+		var lastname = "<?php echo($lastname); ?>"; 
+	</script>
+	<div class="header1" id="navbar"></div>
 	<br><br>
-	
 	<div id="response"></div>
 	<div class="wrapper">
 		
-		<!-- Main content -->
 		<section class="content">
 			<div class="container-fluid">
-				<!-- SELECT2 EXAMPLE -->
 				<div class="card card-default">
 					<form id="update_amc_form" method="POST">
 						<div class="card-header">
 							<h3 class="card-title">View AMC</h3>
 						</div>
-						<!-- /.card-header -->
 						<div class="card-body">
 							<div class="row">
 								<div class="col-md-3">
 									<div class="form-group">
-										<label for="amcid">AMC Id</label>
+										<label for="amcid">AMC ID</label>
 										<input type="text" class="form-control" style="width: 40%;" id="amcid" name="amc_id" readOnly="readOnly" value="<?php echo $amc_id ?>">
-									</div>
-									
+									</div>									
 								</div>
 								<div class="col-md-3">
 									<div class="form-group">
-										<label for="customerid">Customer Id</label>
+										<label for="customerid">Customer ID</label>
 										<input type="text" class="form-control" style="width: 40%;" id="customerid" name="customer_id" readOnly="readOnly" value="<?php echo $customer_id ?>">
 									</div>
-									
 								</div>
 								<div class="col-md-6">		            	
-									<br>
-									<br>
 									<div>
 										<input type="submit" value="Update" class="btn btn-primary" style="float: right;">
-										<!--<button type="submit" class="btn btn-primary">Update</button>-->
 									</div>
 								</div>
 							</div>
@@ -254,7 +176,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="billingname">Billing Name</label>
-										<input type="text" class="form-control" style="width: 100%;" id="billing_name" name="billing_name" placeholder="Enter Billing Name" value="<?php echo(''); ?>">
+										<input list="billing_name" class="form-control" style="width: 100%;" name="billing_name" placeholder="Enter Billing Name" value="<?php echo(''); ?>">
 									</div>
 									<div class="row">
 										<div class="col-md-6">
@@ -281,22 +203,14 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>AMC Type</label>
-										<select class="form-control" id="amctype" name="amc_type" style="width: 50%;" value="<?php echo $cust_placeid ?>">
-											<?php $placetype = array("PREVENTIVE", "", "WARRENTY");
-											$placeid = array("1","2","3");
-											$flag = 0;
-											foreach ($placeid as $current) {
-												$flag=5;
-												if($current == $cust_placeid){
-													echo "<option selected>".$placetype[(int)$current - 1]."</option>";
-													$flag = 1;
-												}
-												else{
-													echo "<option>".$placetype[(int)$current - 1]."</option>";
-												}
+										<input list="amctype" class="form-control" name="amc_type" style="width: 50%;" value="<?php echo $amc_type_id ?>">
+										<?php
+											echo ("<datalist id='amctype'>");
+											foreach($amctype as $row){
+												echo "<option>".$row->amctype."</option>";
 											}
-											?>
-										</select>
+											echo("</datalist>");
+										?>
 									</div>
 									<div class="row">
 										<div class="col-md-5">
@@ -326,56 +240,7 @@
 	</div>
 	
 	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	
-	<script>
-		$(document).ready(function(){
-			console.log("READY");
-			$("#update_amc_form").submit(function(){
-				console.log("INSIDE");
-				var update_customer_form=$(this);
-				var form_data=JSON.stringify(update_customer_form.serializeObject());
-				// submit form data to api
-				console.log(form_data);
-				$.ajax({
-					url: "http://localhost/SMS_WebApp/api/amc/CU_amc.php",
-					type : "POST",
-					contentType : 'application/json',
-					data : form_data,
-					
-					success : function(result){
-						$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Updated Successfully</div>");
-						//add_customer_form.find('input').val('');
-					},
-					error: function(xhr, status, error){
-						//	alert(error);
-						$('#response').html("<div class='alert alert-danger'>Unable to update AMC.</div>");
-					}
-				});
-				return false;
-			});
-			
-			
-			$.fn.serializeObject = function(){
-				
-				var o = {};
-				var a = this.serializeArray();
-				$.each(a, function() {
-					if (o[this.name] !== undefined) {
-						if (!o[this.name].push) {
-							o[this.name] = [o[this.name]];
-						}
-						o[this.name].push(this.value || '');
-					} else {
-						o[this.name] = this.value || '';
-					}
-				});
-				return o;
-			};
-			
-		});
-	</script>
-	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>	
 	<script src="Addcust_files/plugins/jquery/jquery.min.js"></script>
 	<!-- Bootstrap 4 -->
 	<script src="Addcust_files/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -481,69 +346,94 @@
 	<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
 	<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
 	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/select2/select2.min.js"></script>
-	<script type="text/javascript">
-		$(".selection-1").select2({
-			minimumResultsForSearch: 20,
-			dropdownParent: $('#dropDownSelect1')
-		});
-		
-		$(".selection-2").select2({
-			minimumResultsForSearch: 20,
-			dropdownParent: $('#dropDownSelect2')
-		});
-	</script>
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/daterangepicker/moment.min.js"></script>
-	<script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/slick/slick.min.js"></script>
-	<script type="text/javascript" src="js/slick-custom.js"></script>
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
-	<script type="text/javascript">
-		$('.block2-btn-addcart').each(function(){
-			var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
-			$(this).on('click', function(){
-				swal(nameProduct, "is added to cart !", "success");
-			});
-		});
-		
-		$('.block2-btn-addwishlist').each(function(){
-			var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
-			$(this).on('click', function(){
-				swal(nameProduct, "is added to wishlist !", "success");
-			});
-		});
-	</script>
-	
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/noui/nouislider.min.js"></script>
-	<script type="text/javascript">
-		/*[ No ui ]
-		===========================================================*/
-		var filterBar = document.getElementById('filter-bar');
-		
-		noUiSlider.create(filterBar, {
-			start: [ 50, 200 ],
-			connect: true,
-			range: {
-				'min': 50,
-				'max': 200
-			}
-		});
-		
-		var skipValues = [
-		document.getElementById('value-lower'),
-		document.getElementById('value-upper')
-		];
-		
-		filterBar.noUiSlider.on('update', function( values, handle ) {
-			skipValues[handle].innerHTML = Math.round(values[handle]) ;
-		});
-	</script>
-	<!--===============================================================================================-->
 	<script src="js/main.js"></script>
+	<script src="../NavBar/NavBar.js"></script>
+	<!--===============================================================================================-->
+	
+	<script>
+		$(document).ready(function(){
+			showNavBar(userid,firstname,lastname);
+			
+			$('.js-show-header-dropdown').on('click', function(){
+				$(this).parent().find('.header-dropdown')
+			});
+			
+			var menu = $('.js-show-header-dropdown');
+			var sub_menu_is_showed = -1;
+			
+			for(var i=0; i<menu.length; i++){
+				$(menu[i]).on('click', function(){ 
+					
+					if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
+						$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+						sub_menu_is_showed = -1;
+					}
+					else {
+						for (var i = 0; i < menu.length; i++) {
+							$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+						}
+						
+						$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+						sub_menu_is_showed = jQuery.inArray( this, menu );
+					}
+				});
+			}
+			
+			$(".js-show-header-dropdown, .header-dropdown").click(function(event){
+				event.stopPropagation();
+			});
+			
+			$(window).on("click", function(){
+				for (var i = 0; i < menu.length; i++) {
+					$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+				}
+				sub_menu_is_showed = -1;
+			});
+			
+			$("#update_amc_form").submit(function(){
+				console.log("INSIDE");
+				var update_customer_form=$(this);
+				var form_data=JSON.stringify(update_customer_form.serializeObject());
+				// submit form data to api
+				console.log(form_data);
+				$.ajax({
+					url: "http://localhost/SMS_WebApp/api/amc/CU_amc.php",
+					type : "POST",
+					contentType : 'application/json',
+					data : form_data,
+					
+					success : function(result){
+						$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Updated Successfully</div>");
+						//add_customer_form.find('input').val('');
+					},
+					error: function(xhr, status, error){
+						//	alert(error);
+						$('#response').html("<div class='alert alert-danger'>Unable to update AMC.</div>");
+					}
+				});
+				return false;
+			});
+			
+			
+			$.fn.serializeObject = function(){
+				
+				var o = {};
+				var a = this.serializeArray();
+				$.each(a, function() {
+					if (o[this.name] !== undefined) {
+						if (!o[this.name].push) {
+							o[this.name] = [o[this.name]];
+						}
+						o[this.name].push(this.value || '');
+					} else {
+						o[this.name] = this.value || '';
+					}
+				});
+				return o;
+			};
+			
+		});
+	</script>
 	
 </body>
 </html>

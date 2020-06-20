@@ -74,6 +74,35 @@ class Customer{
 		}
 	}
 
+	public static function getAllPlaceType($db){
+		$query = "SELECT placetype FROM place";
+		$result = $db->query($query);
+		
+		$output = array();
+		if($result->num_rows>0) {
+			while($row = $result->fetch_assoc()) {
+				$output[] = $row;
+			}
+			return $output;
+		}else{
+			return false;
+		}
+	}
+
+	public static function getAllBillingName($db){
+		$query = "SELECT billingname FROM customer";
+		$result = $db->query($query);
+		
+		$output = array();
+		if($result->num_rows>0) {
+			while($row = $result->fetch_assoc()) {
+				$output[] = $row;
+			}
+			return $output;
+		}else{
+			return false;
+		}
+	}
 	function showCustomer() {
 		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
 		$query1 = "SELECT * FROM ". $this->table_name ." WHERE customerid = '". $this->customer_id ."'";
@@ -97,9 +126,23 @@ class Customer{
 		return json_encode($json_output);
 	}
 
+	public static function getCustomerIDBillingName($db){
+		$query = "SELECT customerid,billingname FROM customer";
+		$result = $db->query($query);
+		$output = array();
+		if($result->num_rows>0){
+			while($row = $result->fetch_assoc()) {			
+				$output[] = $row;
+			}
+			return $output;
+		}
+		else{
+			return false;
+		}
+	}
+
 	function showAllCustomer() {
 		$query1 = "SELECT * FROM ". $this->table_name;
-		// prepare the query
 		$result1 = $this->conn->query($query1);
 		
 		$json_output = array();

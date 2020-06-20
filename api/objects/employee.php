@@ -3,11 +3,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 class Employee{
 
-	//database connection and table name
 	private $conn;
 	private $table_name = "employee";
 
-	//object properties
 	public $userid;
 	public $firstname;
 	public $lastname;
@@ -17,7 +15,6 @@ class Employee{
     	$this->conn = $db;
     }
 
-    // create new user record
 	function create($admin_password){
 	 
 	    $this->userid=htmlspecialchars(strip_tags($this->userid));
@@ -27,7 +24,6 @@ class Employee{
 	 	$password_hash = password_hash($this->password, PASSWORD_BCRYPT);
 		
 		$query1 = "SELECT admin_id FROM admin WHERE password ='".$admin_password."'";
-		// prepare the query
 		$result = $this->conn->query($query1);
 
 		if ($result->num_rows > 0) {
@@ -39,25 +35,19 @@ class Employee{
 			if ($this->conn->query($query2) === TRUE) {
 				return true;
 			} else {
-				//echo "Error: " . $query2 . "<br>" . $this->conn->error;
 				return false;
 			} 
 			
 		} else {
-			//echo "Error: Admin password is wrong. <br>";
 			return false;
 		}
 
 	}
-
-	// check if given email exist in the database
 	function useridExists(){
 	
-		// query to check if email exists
 		$this->userid=htmlspecialchars(strip_tags($this->userid));
 		
 		$query = "SELECT firstname, lastname, password FROM " . $this->table_name . " WHERE userid = '". $this->userid ."'";
-		// prepare the query
 		$result = $this->conn->query($query);
 
 		if ($result->num_rows > 0) {
@@ -68,10 +58,24 @@ class Employee{
 			return true;
 		} else {
 			return false;
-		}
-		
+		}	
 	}
 
+	public static function getEmployeeNamesDropdown($db){
+		$query = "SELECT firstname, lastname FROM employee";
+		$result = $db->query($query);
+		$output = array();
+		if ($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {			
+				$output[] = $row;
+			}	
+			return $output;
+		}
+		else{
+			return false;
+		}
+
+	}
 }
 
 ?>

@@ -62,7 +62,7 @@ switch($data->operation){
     break;
 
     case "U":
-        $complaint->complaint_id = Complaint::getComplaintid($complaint->customer_id,$complaint->amc_id,$complaint->date,$complaint->complaint_type_id,$db);
+        $complaint->complaint_id = $data->complaint_id;//Complaint::getComplaintid($complaint->customer_id,$complaint->amc_id,$complaint->date,$complaint->complaint_type_id,$db);
         if(
             !empty($complaint->customer_id) && !empty($complaint->amc_id) && !empty($complaint->date) &&
             !empty($complaint->complaint_type_id) && !empty($complaint->status) &&

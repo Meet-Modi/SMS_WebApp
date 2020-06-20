@@ -7,38 +7,17 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+	<link rel="icon" type="image/png" href="images/icons/logo.png"/>
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
 	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/themify/themify-icons.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/elegant-font/html-css/style.css">
-	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
 	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css">
-	<!--===============================================================================================-->
-	
-	
-	<link rel="stylesheet" type="text/css" href="css/custom.css">
-	
 	<link rel="stylesheet" type="text/css" href="css/util.css">
-	
-	<!-- Tell the browser to be responsive to screen width -->
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/custom.css">
+	<!--===============================================================================================-->
 	
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="Addcust_files/plugins/fontawesome-free/css/all.min.css">
@@ -145,77 +124,30 @@
 	$cust_pincode = $data_customer->pincode;
 	$cust_email = $data_customer->email;
 	
+	$inArray = (object)array();
+	$inArray->view = "Viewcustomer";
+	$inJSON = json_encode($inArray);
+	
+	$ch = curl_init();
+	
+	curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/dynamicviews/dropdownviews.php" );
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt($ch, CURLOPT_POST,           1 );
+	curl_setopt($ch, CURLOPT_POSTFIELDS,     $inJSON ); 
+	curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+	
+	$result1 =curl_exec ($ch);
+	$data = json_decode($result1);
+	$name = json_decode($data->name);
+	$place = json_decode($data->place);
+	
 	?>
-	<header class="header1">
-		<!-- Header desktop -->
-		<div class="container-menu-header">
-			<div class="wrap_header">
-				<!-- Logo -->
-				<a href="index.html" class="logo">
-					<img src="images/icons/logo.jpeg" alt="IMG-LOGO">
-				</a>
-				
-				<!-- Menu -->
-				<div class="wrap_menu">
-					<nav class="menu">
-						<ul class="main_menu">
-							<li>
-								<a href="../AMC/index.html">AMC</a>
-							</li>
-							<li>
-								<a href="../Customer/index.html">Customer</a>
-							</li>
-							<li>
-								<a href="../Complaint/index.html">Complaint</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
-				
-				<!-- Header Icon -->
-				<div class="header-icons">
-					<a href="../todo/index.html" class="header-wrapicon1 dis-block">
-						<img src="images/icons/todo.jpg" class="header-icon1" alt="ICON">
-					</a>
-					
-					<span class="linedivide1"></span>
-					
-					<div class="header-wrapicon2">
-						<img src="images/icons/icon-header-01.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-						
-						<!-- Header cart noti -->
-						<div class="header-cart header-dropdown">
-							<ul class="header-cart-wrapitem">
-								<li class="header-cart-item">
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Userid : <?php echo($userid); ?>
-										</a>
-									</div>
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Name : <?php echo($firstname." ".$lastname); ?>
-										</a>
-									</div>
-								</li>
-								
-								
-							</ul>
-							
-							<div class="header-cart-buttons">
-								<!-- Button -->
-								<a href="../Logout/logout.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-									Logout
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
-	
-	
+	<script>
+		var userid = "<?php echo($userid);?>";
+		var firstname = "<?php echo($firstname);?>";
+		var lastname = "<?php echo($lastname); ?>"; 
+	</script>
+	<div class="header1" id="navbar"></div>
 	<br><br>
 	
 	<div id="response"></div>
@@ -249,18 +181,32 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-6">
-								<div class="row">
+							<div class="row">
+								<div class="col-md-6">
 									<label for="inquiry_user">Inquiry received from</label>
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
-												<input type="text" class="form-control" name="user_fname" style="width: 100%;" id="user_fname" value= "<?php echo($firstname) ?>" >
+												<input list="user_fname" class="form-control" name="user_fname" style="width: 100%;" value="<?php echo($firstname); ?>">
+												<?php
+													echo ("<datalist id='user_fname'>");
+													foreach($name as $row){
+														echo "<option>".$row->firstname."</option>";
+													}
+													echo("</datalist>");
+												?>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
-												<input type="text" class="form-control" name="user_lname" style="width: 100%;" id="user_lname" value="<?php echo($lastname) ?>" >
+												<input list="user_lname" class="form-control" name="user_lname" style="width: 100%;" value="<?php echo($lastname); ?>">
+												<?php
+													echo ("<datalist id='user_lname'>");
+													foreach($name as $row){
+														echo "<option>".$row->lastname."</option>";
+													}
+													echo("</datalist>");
+												?>
 											</div>
 										</div>
 									</div>
@@ -304,22 +250,14 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Place</label>
-										<select class="form-control" id="place" name="place_type" style="width: 50%;" value="<?php echo $cust_placeid ?>">
-											<?php $placetype = array("BANK", "HOME/RESIDENCE", "CORPORATE");
-											$placeid = array("1","2","3");
-											$flag = 0;
-											foreach ($placeid as $current) {
-												$flag=5;
-												if($current == $cust_placeid){
-													echo "<option selected>".$placetype[(int)$current - 1]."</option>";
-													$flag = 1;
-												}
-												else{
-													echo "<option>".$placetype[(int)$current - 1]."</option>";
-												}
+										<input list="place_type" class="form-control" name="place_type" style="width: 50%;" value="<?php echo($cust_placetype); ?>">
+										<?php
+											echo ("<datalist id='place_type'>");
+											foreach($place as $row){
+												echo "<option>".$row->placetype."</option>";
 											}
-											?>
-										</select>
+											echo("</datalist>");
+										?>
 									</div>
 									<div class="form-group">
 										<label for="exampleInputEmail1">Address</label>
@@ -329,250 +267,153 @@
 										<div class="col-md-5">
 											<div class="form-group">
 												<label for="exampleInputEmail1">City</label>
-												<input type="text" class="form-control" style="width: 100%;" id="city" name="city" placeholder="Enter City" value="<?php echo $cust_city ?>">
+												<input list="city" class="form-control" style="width: 100%;" placeholder="Enter City" name="city" value="<?php echo($cust_city); ?>">
+												<datalist id="city">
+													<option value="Ahmedabad"></option>
+													<option value="Vadodara"></option>
+													<option value="Surat"></option>
+													<option value="Bhavnagar"></option>
+													<option value="Rajkot"></option>
+												</datalist>
 											</div>	                	
 										</div>
 										<div class="col-md-5">
 											<div class="form-group">
 												<label for="exampleInputEmail1">State</label>
-												<input type="text" class="form-control" style="width: 92%;" id="state" name="state" placeholder="Enter State" value="<?php echo $cust_state ?>">
+												<input list="state" class="form-control" style="width: 92%;" placeholder="Enter State" name="state" value="<?php echo($cust_state); ?>">
+												<datalist id="state">
+													<option value="Gujarat"></option>
+												</datalist>
 											</div>	
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="exampleInputEmail1">Pincode</label>
 										<input type="text" class="form-control" style="width: 40%;" id="pincode" name="pincode" placeholder="Enter Pincode" value="<?php echo $cust_pincode ?>">
-									</div>
-									
+									</div>		
 								</div>
-							</div>
+							</form>
 						</div>
-					</form>
+					</div>    		
 				</div>
-			</div>
-		</section>    				
-	</div>
-	<!-- ./wrapper -->
-	<!-- jQuery -->
-	
-	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	
-	<script>
-		$(document).ready(function(){
-			console.log("READY");
-			$("#update_customer_form").submit(function(){
-				console.log("INSIDE");
-				var update_customer_form=$(this);
-				var form_data=JSON.stringify(update_customer_form.serializeObject());
-				// submit form data to api
-				$.ajax({
-					url: "http://localhost/SMS_WebApp/api/customer/update_customer.php",
-					type : "POST",
-					contentType : 'application/json',
-					data : form_data,
-					
-					success : function(result){
-						$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Updated Successfully</div>");
-						//add_customer_form.find('input').val('');
-					},
-					error: function(xhr, status, error){
-						$('#response').html("<div class='alert alert-danger'>Unable to update customer.</div>");
-						// on error, tell the user login has failed & empty the input boxes
-					}
-				});
-				return false;
-			});
-			
-			
-			$.fn.serializeObject = function(){
 				
-				var o = {};
-				var a = this.serializeArray();
-				$.each(a, function() {
-					if (o[this.name] !== undefined) {
-						if (!o[this.name].push) {
-							o[this.name] = [o[this.name]];
-						}
-						o[this.name].push(this.value || '');
-					} else {
-						o[this.name] = this.value || '';
-					}
-				});
-				return o;
-			};
-			
-		});
-	</script>
-	
-	<script src="Addcust_files/plugins/jquery/jquery.min.js"></script>
-	<!-- Bootstrap 4 -->
-	<script src="Addcust_files/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<!-- Select2 -->
-	<script src="Addcust_files/plugins/select2/js/select2.full.min.js"></script>
-	<!-- Bootstrap4 Duallistbox -->
-	<script src="Addcust_files/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-	<!-- InputMask -->
-	<script src="Addcust_files/plugins/moment/moment.min.js"></script>
-	<script src="Addcust_files/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
-	<!-- date-range-picker -->
-	<script src="Addcust_files/plugins/daterangepicker/daterangepicker.js"></script>
-	<!-- bootstrap color picker -->
-	<script src="Addcust_files/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-	<!-- Tempusdominus Bootstrap 4 -->
-	<script src="Addcust_files/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-	<!-- Bootstrap Switch -->
-	<script src="Addcust_files/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-	<!-- AdminLTE App -->
-	<script src="Addcust_files/dist/js/adminlte.min.js"></script>
-	<!-- AdminLTE for demo purposes -->
-	<script src="Addcust_files/dist/js/demo.js"></script>
-	<!-- Page script -->
-	<script>
-		$(function () {
-			//Initialize Select2 Elements
-			$('.select2').select2()
-			
-			//Initialize Select2 Elements
-			$('.select2bs4').select2({
-				theme: 'bootstrap4'
-			})
-			
-			//Datemask dd/mm/yyyy
-			$('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-			//Datemask2 mm/dd/yyyy
-			$('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
-			//Money Euro
-			$('[data-mask]').inputmask()
-			
-			//Date range picker
-			$('#reservationdate').datetimepicker({
-				format: 'L'
-			});
-			//Date range picker
-			$('#reservation').daterangepicker()
-			//Date range picker with time picker
-			$('#reservationtime').daterangepicker({
-				timePicker: true,
-				timePickerIncrement: 30,
-				locale: {
-					format: 'MM/DD/YYYY hh:mm A'
-				}
-			})
-			//Date range as a button
-			$('#daterange-btn').daterangepicker(
-			{
-				ranges   : {
-					'Today'       : [moment(), moment()],
-					'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-					'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
-					'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-					'This Month'  : [moment().startOf('month'), moment().endOf('month')],
-					'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-				},
-				startDate: moment().subtract(29, 'days'),
-				endDate  : moment()
-			},
-			function (start, end) {
-				$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-			}
-			)
-			
-			//Timepicker
-			$('#timepicker').datetimepicker({
-				format: 'LT'
-			})
-			
-			//Bootstrap Duallistbox
-			$('.duallistbox').bootstrapDualListbox()
-			
-			//Colorpicker
-			$('.my-colorpicker1').colorpicker()
-			//color picker with addon
-			$('.my-colorpicker2').colorpicker()
-			
-			$('.my-colorpicker2').on('colorpickerChange', function(event) {
-				$('.my-colorpicker2 .fa-square').css('color', event.color.toString());
-			});
-			
-			$("input[data-bootstrap-switch]").each(function(){
-				$(this).bootstrapSwitch('state', $(this).prop('checked'));
-			});
-			
-		})
-	</script>
-	
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
-	<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/select2/select2.min.js"></script>
-	<script type="text/javascript">
-		$(".selection-1").select2({
-			minimumResultsForSearch: 20,
-			dropdownParent: $('#dropDownSelect1')
-		});
-		
-		$(".selection-2").select2({
-			minimumResultsForSearch: 20,
-			dropdownParent: $('#dropDownSelect2')
-		});
-	</script>
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/daterangepicker/moment.min.js"></script>
-	<script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/slick/slick.min.js"></script>
-	<script type="text/javascript" src="js/slick-custom.js"></script>
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
-	<script type="text/javascript">
-		$('.block2-btn-addcart').each(function(){
-			var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
-			$(this).on('click', function(){
-				swal(nameProduct, "is added to cart !", "success");
-			});
-		});
-		
-		$('.block2-btn-addwishlist').each(function(){
-			var nameProduct = $(this).parent().parent().parent().find('.block2-name').php();
-			$(this).on('click', function(){
-				swal(nameProduct, "is added to wishlist !", "success");
-			});
-		});
-	</script>
-	
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/noui/nouislider.min.js"></script>
-	<script type="text/javascript">
-		/*[ No ui ]
-		===========================================================*/
-		var filterBar = document.getElementById('filter-bar');
-		
-		noUiSlider.create(filterBar, {
-			start: [ 50, 200 ],
-			connect: true,
-			range: {
-				'min': 50,
-				'max': 200
-			}
-		});
-		
-		var skipValues = [
-		document.getElementById('value-lower'),
-		document.getElementById('value-upper')
-		];
-		
-		filterBar.noUiSlider.on('update', function( values, handle ) {
-			skipValues[handle].innerHTML = Math.round(values[handle]) ;
-		});
-	</script>
-	<!--===============================================================================================-->
-	<script src="js/main.js"></script>
-	
-</body>
-</html>
+				
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+				<script src="Addcust_files/plugins/jquery/jquery.min.js"></script>
+				<!-- Bootstrap 4 -->
+				<script src="Addcust_files/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+				<!-- Select2 -->
+				<script src="Addcust_files/plugins/select2/js/select2.full.min.js"></script>
+				<!-- Bootstrap4 Duallistbox -->
+				<script src="Addcust_files/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+				<!-- InputMask -->
+				<script src="Addcust_files/plugins/moment/moment.min.js"></script>
+				<script src="Addcust_files/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+				<!-- date-range-picker -->
+				<script src="Addcust_files/plugins/daterangepicker/daterangepicker.js"></script>
+				<!-- bootstrap color picker -->
+				<script src="Addcust_files/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+				<!-- Tempusdominus Bootstrap 4 -->
+				<script src="Addcust_files/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+				<!-- Bootstrap Switch -->
+				<script src="Addcust_files/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+				<!-- AdminLTE App -->
+				<script src="Addcust_files/dist/js/adminlte.min.js"></script>
+				<!-- AdminLTE for demo purposes -->
+				<script src="Addcust_files/dist/js/demo.js"></script>
+				<!-- Page script -->
+				<!--===============================================================================================-->
+				<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+				<!--===============================================================================================-->
+				<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+				<!--===============================================================================================-->
+				<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
+				<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+				<!--===============================================================================================-->
+				<script src="js/main.js"></script>
+				<script src="../NavBar/NavBar.js"></script>
+				<!--===============================================================================================-->
+				<script>
+					$(document).ready(function(){
+						showNavBar(userid,firstname,lastname);
+						$('.js-show-header-dropdown').on('click', function(){
+								$(this).parent().find('.header-dropdown')
+							});
+							
+							var menu = $('.js-show-header-dropdown');
+							var sub_menu_is_showed = -1;
+							
+							for(var i=0; i<menu.length; i++){
+								$(menu[i]).on('click', function(){ 
+									
+									if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
+										$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+										sub_menu_is_showed = -1;
+									}
+									else {
+										for (var i = 0; i < menu.length; i++) {
+											$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+										}
+										
+										$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+										sub_menu_is_showed = jQuery.inArray( this, menu );
+									}
+								});
+							}
+							
+							$(".js-show-header-dropdown, .header-dropdown").click(function(event){
+								event.stopPropagation();
+							});
+							
+							$(window).on("click", function(){
+								for (var i = 0; i < menu.length; i++) {
+									$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+								}
+								sub_menu_is_showed = -1;
+							});
+
+						$("#update_customer_form").submit(function(){
+							var update_customer_form=$(this);
+							var form_data=JSON.stringify(update_customer_form.serializeObject());
+							console.log(form_data);
+							$.ajax({
+								url: "http://localhost/SMS_WebApp/api/customer/update_customer.php",
+								type : "POST",
+								contentType : 'application/json',
+								data : form_data,
+								
+								success : function(result){
+									$('#response').html('');
+									setTimeout(function(){$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Updated Successfully</div>");
+								},400);									
+								},
+								error: function(xhr, status, error){
+									$('#response').html('');
+									setTimeout(function(){$('#response').html("<div class='alert alert-danger'>Unable to update customer.</div>");
+								},400);
+								}
+							});
+							return false;
+						});
+						
+						$.fn.serializeObject = function(){
+							
+							var o = {};
+							var a = this.serializeArray();
+							$.each(a, function() {
+								if (o[this.name] !== undefined) {
+									if (!o[this.name].push) {
+										o[this.name] = [o[this.name]];
+									}
+									o[this.name].push(this.value || '');
+								} else {
+									o[this.name] = this.value || '';
+								}
+							});
+							return o;
+						};
+						
+					});
+				</script>
+			</body>
+			</html>
