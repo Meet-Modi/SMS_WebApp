@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>SDE | Customers</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="images/icons/logo.png"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/custom.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+	<!-- Ionicons -->
+	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+	<!-- DataTables -->
+	<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+	<!-- Theme style -->
+	<link rel="stylesheet" href="dist/css/adminlte.min.css">
+	<!-- Google Font: Source Sans Pro -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+	<!--===============================================================================================-->
+	
+</head>
+<body>
+	
+	<?php
+	$cookie_name = "jwt_token";
+	if(isset($_COOKIE[$cookie_name])) { 
+		echo "Cookie named '" . $cookie_name . "' is set!";
+		$jwt_token = $_COOKIE[$cookie_name]; 
+	} 
+	else{
+		header("Location: ../../index.html");
+		exit();
+	}		
+	
+	//echo($jwt_token);
+	$myObj = (object)array();
+	$myObj->jwt = $jwt_token;
+	$myJSON = json_encode($myObj);
+	
+	$ch = curl_init();
+	
+	curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/employee/validate_token.php" );
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt($ch, CURLOPT_POST,           1 );
+	curl_setopt($ch, CURLOPT_POSTFIELDS,     $myJSON ); 
+	curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+	
+	$result=curl_exec ($ch);
+	$data = json_decode($result);
+	$userid = $data->data->userid;
+	$firstname = $data->data->firstname;
+	$lastname = $data->data->lastname;
+	
+	$myObj = (object)array();
+	$myObj->customer_id = "1";
+	$myObj->option = "2";
+	$myJSON = json_encode($myObj);
+	
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/customer/show_customers.php" );
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt($ch, CURLOPT_POST,           1 );
+	curl_setopt($ch, CURLOPT_POSTFIELDS,     $myJSON ); 
+	curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+	$result=curl_exec ($ch);
+	$result=curl_exec ($ch);
+	$data_customer = json_decode($result);
+	?>
+	<script>
+		var userid = "<?php echo($userid);?>";
+		var firstname = "<?php echo($firstname);?>";
+		var lastname = "<?php echo($lastname); ?>"; 
+	</script>
+	<div class="header1" id="navbar"></div>
+	
+	<div class="wrapper tablepostion">
+		<section class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<a href='Addcustomer.html' class='flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4' name="AddEmployee" value="AddEmployee" style="width:20%;">New Customer.
+								</a>			
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+								<table id="example2" class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>Customer ID</th>
+											<th>Billing Name</th>
+											<th>First name</th>
+											<th>Last name</th>
+											<th>email</th>
+											<th>Contact No. 1</th>
+											<th>Contact No. 2</th>
+											<th>Place Type</th>
+											<th>Address</th>
+											<th>City</th>
+											<th>State</th>
+											<th>Pincode</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+										foreach ($data_customer as $stand) {
+											echo "<tr>";
+												echo "<td>".$stand->customerid."</td>";
+												echo "<td>".$stand->billingname."</td>";
+												echo "<td>".$stand->firstname."</td>";
+												echo "<td>".$stand->lastname."</td>";
+												echo "<td>".$stand->email."</td>";
+												echo "<td>".$stand->contactno1."</td>";
+												echo "<td>".$stand->contactno2."</td>";
+												echo "<td>".$stand->placetype."</td>";
+												echo "<td>".$stand->address."</td>";
+												echo "<td>".$stand->city."</td>";
+												echo "<td>".$stand->state."</td>";
+												echo "<td>".$stand->pincode."</td>";
+												echo "<td><div class='row w-size0'><a href='ViewCustomer.html?customer_id=" . $stand->customerid . "'class='w-size0 bg4 bo-rad-23 hov1 trans-0-4' style='border: none;'>View/Update</a></div></td>";
+												echo "</tr>";										 																		 											
+											}
+											?>
+										</tbody>
+										<tfoot>
+											<tr>
+												<th>Customer ID</th>
+												<th>Billing Name</th>
+												<th>First name</th>
+												<th>Last name</th>
+												<th>email</th>
+												<th>Contact No. 1</th>
+												<th>Contact No. 2</th>
+												<th>Place Type</th>
+												<th>Address</th>
+												<th>City</th>
+												<th>State</th>
+												<th>Pincode</th>
+												<th>Action</th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<!--===============================================================================================-->
+		<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+		<!--===============================================================================================-->
+		<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+		<!--===============================================================================================-->
+		<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
+		<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+		<!--===============================================================================================-->
+		<script src="js/main.js"></script>
+		<script src="../views/NavBar/NavBar.js"></script>
+		<!--===============================================================================================-->
+		
+		<!-- jQuery -->
+		<script src="plugins/jquery/jquery.min.js"></script>
+		<!-- Bootstrap 4 -->
+		<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- DataTables -->
+		<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+		<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+		<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+		<!-- AdminLTE App -->
+		<script src="dist/js/adminlte.min.js"></script>
+		<!-- AdminLTE for demo purposes -->
+		<script src="dist/js/demo.js"></script>
+		<!-- page script -->
+		<script>
+			$(function () {
+				$("#example1").DataTable({
+					"responsive": true,
+					"autoWidth": true,
+				});
+				$('#example2').DataTable({
+					"paging": true,
+					"lengthChange": true,
+					"searching": true,
+					"ordering": true,
+					"info": true,
+					"autoWidth": true,
+					"responsive": true,
+				});
+			});
+		</script>
+		
+		<script>
+			$(document).ready(function(){
+				showNavBar(userid,firstname,lastname);
+				
+				$('.js-show-header-dropdown').on('click', function(){
+					$(this).parent().find('.header-dropdown')
+				});
+				
+				var menu = $('.js-show-header-dropdown');
+				var sub_menu_is_showed = -1;
+				
+				for(var i=0; i<menu.length; i++){
+					$(menu[i]).on('click', function(){ 
+						
+						if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
+							$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+							sub_menu_is_showed = -1;
+						}
+						else {
+							for (var i = 0; i < menu.length; i++) {
+								$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+							}
+							
+							$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+							sub_menu_is_showed = jQuery.inArray( this, menu );
+						}
+					});
+				}
+				
+				$(".js-show-header-dropdown, .header-dropdown").click(function(event){
+					event.stopPropagation();
+				});
+				
+				$(window).on("click", function(){
+					for (var i = 0; i < menu.length; i++) {
+						$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+					}
+					sub_menu_is_showed = -1;
+				});
+				
+			});
+		</script>
+		
+		
+		
+	</body>
+	</html>
+	
