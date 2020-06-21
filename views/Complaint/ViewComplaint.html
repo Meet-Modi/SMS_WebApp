@@ -160,6 +160,7 @@
     $result2 =curl_exec ($ch2);
     $data2 = json_decode($result2);
     $name = $data2->mechanic;
+    $complainttype = $data2->complainttype;
     ?>
     <script>
         var userid = "<?php echo($userid);?>";
@@ -244,12 +245,12 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="amctype">Complaint Type</label>
-                                        <select name="complaint_type" id="complaint_type" class="form-control" style="width: 85%;">
-                                            <option>ICE FORMATION</option>
-                                            <option>option 2</option>
-                                            <option>option 3</option>
-                                            <option>option 4</option>
-                                            <option>option 5</option>
+                                        <select id="complaint_type" class="form-control" style="width:85%;" value="" name="complaint_type">                
+                                        <?php
+                                            foreach($complainttype as $row){
+                                                echo "<option>".$row->complainttype."</option>";
+                                            }
+                                        ?>
                                         </select>
                                     </div>    
                                 </div>

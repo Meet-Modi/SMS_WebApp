@@ -41,9 +41,19 @@ switch($data->operation){
         }
     break;
     case "R":
-        $date = $data->date;
-        $output_data = Service::getAllServiceByDate($db,$date);
-        echo(json_encode($output_data));
+        switch($data->readmode){
+            case "readMonth":
+                $month = $data->month;
+                $year = $data->year;
+                $output_data = Service::getAllServiceByMonth($db,$month,$year);
+                echo(json_encode($output_data));        
+            break;
+            case "readDate":
+                $date = $data->date;
+                $output_data = Service::getAllServiceByDate($db,$date);
+                echo(json_encode($output_data));        
+            break;
+        }
     break;
     case "U":
         $service->service_id = $data->service_id;

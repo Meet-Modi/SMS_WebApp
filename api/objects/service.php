@@ -68,6 +68,7 @@ class Service{
             return false;
         }
     }
+
     public static function getAllServiceByDate($db,$date){
         $date=htmlspecialchars(strip_tags($date));
         $query = "SELECT customer.customerid,customer.billingname, customer.firstname, customer.lastname, a.quantity, a.status,a.serviceid FROM customer INNER JOIN (SELECT amc.customerid, amc.quantity, service.status,service.serviceid FROM amc INNER JOIN service ON amc.amcid=(SELECT service.amcid WHERE service.date = '".$date."')) as a ON a.customerid = customer.customerid";
@@ -78,6 +79,18 @@ class Service{
 		}
 		return $output;
     }
-        
+
+    public static function getAllServiceByMonth($db,$month,$year){
+        $month=htmlspecialchars(strip_tags($month));
+        $year=htmlspecialchars(strip_tags($year));
+        $query = "SELECT DAY(date) as day,COUNT(date) as total FROM service WHERE MONTH(date)='".$month."' AND YEAR(date)='".$year."' GROUP BY date";
+        $result = $db->query($query);
+		$output = array();
+		while($row = $result->fetch_assoc()) {			
+			$output[] = $row;
+		}
+		return $output;
+    }
+
 }
 ?>

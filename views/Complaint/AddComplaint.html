@@ -91,12 +91,62 @@
     $userid = $data->data->userid;
     $firstname = $data->data->firstname;
     $lastname = $data->data->lastname;
+    $inArray = (object)array();
+    $inArray->view = "BillingName_AMC";
+    $inJSON = json_encode($inArray);
+    
+    $ch = curl_init();
+    
+    curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/dynamicviews/dropdownviews.php" );
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch, CURLOPT_POST,           1 );
+    curl_setopt($ch, CURLOPT_POSTFIELDS,     $inJSON ); 
+    curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    
+    $result1 =curl_exec ($ch);
+
+    $inArray2 = (object)array();
+    $inArray2->view = "AddComplaint";
+    $inJSON2 = json_encode($inArray2);
+    
+    $ch2= curl_init();
+    
+    curl_setopt($ch2, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/dynamicviews/dropdownviews.php" );
+    curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch2, CURLOPT_POST,           1 );
+    curl_setopt($ch2, CURLOPT_POSTFIELDS,     $inJSON2 ); 
+    curl_setopt($ch2, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    
+    $result2 =curl_exec ($ch2);
+    $data2 = json_decode($result2);
+    $name = $data2->mechanic;
+    $complainttype = $data2->complainttype;
     
     ?>
     <script>
         var userid = "<?php echo($userid);?>";
         var firstname = "<?php echo($firstname);?>";
         var lastname = "<?php echo($lastname); ?>"; 
+    </script>
+    <script>
+        var stateObject = <?php echo($result1); ?>;
+        window.onload = function () {
+            var countySel = document.getElementById("billing_name"),
+            stateSel = document.getElementById("amc_id");
+            for (var country in stateObject) {                
+                countySel.options[countySel.options.length] = new Option(country, country);
+            }
+            countySel.onchange = function () {
+                var e = document.getElementById("billing_name");
+                console.log(e.selectedIndex);
+                stateSel.length = 0; // remove all options bar first
+                if (this.selectedIndex < 1) return; // done 
+                var state = stateObject[this.value];
+                for (var i = 0; i < state.length; i++) {
+                    stateSel.options[stateSel.options.length] = new Option(state[i], state[i]);
+                }
+            }            
+        }
     </script>
     <div class="header1" id="navbar"></div>
     <br>
@@ -111,13 +161,14 @@
                             <h3 class="card-title">New Complaint</h3>
                             <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
                         </div>
-                        <!-- /.card-header -->
                         <div class="card-body" id="complaint">
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="billing_name">Billing Name</label>
-                                        <input type="text" class="form-control" style="width: 100%;" required="required" id="billing_name" name="billing_name" placeholder="Enter Billing Name">
+                                        <select class="form-control" style="width: 85%;" required="required" id="billing_name" name="billing_name">
+                                            <option selected="selected">Choose customer</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="date">Date</label>
@@ -127,18 +178,20 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="amc_id">AMC ID</label>
-                                        <input type="text" class="form-control" style="width: 50%;" id="amc_id" name="amc_id" placeholder="Enter AMC-ID">
+                                        <select class="form-control" style="width: 60%;" id="amc_id" name="amc_id">
+                                            <option selected="selected">Choose customer first</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="complaint_type">Complaint Type</label>
-                                        <select name="complaint_type" id="complaint_type" class="form-control" style="width: 85%;">
-                                            <option>ICE FORMATION</option>
-                                            <option>option 2</option>
-                                            <option>option 3</option>
-                                            <option>option 4</option>
-                                            <option>option 5</option>
+                                        <select id="complaint_type" class="form-control" style="width:85%;" value="" name="complaint_type">                
+                                        <?php
+                                            foreach($complainttype as $row){
+                                                echo "<option>".$row->complainttype."</option>";
+                                            }
+                                        ?>
                                         </select>
-                                    </div>    
+                                    </div>   
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -159,7 +212,14 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="mechanic_name">Assigned to Mechanic</label>
-                                        <input type="text" class="form-control" style="width:40%;" id="mechanic_name" value="OPEN" name="mechanic_name">
+                                        <input list="mechanic_name" class="form-control" style="width:40%;" value="" name="mechanic_name">
+                                        <?php
+                                            echo ("<datalist id='mechanic_name'>");
+                                            foreach($name as $row){
+                                                echo "<option>".$row->name."</option>";
+                                            }
+                                            echo("</datalist>");
+                                        ?>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -293,42 +353,42 @@
     <script>
         $(document).ready(function(){
             showNavBar(userid,firstname,lastname);
-			$('.js-show-header-dropdown').on('click', function(){
-				$(this).parent().find('.header-dropdown')
-			});
-			
-			var menu = $('.js-show-header-dropdown');
-			var sub_menu_is_showed = -1;
-			
-			for(var i=0; i<menu.length; i++){
-				$(menu[i]).on('click', function(){ 
-					
-					if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
-						$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
-						sub_menu_is_showed = -1;
-					}
-					else {
-						for (var i = 0; i < menu.length; i++) {
-							$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
-						}
-						
-						$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
-						sub_menu_is_showed = jQuery.inArray( this, menu );
-					}
-				});
-			}
-			
-			$(".js-show-header-dropdown, .header-dropdown").click(function(event){
-				event.stopPropagation();
-			});
-			
-			$(window).on("click", function(){
-				for (var i = 0; i < menu.length; i++) {
-					$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
-				}
-				sub_menu_is_showed = -1;
-			});
-
+            $('.js-show-header-dropdown').on('click', function(){
+                $(this).parent().find('.header-dropdown')
+            });
+            
+            var menu = $('.js-show-header-dropdown');
+            var sub_menu_is_showed = -1;
+            
+            for(var i=0; i<menu.length; i++){
+                $(menu[i]).on('click', function(){ 
+                    
+                    if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
+                        $(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+                        sub_menu_is_showed = -1;
+                    }
+                    else {
+                        for (var i = 0; i < menu.length; i++) {
+                            $(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+                        }
+                        
+                        $(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+                        sub_menu_is_showed = jQuery.inArray( this, menu );
+                    }
+                });
+            }
+            
+            $(".js-show-header-dropdown, .header-dropdown").click(function(event){
+                event.stopPropagation();
+            });
+            
+            $(window).on("click", function(){
+                for (var i = 0; i < menu.length; i++) {
+                    $(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+                }
+                sub_menu_is_showed = -1;
+            });
+            
             $("#add_complaint_form").submit(function(){
                 console.log("INSIDE");
                 var add_customer_form=$(this);

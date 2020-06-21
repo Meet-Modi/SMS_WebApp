@@ -70,6 +70,13 @@ switch($data->view){
         echo(json_encode($data));
         break;
 
+    case "AddComplaint":
+        $data = array();
+        $data['mechanic'] = Mechanic::getAllMechanicName($db);
+        $data['complainttype'] = Complaint_type::getAllComplaintTypes($db);
+        echo(json_encode($data));
+        break;
+    
 
     case "ViewAMC":
         $data = array();
