@@ -109,6 +109,21 @@
 	$data = json_decode($result1);
 	$name = json_decode($data->name);
 	$place = json_decode($data->place);
+
+	$myObj1 = (object)array();
+	$myObj1->customer_id = "1";
+	$myObj1->option = "2";
+	$myJSON1 = json_encode($myObj1);
+	
+	$ch1 = curl_init();
+	curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/customer/show_customers.php" );
+	curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt($ch1, CURLOPT_POST,           1 );
+	curl_setopt($ch1, CURLOPT_POSTFIELDS,     $myJSON1 ); 
+	curl_setopt($ch1, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+	$result1=curl_exec ($ch1);
+	$result1=curl_exec ($ch1);
+	$data_customer = json_decode($result1);
 	
 	?>
 	
@@ -355,9 +370,11 @@
 									data : form_data,
 									success : function(result){
 										$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Added Successfully</div>");
+										setTimeout("window.location = 'http://localhost/SMS_WebApp/admin/index.html'",500);
 									},
 									error: function(xhr, status, error){
 										$('#response').html("<div class='alert alert-danger'>Unable to add new customer.</div>");
+										setTimeout("window.location = 'http://localhost/SMS_WebApp/admin/index.html'",500);
 									}
 								});
 								return false;
