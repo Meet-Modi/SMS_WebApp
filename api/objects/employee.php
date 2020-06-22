@@ -13,8 +13,32 @@ class Employee{
 
 	public function __construct($db){
     	$this->conn = $db;
-    }
+	}
+	
+	function deleteEmployee(){
+		$this->userid=htmlspecialchars(strip_tags($this->userid));
+		$query = "DELETE FROM employee WHERE userid ='".$this->userid."'";
+		if ($this->conn->query($query) === TRUE) {
+			return true;
+		} else {
+			return false;
+		}
+				
+	}
 
+	function updateEmployee(){
+	    $this->userid=htmlspecialchars(strip_tags($this->userid));
+	    $this->firstname=htmlspecialchars(strip_tags($this->firstname));
+	    $this->lastname=htmlspecialchars(strip_tags($this->lastname));
+	
+		$query = "UPDATE employee SET firstname='".$this->firstname."',lastname='".$this->lastname."' WHERE userid='".$this->userid."'";
+//		echo($query);
+		if ($this->conn->query($query) === TRUE) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	function create($admin_password){
 	 
 	    $this->userid=htmlspecialchars(strip_tags($this->userid));

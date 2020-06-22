@@ -115,9 +115,9 @@
     $myObj1 = (object)array();
     $myObj1->operation = "R";
     $myJSON1 = json_encode($myObj1);
-
+    
     $ch1 = curl_init();
-    curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/employee/read_update_employee.php" );
+    curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/employee/RUD_employee.php" );
     curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1 );
     curl_setopt($ch1, CURLOPT_POST,           1 );
     curl_setopt($ch1, CURLOPT_POSTFIELDS,     $myJSON1 ); 
@@ -125,6 +125,20 @@
     $result2=curl_exec ($ch1);
     $result2=curl_exec ($ch1);
     $data_employee = json_decode($result2);
+    
+    $myObj1 = (object)array();
+    $myObj1->operation = "R";
+    $myJSON1 = json_encode($myObj1);
+    
+    $ch1 = curl_init();
+    curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/product/CRUD_product.php" );
+    curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch1, CURLOPT_POST,           1 );
+    curl_setopt($ch1, CURLOPT_POSTFIELDS,     $myJSON1 ); 
+    curl_setopt($ch1, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    $result3=curl_exec ($ch1);
+    $result3=curl_exec ($ch1);
+    $data_product = json_decode($result3);
     
     ?>
     
@@ -134,9 +148,11 @@
         var lastname = "<?php echo($lastname); ?>"; 
     </script>
     <div class="header1" id="navbar"></div>
+    <br><br>
     <div class="wrapper">
         <section class="content" id="product-section">
-            <div class="wrapper tablepostion">
+            <div id="response-product"></div>
+            <div class="wrapper tablepostion3">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
@@ -146,8 +162,8 @@
                                         Product Entries
                                     </div>
                                     <div class="col-2">
-                                        <a href="#" onclick="AddProduct();" class='flex-c-m size0 bg4 bo-rad-25 hov1 m-text3 trans-0-4' name="AddProduct" value="AddProduct" style="position: relative; left: 40px; width:70%;">Add Product
-                                        </a>			
+                                        <button onclick="AddProduct();" class='flex-c-m size0 bg4 bo-rad-25 hov1 m-text3 trans-0-4' name="AddProduct" value="AddProduct" style="position: relative; left: 40px; width:70%;border: none;">Add Product
+                                        </button>			
                                     </div>
                                 </div>
                                 <div class="row">
@@ -157,35 +173,25 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Action</th>
-                                                        <th>Customer ID</th>
-                                                        <th>Billing Name</th>
-                                                        <th>First name</th>
-                                                        <th>Last name</th>
-                                                        <th>email</th>
-                                                        <th>Contact No. 1</th>
-                                                        <th>Contact No. 2</th>
-                                                        <th>Place Type</th>
-                                                        <th>Address</th>
-                                                        <th>City</th>
-                                                        <th>State</th>
+                                                        <th>Product ID</th>
+                                                        <th>Company Name</th>
+                                                        <th>Product Type</th>
+                                                        <th>Model No</th>
+                                                        <th>Capacity</th>
+                                                        <th>Rating</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                    foreach ($data_customer as $stand) {
+                                                    foreach ($data_product as $stand) {
                                                         echo "<tr>";
-                                                            echo "<td><div class='row w-size2'><a href='#' onclick='ViewUpdateProduct();'class='w-size13' style='position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;'><center>Update</center></a><button class='delete-btn' style='position: relative;left: 20px;'><i class='fa fa-trash'> </i></button></div></td>";
-                                                            echo "<td>".$stand->customerid."</td>";
-                                                            echo "<td>".$stand->billingname."</td>";
-                                                            echo "<td>".$stand->firstname."</td>";
-                                                            echo "<td>".$stand->lastname."</td>";
-                                                            echo "<td>".$stand->email."</td>";
-                                                            echo "<td>".$stand->contactno1."</td>";
-                                                            echo "<td>".$stand->contactno2."</td>";
-                                                            echo "<td>".$stand->placetype."</td>";
-                                                            echo "<td>".$stand->address."</td>";
-                                                            echo "<td>".$stand->city."</td>";
-                                                            echo "<td>".$stand->state."</td>";
+                                                            echo '<td><div class="row w-size2"><a href="#" onclick="ViewUpdateProduct(\''.$stand->productid.'\',\''.$stand->productcompany.'\',\''.$stand->producttype.'\',\''.$stand->modelno.'\',\''.$stand->capacity.'\',\''.$stand->rating.'\');"class="w-size13" style="position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" onclick="DeleteProduct(\''.$stand->productid.'\',\''.$stand->modelno.'\');" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button></div></td>';
+                                                            echo "<td>".$stand->productid."</td>";
+                                                            echo "<td>".$stand->productcompany."</td>";
+                                                            echo "<td>".$stand->producttype."</td>";
+                                                            echo "<td>".$stand->modelno."</td>";
+                                                            echo "<td>".$stand->capacity."</td>";
+                                                            echo "<td>".$stand->rating."</td>";
                                                             echo "</tr>";										 																		 											
                                                         }
                                                         ?>
@@ -194,6 +200,10 @@
                                             </div>
                                         </div>                           
                                         <div id="product-form" class="col-6">
+                                            <form id="add_product_form" method="POST">
+                                            </form>
+                                            <form id="update_product_form" method="POST">
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -202,8 +212,10 @@
                     </div>
                 </div>
             </section>
+            <br><br>
             <section class="content" id="customer-section">
-                <div class="wrapper tablepostion">
+                <div class="response-customer"></div>
+                <div class="wrapper tablepostion3">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
@@ -257,42 +269,52 @@
                         </div>
                     </div>
                 </section>      
+ 
                 <section class="content" id="employee-section">
-                    <div class="wrapper tablepostion">
+                    <div id="response-employee"></div>
+                    <div class="wrapper tablepostion3">
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-12">
+                                    
                                     <div class="card">
                                         <div class="card-header">
                                             Employee Entries
-                                        </div>        
-                                        <div class="col-6">                 
-                                            <!-- /.card-header -->
-                                            <div class="card-body">
-                                                <table id="example4" class="table table-bordered table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Action</th>
-                                                            <th>userid</th>
-                                                            <th>First name</th>
-                                                            <th>Last name</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        foreach ($data_employee as $stand) {
-                                                            echo "<tr>";
-                                                                echo "<td><div class='row w-size2'><a href='#' onclick='ViewUpdateProduct();'class='w-size13' style='position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;'><center>Update</center></a><button class='delete-btn' style='position: relative;left: 20px;'><i class='fa fa-trash'> </i></button></div></td>";
-                                                                echo "<td>".$stand->userid."</td>";
-                                                                echo "<td>".$stand->firstname."</td>";
-                                                                echo "<td>".$stand->lastname."</td>";
-                                                                echo "</tr>";										 																		 											
-                                                            }
-                                                            ?>
-                                                        </tbody>
-                                                    </table>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">                 
+                                                <!-- /.card-header -->
+                                                <div class="card-body">
+                                                    <table id="example4" class="table table-bordered table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Action</th>
+                                                                <th>userid</th>
+                                                                <th>First name</th>
+                                                                <th>Last name</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                            $p = "'";
+                                                            foreach ($data_employee as $stand) {
+                                                                echo "<tr>";
+                                                                    echo '<td><div class="row w-size2"><button onclick="UpdateEmployee(\''.$stand->userid.'\',\''.$stand->firstname.'\',\''.$stand->lastname.'\');" class="w-size13" style="position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;border: none;"><center>Update</center></button><!--<button onclick="DeleteEmployee(\''.$stand->userid.'\');" class="delete-btn" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button>--></div></td>';
+                                                                    echo "<td>".$stand->userid."</td>";
+                                                                    echo "<td>".$stand->firstname."</td>";
+                                                                    echo "<td>".$stand->lastname."</td>";
+                                                                    echo "</tr>";										 																		 											
+                                                                }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
-                                            </div>  
+                                                <div id="employee-form" class="col-6">
+                                                    <form id="update_employee_form" method="POST">
+                                                    </form>
+                                                </div>
+                                            </div>        
                                         </div>
                                     </div>
                                 </div>
@@ -359,23 +381,44 @@
                 </script>
                 
                 <script type="text/javascript">
-                    var html1 = `<form id="add_customer_form" method="POST">
-                        <br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
-                                </div>
+                    var html1 = `
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
                             </div>
                         </div>
-                        
-                        <div class="row">
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_company">Product Company</label>
+                                <input list="product_company" class="form-control" name="product_company" style="width: 80%;">
+                                <?php
+                                echo ("<datalist id='product_company'>");
+                                    foreach($name as $row){
+                                        echo "<option>".$row->firstname."</option>";
+                                    }
+                                    echo("</datalist>");
+                                    ?>
+                                    <div class="form-group">
+                                        <label for="capacity">Capacity</label>
+                                        <input type="text" class="form-control" style="width: 50%;" id="capacity" name="capacity" placeholder="Enter Capacity">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model_no">Model No.</label>
+                                    <input type="text" class="form-control" style="width: 80%;" id="model_no" name="model_no" placeholder="Enter Model No.">
+                                </div>	                                								
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="product_company">Product Company</label>
-                                    <input list="product_company" class="form-control" name="product_company" style="width: 80%;">
+                                    <label for="product_type">Product Type</label>
+                                    <input list="product_type" class="form-control" name="product_type" style="width: 80%;">
                                     <?php
-                                    echo ("<datalist id='product_company'>");
+                                    echo ("<datalist id='product_type'>");
                                         foreach($name as $row){
                                             echo "<option>".$row->firstname."</option>";
                                         }
@@ -383,36 +426,20 @@
                                         ?>
                                     </div>
                                     <div class="form-group">
-                                        <label for="capacity">Capacity</label>
-                                        <input type="text" class="form-control" style="width: 50%;" id="capacity" name="capacity" placeholder="Enter Capacity">
+                                        <label for="rating">Rating</label>
+                                        <input type="text" class="form-control" style="width: 50%;" id="rating" name="rating" placeholder="Enter Rating">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="model_no">Model No.</label>
-                                        <input type="text" class="form-control" style="width: 80%;" id="model_no" name="model_no" placeholder="Enter Model No.">
-                                    </div>	                                								
+                                    <input type="hidden" class="form-control" style="width:25%;" id="operation" value="C" name="operation">
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="product_type">Product Type</label>
-                                        <input list="product_type" class="form-control" name="product_type" style="width: 80%;">
-                                        <?php
-                                        echo ("<datalist id='product_type'>");
-                                            foreach($name as $row){
-                                                echo "<option>".$row->firstname."</option>";
-                                            }
-                                            echo("</datalist>");
-                                            ?>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="rating">Rating</label>
-                                            <input type="text" class="form-control" style="width: 50%;" id="rating" name="rating" placeholder="Enter Rating">
-                                        </div>
-                                    </div>
-                                </div>									
-                            </form>`;
+                            </div>`;
                             
-                            var html2 = `<form id="add_customer_form" method="POST">
-                                <br>
+                            function AddProduct(){
+                                $("#add_product_form").html('');
+                                $("#update_product_form").html('');
+                                $("#add_product_form").html(html1);
+                            }
+                            function ViewUpdateProduct(productid,productcompany,producttype,modelno,capacity,rating){
+                                var html2 = `   <br>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -425,11 +452,11 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="product_id">Model No.</label>
-                                            <input type="text" class="form-control" style="width: 80%;" id="product_id" name="product_id" placeholder="Enter Product id">
+                                            <input type="text" class="form-control" style="width: 80%;" id="product_id" name="product_id" value="` + productid + `">
                                         </div>	
                                         <div class="form-group">
                                             <label for="product_company">Product Company</label>
-                                            <input list="product_company" class="form-control" name="product_company" style="width: 80%;">
+                                            <input list="product_company" class="form-control" name="product_company" style="width: 80%;" value="` + productcompany + `">
                                             <?php
                                             echo ("<datalist id='product_company'>");
                                                 foreach($name as $row){
@@ -440,18 +467,18 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="capacity">Capacity</label>
-                                                <input type="text" class="form-control" style="width: 50%;" id="capacity" name="capacity" placeholder="Enter Capacity">
+                                                <input type="text" class="form-control" style="width: 50%;" id="capacity" name="capacity" value="` + capacity + `">
                                             </div>
                                             
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="model_no">Model No.</label>
-                                                <input type="text" class="form-control" style="width: 80%;" id="model_no" name="model_no" placeholder="Enter Model No.">
+                                                <input type="text" class="form-control" style="width: 80%;" id="model_no" name="model_no" value="` + modelno + `">
                                             </div>	
                                             <div class="form-group">
                                                 <label for="product_type">Product Type</label>
-                                                <input list="product_type" class="form-control" name="product_type" style="width: 80%;">
+                                                <input list="product_type" class="form-control" name="product_type" style="width: 80%;" value="` + producttype + `">
                                                 <?php
                                                 echo ("<datalist id='product_type'>");
                                                     foreach($name as $row){
@@ -462,21 +489,116 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="rating">Rating</label>
-                                                    <input type="text" class="form-control" style="width: 50%;" id="rating" name="rating" placeholder="Enter Rating">
+                                                    <input type="text" class="form-control" style="width: 50%;" id="rating" name="rating" value="` + rating + `">
+                                                    <input type="hidden" class="form-control" style="width:25%;" id="operation" value="U" name="operation">
                                                 </div>
                                             </div>
                                         </div>									
-                                    </form>`;
-                                    
-                                    function AddProduct(){
-                                        console.log("HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-                                        $("#product-form").html('');
-                                        $("#product-form").html(html1);
+                                        `;
+                                        
+                                        $("#update_product_form").html('');
+                                        $("#add_product_form").html('');
+                                        $("#update_product_form").html(html2);
                                     }
-                                    function ViewUpdateProduct(){
-                                        console.log("HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-                                        $("#product-form").html('');
-                                        $("#product-form").html(html2);
+                                    
+                                    function DeleteProduct(productid,modelno){
+                                        console.log("Delete Product called "+ productid);
+                                        var data = JSON.stringify({product_id: productid,model_no: modelno, operation:"D"});
+                                        console.log(data);
+                                        if(confirm("Are you sure you want to delete the Product?")){
+                                            
+                                            $.ajax({
+                                                url: "http://localhost/SMS_WebApp/api/product/CRUD_product.php",
+                                                type : "POST",
+                                                contentType : 'application/json',
+                                                data : data,
+                                                success : function(result){
+                                                    $('#response-product').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Product Deleted Successfully</div>");
+                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                                },
+                                                error: function(xhr, status, error){
+                                                    alert(error);
+                                                    $('#response-product').html("<div class='alert alert-danger'>Unable to delete Product.</div>");
+                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                                }
+                                            });
+                                        }
+                                    }
+                                    
+                                    function DeleteCustomer(customer_id){
+                                        var data = JSON.stringify({customerid: customer_id,operation:"D"});
+                                        console.log(data);
+                                        $.ajax({
+                                            url: "http://localhost/SMS_WebApp/api/employee/RUD_employee.php",
+                                            type : "POST",
+                                            contentType : 'application/json',
+                                            data : data,
+                                            success : function(result){
+                                                $('#response-customer').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Employee deleted Successfully</div>");
+                                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                            },
+                                            error: function(xhr, status, error){
+                                                alert(error);
+                                                $('#response-customer').html("<div class='alert alert-danger'>Unable to Employee.</div>");
+                                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                            }
+                                        });
+                                    }
+                                    
+
+                                    function DeleteEmployee(user_id){
+                                        var data = JSON.stringify({userid: user_id,operation:"D"});
+                                        console.log(data);
+                                        $.ajax({
+                                            url: "http://localhost/SMS_WebApp/api/employee/RUD_employee.php",
+                                            type : "POST",
+                                            contentType : 'application/json',
+                                            data : data,
+                                            success : function(result){
+                                                $('#response-employee').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Employee deleted Successfully</div>");
+                                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                            },
+                                            error: function(xhr, status, error){
+                                                alert(error);
+                                                $('#response-employee').html("<div class='alert alert-danger'>Unable to Employee.</div>");
+                                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                            }
+                                        });
+                                    }
+                                    
+                                    function UpdateEmployee(user_id,first_name,last_name){                                        var html3 = ` <br>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <input type="submit" value="Update" class="btn btn-primary" style="float: right;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="userid">User ID</label>
+                                                    <input type="text" class="form-control" style="width: 100%;" id="userid" disabled ="disabled" name="userid" value="` + user_id + `">
+                                                </div>	
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="firstname">First Name</label>
+                                                    <input type="text" class="form-control" style="width: 80%;" id="firstname" name="firstname" value="` + first_name + `">
+                                                </div>	
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="lastname">Last Name</label>
+                                                    <input type="text" class="form-control" style="width: 80%;" id="lastname" name="lastname" value="` + last_name + `">
+                                                    <input type="hidden" class="form-control" style="width:25%;" id="operation" value="U" name="operation">
+                                                </div>	
+                                            </div>
+                                        </div>`;       
+                                        $("#update_employee_form").html('');
+                                        $("#update_employee_form").html(html3);
                                     }
                                 </script>
                                 
@@ -520,6 +642,89 @@
                                             sub_menu_is_showed = -1;
                                         });
                                         
+                                        $("#add_product_form").submit(function(){
+                                            var add_customer_form=$(this);
+                                            var form_data=JSON.stringify(add_customer_form.serializeObject());
+                                            console.log(form_data);
+                                            $.ajax({
+                                                url: "http://localhost/SMS_WebApp/api/product/CRUD_product.php",
+                                                type : "POST",
+                                                contentType : 'application/json',
+                                                data : form_data,
+                                                success : function(result){
+                                                    //alert("product added");
+                                                    $('#response-product').html("<br><br><div class='alert alert-success' style='postion:absolute; bottom:0px;'> Product Added Successfully</div>");
+                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                                },
+                                                error: function(xhr, status, error){
+                                                    //alert(error);
+                                                    $('#response-product').html("<br><br><div class='alert alert-danger'>Unable to add Product.</div>");
+                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/view/admin/index1.html'",1000);
+                                                }
+                                            });
+                                            return false;
+                                        });
+                                        
+                                        $("#update_product_form").submit(function(){
+                                            var add_customer_form=$(this);
+                                            var form_data=JSON.stringify(add_customer_form.serializeObject());
+                                            console.log(form_data);
+                                            $.ajax({
+                                                url: "http://localhost/SMS_WebApp/api/product/CRUD_product.php",
+                                                type : "POST",
+                                                contentType : 'application/json',
+                                                data : form_data,
+                                                success : function(result){
+                                                    //alert("product added");
+                                                    $('#response-product').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Product Updated Successfully</div>");
+                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                                },
+                                                error: function(xhr, status, error){
+                                                    //alert(error);
+                                                    $('#response-product').html("<div class='alert alert-danger'>Unable to update Product.</div>");
+                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/view/admin/index1.html'",1000);
+                                                }
+                                            });
+                                            return false;
+                                        });
+                                        
+                                        $("#update_employee_form").submit(function(){
+                                            var add_customer_form=$(this);
+                                            var form_data=JSON.stringify(add_customer_form.serializeObject());
+                                            console.log(form_data);
+                                            $.ajax({
+                                                url: "http://localhost/SMS_WebApp/api/employee/RUD_employee.php",
+                                                type : "POST",
+                                                contentType : 'application/json',
+                                                data : form_data,
+                                                success : function(result){
+                                                    //alert("product added");
+                                                    $('#response-employee').html("<div class='alert alert-success' style='postion: relative; bottom:0px;top: 10px'>Employee Updated Successfully</div>");
+                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                                },
+                                                error: function(xhr, status, error){
+                                                    //alert(error);
+                                                    $('#response-employee').html("<div class='alert alert-danger'>Unable to update Employee.</div>");
+                                                    //setTimeout("window.location = 'http://localhost/SMS_WebApp/view/admin/index1.html'",1000);
+                                                }
+                                            });
+                                            return false;
+                                        });
+                                        $.fn.serializeObject = function(){	
+                                            var o = {};
+                                            var a = this.serializeArray();
+                                            $.each(a, function() {
+                                                if (o[this.name] !== undefined) {
+                                                    if (!o[this.name].push) {
+                                                        o[this.name] = [o[this.name]];
+                                                    }
+                                                    o[this.name].push(this.value || '');
+                                                } else {
+                                                    o[this.name] = this.value || '';
+                                                }
+                                            });
+                                            return o;
+                                        };
                                     });
                                 </script>
                             </body>

@@ -3583,6 +3583,16 @@ SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE SHAPE
 	top: 50px;
 }
 
+.tablepostion2{
+	position: relative;
+	top: 50px;
+}
+
+.tablepostion3{
+	position: relative;
+	top: 10px;
+}
+
 /*[ Width Size ]
 ///////////////////////////////////////////////////////////
 */

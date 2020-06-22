@@ -25,16 +25,16 @@ $product = new Product($db);
 $json = file_get_contents("php://input");
 $data = json_decode($json);
 
-// set product property values
-$product->model_no = $data->model_no;
-$product->product_company = $data->product_company;
-$product->product_type = $data->product_type;
-$product->capacity = $data->capacity;
-$product->rating = $data->rating;
 
 // create the user
 switch($data->operation){
     case "C":
+        $product->model_no = $data->model_no;
+        $product->product_company = $data->product_company;
+        $product->product_type = $data->product_type;
+        $product->capacity = $data->capacity;
+        $product->rating = $data->rating;
+
         if(
             !empty($product->model_no) && !empty($product->product_company) &&
             !empty($product->product_type) && !empty($product->capacity) && !empty($product->rating) &&
@@ -45,20 +45,11 @@ switch($data->operation){
             http_response_code(200);
          
             // display message: user was created
-            echo json_encode(
-                array(
-                    "message" => "Product added."
-                )
-            );
+            echo json_encode(array("message" => "Product added."));
         }
          
-        // message if unable to create user
         else{
-         
-            // set response code
-            http_response_code(400);
-         
-            // display message: unable to create user
+            http_response_code(400);         
             echo json_encode(array("message" => "Unable to add product"));
         }
     break;
@@ -67,8 +58,14 @@ switch($data->operation){
         echo($json_data);
     break;
     case "U":
+        $product->product_id = $data->product_id;
+        $product->model_no = $data->model_no;
+        $product->product_company = $data->product_company;
+        $product->product_type = $data->product_type;
+        $product->capacity = $data->capacity;
+        $product->rating = $data->rating;
         if(
-            !empty($product->model_no) && !empty($product->product_company) &&
+            !empty($product->product_id) && !empty($product->model_no) && !empty($product->product_company) &&
             !empty($product->product_type) && !empty($product->capacity) && !empty($product->rating) &&
             $product->UpdateProduct()
         ){
@@ -77,47 +74,27 @@ switch($data->operation){
             http_response_code(200);
          
             // display message: user was created
-            echo json_encode(
-                array(
-                    "message" => "Product updateed."
-                )
-            );
+            echo json_encode(array("message" => "Product updateed."));
         }
          
         // message if unable to create user
         else{
-         
-            // set response code
             http_response_code(400);
-         
-            // display message: unable to create user
             echo json_encode(array("message" => "Unable to update product"));
         }
     break;
     case "D":
+        $product->product_id = $data->product_id;
+        $product->model_no = $data->model_no;
         if(
             (!empty($product->model_no) || !empty($product->product_id)) &&
             $product->deleteProduct()
-        ){
-         
-            // set response code
+        ){         
             http_response_code(200);
-         
-            // display message: user was created
-            echo json_encode(
-                array(
-                    "message" => "Product deleted."
-                )
-            );
+            echo json_encode(array("message" => "Product deleted."));
         }
-         
-        // message if unable to create user
         else{
-         
-            // set response code
             http_response_code(400);
-         
-            // display message: unable to create user
             echo json_encode(array("message" => "Unable to delete product"));
         }
     break;

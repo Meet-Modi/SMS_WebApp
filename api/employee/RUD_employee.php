@@ -32,6 +32,30 @@ switch($data->operation){
     break;
 
     case "U":
-        
+        $employee->userid = $data->userid;
+        $employee->firstname = $data->firstname;
+        $employee->lastname = $data->lastname;
+        if(!empty($employee->userid) && !empty($employee->firstname) &&
+           !empty($employee->userid) && $employee->updateEmployee()
+         ){
+            http_response_code(200);
+            echo json_encode(array("message" => "Employee updated."));
+        }
+        else{
+            http_response_code(400);
+            echo json_encode(array("message" => "Unable to update Employee"));
+        }            
+    break;
+
+    case "D":
+        $employee->userid = $data->userid;
+        if(!empty($employee->userid = $data->userid && $employee->deleteEmployee())){
+            http_response_code(200);
+            echo json_encode(array("message" => "Employee deleted."));
+        }
+        else{
+            http_response_code(400);
+            echo json_encode(array("message" => "Unable to delete Employee"));
+        }
     break;
 }
