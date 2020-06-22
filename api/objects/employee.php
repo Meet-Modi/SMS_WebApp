@@ -76,6 +76,21 @@ class Employee{
 		}
 
 	}
+
+	public static function getAllEmployees($db){
+		$query = "SELECT userid,firstname,lastname FROM employee";
+		$result = $db->query($query);
+		$output = array();
+		if ($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {			
+				$output[] = $row;
+			}	
+			return $output;
+		}
+		else{
+			return false;
+		}
+	}
 }
 
 ?>
