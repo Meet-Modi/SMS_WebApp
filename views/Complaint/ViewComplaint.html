@@ -110,11 +110,12 @@
     $result1=curl_exec ($ch);
     $result1=curl_exec ($ch);
     $data_complaint = json_decode($result1);
-    
+    echo($result1);
     $customer_id = $data_complaint->customerid;
+    $billing_name = $data_complaint->billingname;
     $amc_id = $data_complaint->amcid;
     $date = $data_complaint->date;
-    $complaint_type_id = $data_complaint->complainttypeid;
+    $complaint_type = $data_complaint->complainttype;
     $complaint_status = $data_complaint->status;
     $defect_observed=$data_complaint->defectobserved;
     $action_taken=$data_complaint->actiontaken;
@@ -131,6 +132,7 @@
     $customer_remarks=$data_complaint->customerremarks;
     $row = json_encode(array_merge(json_decode($result,true),json_decode($result1,true)));
     
+
     $inArray = (object)array();
     $inArray->view = "BillingName_AMC";
     $inJSON = json_encode($inArray);
@@ -161,13 +163,15 @@
     $data2 = json_decode($result2);
     $name = $data2->mechanic;
     $complainttype = $data2->complainttype;
+
+    $STATUS = array("OPEN","CLOSED");
     ?>
     <script>
         var userid = "<?php echo($userid);?>";
         var firstname = "<?php echo($firstname);?>";
         var lastname = "<?php echo($lastname); ?>";
         var amcid = "<?php echo($amc_id); ?>";
-        var billingname = "SBI_CTM";
+        var billingname = "<?php echo($billing_name); ?>";
     </script>
     <script>
         var stateObject = <?php echo($result1); ?>;
@@ -208,7 +212,6 @@
         
     </script>
     <div class="header1" id="navbar"></div>
-    <br><br>
     <div id="response"></div>
     <div class="wrapper">
         <section class="content">
@@ -230,6 +233,7 @@
                                     <div class="form-group">
                                         <label for="billing_name">Billing Name</label>
                                         <select class="form-control" style="width: 85%;" required="required" id="billing_name" name="billing_name">
+                                         
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -245,11 +249,16 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="amctype">Complaint Type</label>
-                                        <select id="complaint_type" class="form-control" style="width:85%;" value="" name="complaint_type">                
-                                        <?php
+                                        <select id="complaint_type" class="form-control" style="width:85%;" name="complaint_type">                
+                                        
+                                        <?php 
                                             foreach($complainttype as $row){
-                                                echo "<option>".$row->complainttype."</option>";
-                                            }
+                                                echo "<option";
+                                                if($complaint_type == $row->complainttype){
+                                                    echo " selected='selected'";
+                                                }
+                                                echo ">".$row->complainttype."</option>"; 
+                                            }           
                                         ?>
                                         </select>
                                     </div>    
@@ -257,7 +266,17 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="fromdate">Status</label>
-                                        <input type="text" class="form-control" style="width:25%;" id="status" value="<?php echo($complaint_status); ?>" name="status">
+                                        <select class="form-control" style="width:25%;" id="status" name="status">
+                                            <?php 
+                                                foreach($STATUS as $row){
+                                                    echo "<option";
+                                                    if($complaint_status == $row){
+                                                        echo " selected='selected'";
+                                                    }
+                                                    echo ">".$row."</option>"; 
+                                                }           
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -463,7 +482,7 @@
                     form.submit();
                 }
                 var form_data=JSON.stringify(update_customer_form.serializeObject());
-                redirectPost('http://localhost/SMS_WebApp/api/pdf_api/generate_report.php', update_customer_form.serializeObject());
+//                redirectPost('http://localhost/SMS_WebApp/api/pdf_api/generate_report.php', update_customer_form.serializeObject());
                 console.log(form_data);
             });
             

@@ -138,6 +138,19 @@
     $result3=curl_exec ($ch1);
     $data_product = json_decode($result3);
     
+    $myObj1 = (object)array();
+    $myObj1->operation = "R";
+    $myJSON1 = json_encode($myObj1);
+    
+    $ch1 = curl_init();
+    curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/complaint/type/CRUD_complaint_type.php");
+    curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch1, CURLOPT_POST,           1 );
+    curl_setopt($ch1, CURLOPT_POSTFIELDS,     $myJSON1 ); 
+    curl_setopt($ch1, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    $result4=curl_exec ($ch1);
+    $result4=curl_exec ($ch1);
+    $data_complaint_type = json_decode($result4);
     ?>
     
     <script>
@@ -319,6 +332,62 @@
                             </div>
                         </div>
                     </section>
+                <section class="content" id="complaint-type-section">
+                    <div id="response-complaint-type"></div>
+                    <div class="wrapper tablepostion3">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header row">
+                                            <div class="col-4">
+                                                Complaint Type
+                                            </div>
+                                            <div class="col-2">
+                                                <button onclick="AddComplaintType();" class='flex-c-m size0 bg4 bo-rad-25 hov1 m-text3 trans-0-4' name="AddProduct" value="AddProduct" style="position: relative; width:100%;border: none;">Add Complaint Type
+                                                </button>			
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">                                    
+                                                <div class="card-body">   
+                                                    <table id="example5" class="table table-bordered table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Action</th>
+                                                                <th>Complaint Type Id</th>
+                                                                <th>Complaint Type</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                                if($data_complaint_type !=0){
+                                                                    foreach ($data_complaint_type as $stand) {
+                                                                    echo "<tr>";
+                                                                        echo '<td><div class="row w-size2"><button onclick="ViewUpdateComplaintType(\''.$stand->complainttypeid.'\',\''.$stand->complainttype.'\');"class="w-size13" style="position: relative;color: white;border: none;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" onclick="DeleteComplaintType(\''.$stand->complainttypeid.'\');" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button></div></td>';
+                                                                        echo "<td>".$stand->complainttypeid."</td>";
+                                                                        echo "<td>".$stand->complainttype."</td>";
+                                                                        echo "</tr>";										 																		 											
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>                           
+                                            <div id="complainttype-form" class="col-6">
+                                                <form id="add_complaint_type_form" method="POST">
+                                                </form>
+                                                <form id="update_complaint_type_form" method="POST">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                            
+                </section>
                 </div>    
                 <!--===============================================================================================-->
                 <script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -375,6 +444,16 @@
                             "autoWidth": true,
                             "responsive": true,
                         });
+                        $('#example5').DataTable({
+                            "paging": true,
+                            "lengthChange": true,
+                            "searching": true,
+                            "ordering": true,
+                            "info": true,
+                            "autoWidth": true,
+                            "responsive": true,
+                        });
+
                     });
                 </script>
                 
@@ -563,6 +642,25 @@
                                             }
                                         });
                                     }
+                                    function DeleteComplaintType(complainttypeid){
+                                        var data = JSON.stringify({complaint_type_id: complainttypeid,operation:"D"});
+                                        console.log(data);
+                                        $.ajax({
+                                            url: "http://localhost/SMS_WebApp/api/complaint/type/CRUD_complaint_type.php",
+                                            type : "POST",
+                                            contentType : 'application/json',
+                                            data : data,
+                                            success : function(result){
+                                                $('#response-complaint-type').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Complaint Type Deleted</div>");
+                                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                            },
+                                            error: function(xhr, status, error){
+                                                alert(error);
+                                                $('#response-complaint-type').html("<div class='alert alert-danger'>Unable to Delete Complaint Type.</div>");
+                                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                            }
+                                        });
+                                    }
                                     
                                     function UpdateEmployee(user_id,first_name,last_name){                                        var html3 = ` <br>
                                         <div class="row">
@@ -597,6 +695,31 @@
                                         </div>`;       
                                         $("#update_employee_form").html('');
                                         $("#update_employee_form").html(html3);
+                                    }
+                                
+                                    function AddComplaintType(){
+                                        var html = `<br>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="row">
+                                                        <div class="form-group">
+                                                            <label for="complaint_type">Complaint Type</label>
+                                                            <input type="text" class="form-control" style="width: 120%;" id="complaint_type" name="complaint_type" placeholder="Enter Complaint Type">
+                                                            <input type="hidden" class="form-control" style="width:25%;" id="operation" value="C" name="operation">
+                                                        </div>	                                								
+                                                    </div>
+                                                    `;
+
+                                        $('#add_complaint_type_form').html('');
+                                        $('#update_complaint_type_form').html('');
+                                        $('#add_complaint_type_form').html(html);
+                           
                                     }
                                 </script>
                                 
@@ -708,6 +831,30 @@
                                             });
                                             return false;
                                         });
+
+                                        $("#add_complaint_type_form").submit(function(){
+                                            var add_customer_form=$(this);
+                                            var form_data=JSON.stringify(add_customer_form.serializeObject());
+                                            console.log(form_data);
+                                            $.ajax({
+                                                url: "http://localhost/SMS_WebApp/api/complaint/type/CRUD_complaint_type.php",
+                                                type : "POST",
+                                                contentType : 'application/json',
+                                                data : form_data,
+                                                success : function(result){
+                                                    //alert("product added");
+                                                    $('#response-complaint-type').html("<div class='alert alert-success' style='postion: relative; bottom:0px;top: 10px'>Complaint Type Added Successfully</div>");
+                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                                },
+                                                error: function(xhr, status, error){
+                                                    //alert(error);
+                                                    $('#response-complaint-type').html("<div class='alert alert-danger'>Unable to Add Complaint Type.</div>");
+                                                    //setTimeout("window.location = 'http://localhost/SMS_WebApp/view/admin/index1.html'",1000);
+                                                }
+                                            });
+                                            return false;
+                                        });
+
                                         $.fn.serializeObject = function(){	
                                             var o = {};
                                             var a = this.serializeArray();

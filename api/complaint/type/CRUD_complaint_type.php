@@ -9,8 +9,8 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 // database connection will be here
 // files needed to connect to database
-include_once '../config/database.php';
-include_once '../objects/complaint_type.php';
+include_once '../../config/database.php';
+include_once '../../objects/complaint_type.php';
 
 // get database connection
 $database = new Database();
@@ -19,16 +19,14 @@ $db = $database->getConnection();
 $json = file_get_contents("php://input");
 $data = json_decode($json);
 
-$complaint_type = new Complaint_type();
-
-$complaint_type->complaint_type_id = $data->complaint_type_id;
-$complaint_type->complaint_type = $data->complaint_type;
+$complaint_type = new Complaint_type($db);
 
 switch($data->operation){
     case "C":
+        $complaint_type->complaint_type = $data->complaint_type;
         if(
-           !empty($complaint_type->complaint_type) && !empty($complaint_type->complaint_type_id) &&
-            $complaint_type->createComplaintType();
+           !empty($complaint_type->complaint_type) &&
+            $complaint_type->createComplaintType()
         ){
             http_response_code(200);
             echo json_encode(array("message" => "complaint type added."));
@@ -39,13 +37,15 @@ switch($data->operation){
         }
     break;
     case "R":
-        $output_data = Complaint_type::getAllComplaintTypes();
-        echo(json_encode($output_data);
+        $output_data = Complaint_type::getAllComplaintTypes($db);
+        echo(json_encode($output_data));
     break;
     case "U":
+        $complaint_type->complaint_type_id = $data->complaint_type_id;
+        $complaint_type->complaint_type = $data->complaint_type;
         if(
             !empty($complaint_type->complaint_type) && !empty($complaint_type->complaint_type_id) &&
-            $complaint_type->updateComplaintTypeById();
+            $complaint_type->updateComplaintTypeById()
         ){
             http_response_code(200);
             echo json_encode(array("message" => "complaint type updated."));
@@ -56,9 +56,10 @@ switch($data->operation){
         }
     break;
     case "D":
+        $complaint_type->complaint_type_id = $data->complaint_type_id;
         if(
-            !empty($complaint_type->complaint_type) && !empty($complaint_type->complaint_type_id) &&
-            $complaint_type->deleteComplaintTypeById();
+            !empty($complaint_type->complaint_type_id) &&
+            $complaint_type->deleteComplaintTypeById()
         ){
             http_response_code(200);
             echo json_encode(array("message" => "complaint type deleted."));
@@ -69,8 +70,5 @@ switch($data->operation){
         }
     break;
 }
-
-
-
 
 ?>

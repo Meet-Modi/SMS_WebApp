@@ -110,7 +110,8 @@
 	
 	$amc_id = $data_amc->amcid;
 	$customer_id = $data_amc->customerid;
-	$amc_type_id = $data_amc->amctypeid;
+	$billing_name = $data_amc->billingname;
+	$amc_type = $data_amc->amctype;
 	$from_date = $data_amc->fromdate;
 	$period = $data_amc->period;
 	$quantity = $data_amc->quantity;
@@ -176,7 +177,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="billingname">Billing Name</label>
-										<input list="billing_name" class="form-control" style="width: 100%;" name="billing_name" placeholder="Enter Billing Name" value="<?php echo(''); ?>">
+										<input list="billing_name" class="form-control" style="width: 100%;" name="billing_name" placeholder="Enter Billing Name" readOnly="readOnly" value="<?php echo $billing_name; ?>">
 									</div>
 									<div class="row">
 										<div class="col-md-6">
@@ -203,14 +204,13 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>AMC Type</label>
-										<input list="amctype" class="form-control" name="amc_type" style="width: 50%;" value="<?php echo $amc_type_id ?>">
+										<select id="amctype" class="form-control" name="amc_type" style="width: 50%;" value="<?php echo $amc_type ?>">
 										<?php
-											echo ("<datalist id='amctype'>");
 											foreach($amctype as $row){
 												echo "<option>".$row->amctype."</option>";
 											}
-											echo("</datalist>");
 										?>
+										</select>
 									</div>
 									<div class="row">
 										<div class="col-md-5">
@@ -403,12 +403,12 @@
 					data : form_data,
 					
 					success : function(result){
-						$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Updated Successfully</div>");
-						//add_customer_form.find('input').val('');
+						$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>AMC Updated Successfully</div>");
+						setTimeout(function(){$('#response').html('');}, 1000);
 					},
 					error: function(xhr, status, error){
-						//	alert(error);
 						$('#response').html("<div class='alert alert-danger'>Unable to update AMC.</div>");
+						setTimeout(function(){$('#response').html('');}, 1000);
 					}
 				});
 				return false;

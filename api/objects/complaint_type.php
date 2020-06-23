@@ -13,10 +13,9 @@
 
         function createComplaintType(){
             $this->complaint_type=htmlspecialchars(strip_tags($this->complaint_type));
-            $this->complaint_type_id=htmlspecialchars(strip_tags($this->complaint_type_id));
 
-            $query = "INSERT INTO complaint_type(complainttypeid, complainttype) VALUES ";
-            $query .= "('".$this->complaint_type."','".$this->complaint_type_id."')";
+            $query = "INSERT INTO complaint_type(complainttype) VALUES ";
+            $query .= "('".$this->complaint_type."')";
             if($this->conn->query($query) === TRUE){
                 return true;
             }
@@ -26,7 +25,7 @@
         }
 
         public static function getAllComplaintTypes($db){
-            $query = "SELECT complainttype FROM complaint_type";
+            $query = "SELECT complainttype,complainttypeid FROM complaint_type";
             $result = $db->query($query);
             $output = array();
             while($row = $result->fetch_assoc()) {			

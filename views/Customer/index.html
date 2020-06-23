@@ -115,24 +115,26 @@
 									</thead>
 									<tbody>
 										<?php
-										foreach ($data_customer as $stand) {
-											echo "<tr>";
-												echo "<td>".$stand->customerid."</td>";
-												echo "<td>".$stand->billingname."</td>";
-												echo "<td>".$stand->firstname."</td>";
-												echo "<td>".$stand->lastname."</td>";
-												echo "<td>".$stand->email."</td>";
-												echo "<td>".$stand->contactno1."</td>";
-												echo "<td>".$stand->contactno2."</td>";
-												echo "<td>".$stand->placetype."</td>";
-												echo "<td>".$stand->address."</td>";
-												echo "<td>".$stand->city."</td>";
-												echo "<td>".$stand->state."</td>";
-												echo "<td>".$stand->pincode."</td>";
-												echo "<td><div class='row w-size0'><a href='ViewCustomer.html?customer_id=" . $stand->customerid . "'class='w-size0 bg4 bo-rad-23 hov1 trans-0-4' style='border: none;'>View/Update</a></div></td>";
-												echo "</tr>";										 																		 											
+											if($data_customer != 0){
+												foreach ($data_customer as $stand) {
+													echo "<tr>";
+													echo "<td>".$stand->customerid."</td>";
+													echo "<td>".$stand->billingname."</td>";
+													echo "<td>".$stand->firstname."</td>";
+													echo "<td>".$stand->lastname."</td>";
+													echo "<td>".$stand->email."</td>";
+													echo "<td>".$stand->contactno1."</td>";
+													echo "<td>".$stand->contactno2."</td>";
+													echo "<td>".$stand->placetype."</td>";
+													echo "<td>".$stand->address."</td>";
+													echo "<td>".$stand->city."</td>";
+													echo "<td>".$stand->state."</td>";
+													echo "<td>".$stand->pincode."</td>";
+													echo "<td><div class='row w-size0'><a href='ViewCustomer.html?customer_id=" . $stand->customerid . "'class='w-size0 bg4 bo-rad-23 hov1 trans-0-4' style='border: none;'>View/Update</a></div></td>";
+													echo "</tr>";										 																		 											
+												}	
 											}
-											?>
+										?>
 										</tbody>
 										<tfoot>
 											<tr>

@@ -59,14 +59,18 @@
         } 
         
         public static function getComplaintReportById($complaint_id,$db){
-            $json_output = Complaint::getComplaintById($complaint_id,$db);
-            $output = $json_output;
-
-            $query = "SELECT * FROM complaint_report WHERE complaintid='".$complaint_id."'";
+            $output = array();
+            $query = "SELECT complaint.complaintid,customer.billingname,complaint.customerid,complaint.amcid,complaint.status,complaint.date, complaint_type.complainttype,complaint_report.mechanicname,complaint_report.timefrom,complaint_report.timeto,complaint_report.linevoltage,complaint_report.defectobserved,complaint_report.actiontaken,complaint_report.partsreplaced,complaint_report.remarks,complaint_report.grilltemp,complaint_report.current,complaint_report.roomtemp,complaint_report.mechanicremarks,complaint_report.customerremarks
+            FROM complaint 
+            INNER JOIN complaint_type ON complaint_type.complainttypeid=complaint.complainttypeid
+            INNER JOIN complaint_report ON complaint_report.complaintid=complaint.complaintid
+            INNER JOIN customer ON complaint.customerid=customer.customerid
+            WHERE complaint.complaintid='".$complaint_id."'";
+            //echo($query);
             $result = $db->query($query);
             if($result->num_rows>0) {
                 $row = $result->fetch_assoc();		
-                $output = $output + $row;
+                $output = $row;
             }else{
                 return "complaint not found";
             }

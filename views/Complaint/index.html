@@ -111,20 +111,21 @@
 									</thead>
 									<tbody>
 										<?php
-										foreach ($data_complaint as $stand) {
-											// Output a row
-											echo "<tr>";
-												echo "<td>".$stand->complaintid."</td>";
-												echo "<td>".$stand->customerid."</td>";
-												echo "<td></td>";
-												echo "<td>".$stand->amcid."</td>";
-												echo "<td>".$stand->date."</td>";
-												echo "<td>".$stand->complainttypeid."</td>";
-												echo "<td>".$stand->status."</td>";
-												echo "<td><div class='row'><a href='ViewComplaint.html?complaint_id=" . $stand->complaintid . "'class='w-size0 bg4 bo-rad-23 hov1 trans-0-4' style='border: none;'>View/Update</a></div></td>";
-												echo "</tr>";
+											if($data_complaint != 0){
+												foreach ($data_complaint as $stand) {
+													echo "<tr>";
+													echo "<td>".$stand->complaintid."</td>";
+													echo "<td>".$stand->customerid."</td>";
+													echo "<td>".$stand->billingname."</td>";
+													echo "<td>".$stand->amcid."</td>";
+													echo "<td>".$stand->date."</td>";
+													echo "<td>".$stand->complainttype."</td>";
+													echo "<td>".$stand->status."</td>";
+													echo "<td><div class='row'><a href='ViewComplaint.html?complaint_id=" . $stand->complaintid . "'class='w-size0 bg4 bo-rad-23 hov1 trans-0-4' style='border: none;'>View/Update</a></div></td>";
+													echo "</tr>";
+												}
 											}
-											?>
+										?>
 										</tbody>
 										<tfoot>
 											<tr>

@@ -45,7 +45,11 @@ class AMC{
 
 	public static function getAmcById($amc_id,$db) {
 		$amc_id=htmlspecialchars(strip_tags($amc_id));
-		$query = "SELECT * FROM amc WHERE amcid = '". $amc_id ."'";
+		$query = "SELECT amc.amcid, amc.customerid,customer.billingname,amc_type.amctype,amc.fromdate,amc.period,amc.quantity,amc.totalservices,amc.amount
+		FROM amc
+		INNER JOIN customer ON amc.customerid=customer.customerid
+		INNER JOIN amc_type ON amc_type.amctypeid=amc.amctypeid
+		WHERE amc.amcid='". $amc_id ."'";
 		$result= $db->query($query);
 
 		if($result->num_rows>0) {
@@ -58,7 +62,7 @@ class AMC{
 	}
 
 	public static function getAllAmc($db) {
-		$query = "SELECT * FROM amc";
+		$query = "SELECT amc.amcid, amc.customerid,customer.billingname,amc_type.amctype,amc.fromdate,amc.period,amc.quantity,amc.totalservices,amc.amount FROM amc INNER JOIN customer ON amc.customerid=customer.customerid INNER JOIN amc_type ON amc_type.amctypeid=amc.amctypeid";
 		$result = $db->query($query);
 		$json_output = array();
 		while($row = $result->fetch_assoc()) {			

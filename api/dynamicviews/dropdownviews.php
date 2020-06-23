@@ -84,6 +84,13 @@ switch($data->view){
         $data['billingname'] = json_encode(Customer::getAllBillingName($db));
         echo json_encode($data);
         break;
+    
+    case "AddAMC":
+        $data = array();
+        $data['amctype'] = json_encode(amc_type::getAllAmcTypes($db));
+        $data['billingname'] = json_encode(Customer::getAllBillingName($db));
+        echo json_encode($data);
+        break;
 }
 
 

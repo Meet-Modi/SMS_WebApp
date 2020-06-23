@@ -92,7 +92,24 @@
 	$userid = $data->data->userid;
 	$firstname = $data->data->firstname;
 	$lastname = $data->data->lastname;
+
+	$inArray = (object)array();
+	$inArray->view = "AddAMC";
+	$inJSON = json_encode($inArray);
 	
+	$ch = curl_init();
+	
+	curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/dynamicviews/dropdownviews.php" );
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt($ch, CURLOPT_POST,           1 );
+	curl_setopt($ch, CURLOPT_POSTFIELDS,     $inJSON ); 
+	curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+	
+	$result1 =curl_exec ($ch);
+	$data = json_decode($result1);
+	$amctype = json_decode($data->amctype);
+	$billingname = json_decode($data->billingname);
+
 	?>
 	<script>
 		var userid = "<?php echo($userid);?>";
@@ -118,7 +135,13 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="billingname">Billing Name</label>
-										<input type="text" class="form-control" style="width: 100%;" id="billing_name" name="billing_name" placeholder="Enter Billing Name" value="<?php echo(''); ?>">
+										<select id="billing_name" class="form-control" style="width: 100%;" name="billing_name">
+										<?php
+											foreach($billingname as $row){
+												echo "<option>".$row->billingname."</option>";
+											}
+										?>
+										</select>
 									</div>
 									<div class="row">
 										<div class="col-md-6">
@@ -145,20 +168,12 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>AMC Type</label>
-										<select class="form-control" id="amctype" name="amc_type" style="width: 50%;">
-											<?php $placetype = array("PREVENTIVE", "", "WARRENTY");
-											$placeid = array("1","2","3");
-											$flag = 0;
-											foreach ($placeid as $current) {
-												$flag=5;
-												if($current == $cust_placeid){
-													echo "<option selected>".$placetype[(int)$current - 1]."</option>";
-													$flag = 1;
+										<select id="amctype" class="form-control" name="amc_type" style="width: 50%;">
+											<option selected="selected">Select AMC Type</option>
+											<?php
+												foreach($amctype as $row){
+													echo "<option>".$row->amctype."</option>";
 												}
-												else{
-													echo "<option>".$placetype[(int)$current - 1]."</option>";
-												}
-											}
 											?>
 										</select>
 									</div>
@@ -274,10 +289,12 @@
 								data : form_data,
 								success : function(result){
 									$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> AMC Added Successfully</div>");
+									setTimeout(function(){$('#response').html('');}, 1000);
 								},
 								error: function(xhr, status, error){
 									//		    	alert(error);
 									$('#response').html("<div class='alert alert-danger'>Unable to add AMC.</div>");
+									setTimeout(function(){$('#response').html('');}, 1000);
 								}
 							});
 							return false;

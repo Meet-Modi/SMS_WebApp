@@ -37,7 +37,10 @@ class Complaint{
 	}
 
 	public static function getAllComplaints($db){
-		$query = "SELECT * FROM complaint";
+		$query = "SELECT complaint.complaintid, customer.customerid ,customer.billingname,complaint.amcid,complaint.date,complaint_type.complainttype,complaint.status
+		FROM complaint
+		INNER JOIN customer ON customer.customerid=complaint.customerid
+		INNER JOIN complaint_type ON complaint.complainttypeid=complaint_type.complainttypeid";
 		$result = $db->query($query);
 
 		$output = array();
