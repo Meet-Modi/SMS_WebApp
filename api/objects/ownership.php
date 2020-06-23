@@ -12,7 +12,7 @@ class Ownership{
     	$this->conn = $db;
 	}
 	
-	function create(){
+	function createOwnership(){
 		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
 		$this->product_id=htmlspecialchars(strip_tags($this->product_id));
 		$this->quantity=htmlspecialchars(strip_tags($this->quantity));
@@ -34,8 +34,7 @@ class Ownership{
 		$this->quantity=htmlspecialchars(strip_tags($this->quantity));
 
 		$query = "DELETE FROM " .$this->table_name. " WHERE customerid='".$this->customer_id."' AND productid='".$this->product_id."'";	
-        echo($query);
-		if ($this->conn->query($query) === TRUE) {
+       	if ($this->conn->query($query) === TRUE) {
 			return true;
 		} else {
 			return false;
@@ -48,7 +47,6 @@ class Ownership{
 		$this->quantity=htmlspecialchars(strip_tags($this->quantity));
 
 		$oldproduct_id=htmlspecialchars(strip_tags($oldproduct_id));
-
 
 		$query = "UPDATE " .$this->table_name." SET customerid= '" .$this->customer_id. "', productid = '".$this->product_id."',quantity='".$this->quantity."' WHERE customerid='".$this->customer_id."' AND productid='".$oldproduct_id."'";	
 		 echo($query);
@@ -83,13 +81,13 @@ class Ownership{
 					$row2 = $result2->fetch_assoc();		
 					$json_output[] = $row1 + $row2;
 				}else{	
-					return "Product not found";
+					return false;
 				}
 			}
 			return json_encode($json_output);
 		}
 		else{
-			return "Customer doesn't have own any product.";
+			return false;
 		}		
 	}
 }

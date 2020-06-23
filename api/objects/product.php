@@ -82,10 +82,10 @@ class Product{
 		if($result->num_rows>0) {
 			$row = $result->fetch_assoc();		
 			$json_output = $row;
+			return json_encode($json_output);
 		}else{
-			return json_encode(array("message" => "PRODUCT NOT FOUND"));
+			return false;
 		}
-		return json_encode($json_output);
 	}
 
 	function showAllProduct(){

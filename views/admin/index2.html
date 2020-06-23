@@ -153,7 +153,7 @@
             <div class="wrapper tablepostion3">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-6">
                             <div class="card">
                                 <div class="card-header row">
                                     <div class="col-4">
@@ -164,51 +164,94 @@
                                         </button>			
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-6">                                    
-                                        <div class="card-body">   
-                                            <table id="example3" class="table table-bordered table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Action</th>
-                                                        <th>Product ID</th>
-                                                        <th>Company Name</th>
-                                                        <th>Product Type</th>
-                                                        <th>Model No</th>
-                                                        <th>Capacity</th>
-                                                        <th>Rating</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    foreach ($data_product as $stand) {
-                                                        echo "<tr>";
-                                                            echo '<td><div class="row w-size2"><a href="#" onclick="ViewUpdateProduct(\''.$stand->productid.'\',\''.$stand->productcompany.'\',\''.$stand->producttype.'\',\''.$stand->modelno.'\',\''.$stand->capacity.'\',\''.$stand->rating.'\');"class="w-size13" style="position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" onclick="DeleteProduct(\''.$stand->productid.'\',\''.$stand->modelno.'\');" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button></div></td>';
-                                                            echo "<td>".$stand->productid."</td>";
-                                                            echo "<td>".$stand->productcompany."</td>";
-                                                            echo "<td>".$stand->producttype."</td>";
-                                                            echo "<td>".$stand->modelno."</td>";
-                                                            echo "<td>".$stand->capacity."</td>";
-                                                            echo "<td>".$stand->rating."</td>";
-                                                            echo "</tr>";										 																		 											
-                                                        }
-                                                        ?>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>                           
-                                        <div id="product-form" class="col-6">
-                                            <form id="add_product_form" method="POST">
-                                            </form>
-                                            <form id="update_product_form" method="POST">
-                                            </form>
-                                        </div>
+                                                                  
+                                <div class="card-body">   
+                                    <table id="example3" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Action</th>
+                                                <th>Product ID</th>
+                                                <th>Company Name</th>
+                                                <th>Product Type</th>
+                                                <th>Model No</th>
+                                                <th>Capacity</th>
+                                                <th>Rating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                foreach ($data_product as $stand) {
+                                                echo "<tr>";
+                                                    echo '<td><div class="row w-size2"><a href="#" onclick="ViewUpdateProduct(\''.$stand->productid.'\',\''.$stand->productcompany.'\',\''.$stand->producttype.'\',\''.$stand->modelno.'\',\''.$stand->capacity.'\',\''.$stand->rating.'\');"class="w-size13" style="position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" onclick="DeleteProduct(\''.$stand->productid.'\',\''.$stand->modelno.'\');" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button></div></td>';
+                                                    echo "<td>".$stand->productid."</td>";
+                                                    echo "<td>".$stand->productcompany."</td>";
+                                                    echo "<td>".$stand->producttype."</td>";
+                                                    echo "<td>".$stand->modelno."</td>";
+                                                    echo "<td>".$stand->capacity."</td>";
+                                                    echo "<td>".$stand->rating."</td>";
+                                                    echo "</tr>";										 																		 											
+                                                }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                        
+                                <div id="product-form" class="col-6">
+                                    <form id="add_product_form" method="POST">
+                                    </form>
+                                    <form id="update_product_form" method="POST">
+                                    </form>
+                                </div>
+                        
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card">
+                                <div class="card-header row">
+                                    <div class="col-4">
+                                        Product Entries
                                     </div>
+                                    <div class="col-2">
+                                        <button onclick="AddProduct();" class='flex-c-m size0 bg4 bo-rad-25 hov1 m-text3 trans-0-4' name="AddProduct" value="AddProduct" style="position: relative; left: 40px; width:70%;border: none;">Add Product
+                                        </button>			
+                                    </div>
+                                </div>
+                                                                  
+                                <div class="card-body">   
+                                    <table id="example4" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Action</th>
+                                                <th>Product ID</th>
+                                                <th>Company Name</th>
+                                                <th>Product Type</th>
+                                                <th>Model No</th>
+                                                <th>Capacity</th>
+                                                <th>Rating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                foreach ($data_product as $stand) {
+                                                echo "<tr>";
+                                                    echo '<td><div class="row w-size2"><a href="#" onclick="ViewUpdateProduct(\''.$stand->productid.'\',\''.$stand->productcompany.'\',\''.$stand->producttype.'\',\''.$stand->modelno.'\',\''.$stand->capacity.'\',\''.$stand->rating.'\');"class="w-size13" style="position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" onclick="DeleteProduct(\''.$stand->productid.'\',\''.$stand->modelno.'\');" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button></div></td>';
+                                                    echo "<td>".$stand->productid."</td>";
+                                                    echo "<td>".$stand->productcompany."</td>";
+                                                    echo "<td>".$stand->producttype."</td>";
+                                                    echo "<td>".$stand->modelno."</td>";
+                                                    echo "<td>".$stand->capacity."</td>";
+                                                    echo "<td>".$stand->rating."</td>";
+                                                    echo "</tr>";										 																		 											
+                                                }
+                                            ?>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
             </section>
             <br><br>
             <section class="content" id="customer-section">
