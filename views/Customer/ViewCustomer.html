@@ -328,6 +328,7 @@
                                                 <th>Product ID</th>
                                                 <th>Company Name</th>
                                                 <th>Product Type</th>
+                                                <th>Quantity</th>
                                                 <th>Model No</th>
                                                 <th>Capacity</th>
                                                 <th>Rating</th>
@@ -336,12 +337,13 @@
                                         <tbody>
                                             <?php
                                                 foreach ($data_ownership as $stand) {
-                                                echo "<tr>";
-                                                    echo '<td><div class="row w-size2"><a href="#" onclick="ViewUpdateProduct(\''.$stand->productid.'\',\''.$stand->productcompany.'\',\''.$stand->producttype.'\',\''.$stand->modelno.'\',\''.$stand->capacity.'\',\''.$stand->rating.'\');"class="w-size13" style="position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" onclick="DeleteProduct(\''.$stand->productid.'\',\''.$stand->modelno.'\');" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button></div></td>';
-                                                    echo "<td>".$stand->productid."</td>";
+                                                echo '<tr>';
+                                                    echo '<td><div class="row w-size1"><a href="#" onclick="UpdateOwnership(\''.$stand->productid.'\');"class="w-size13" style="position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" style="position: relative;left: 10px;font-size: 16px;"><i class="fa fa-trash"></i></button></div></td>';
+													echo "<td>".$stand->productid."</td>";
                                                     echo "<td>".$stand->productcompany."</td>";
-                                                    echo "<td>".$stand->producttype."</td>";
-                                                    echo "<td>".$stand->modelno."</td>";
+													echo "<td>".$stand->producttype."</td>";
+													echo "<td><input type='number' id='product-".$stand->productid."' value='".$stand->quantity."' style='width: 40%;'></td>";
+													echo "<td>".$stand->modelno."</td>";
                                                     echo "<td>".$stand->capacity."</td>";
                                                     echo "<td>".$stand->rating."</td>";
                                                     echo "</tr>";										 																		 											
@@ -474,6 +476,15 @@
 									setTimeout(url,1000);
 								}
 							});
+					}
+
+					function UpdateOwnership(productid){
+						var id = "product-" + productid;
+						console.log(id);
+						var quan = document.getElementById(id).value;
+						console.log(quan);
+						var data = JSON.stringify({customer_id: customerid,product_id:productid,quantity:quan,operation:"U"});
+						console.log(data);
 					}
 				</script>
                 <script type="text/javascript">

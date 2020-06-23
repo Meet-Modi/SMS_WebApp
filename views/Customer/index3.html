@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<table>
+<tbody>
+<tr>
+<?php echo("<td><button onclick='myFunction(1,1)'>Try it</button></td>"); ?>
+<?php echo("<td><input type='number' id='fname-1' size='20' value='1'></td>"); ?>
+<td><input type="number" id="myText-1" value=""></td>
+</tr>
+<tr>
+<td><button onclick="myFunction('2','2')">Try it</button></td>
+<td><input type="number" id="fname-2" size="20" value="1"></td>
+<td><input type="number" id="myText-2" value=""></td>
+</tr>
+</tbody>
+</table>
+ 
+<script>
+function myFunction(i1,i2) {
+  var id = "fname-" + i1;
+  var id2 = "myText-" + i2;
+  var fname = document.getElementById(id).value;
+  console.log(fname);
+  document.getElementById(id2).value = fname;
+}
+</script>
+
+</body>
+</html>
