@@ -45,38 +45,36 @@ switch($data->operation){
         echo($json_data);
     break;
     case "U":
-        $product->product_id = $data->product_id;
-        $product->model_no = $data->model_no;
-        $product->product_company = $data->product_company;
-        $product->product_type = $data->product_type;
-        $product->capacity = $data->capacity;
-        $product->rating = $data->rating;
+        $ownership->customer_id = $data->customer_id;
+        $ownership->product_id = $data->product_id;
+        $ownership->quantity = $data->quantity;
+
         if(
-            !empty($product->product_id) && !empty($product->model_no) && !empty($product->product_company) &&
-            !empty($product->product_type) && !empty($product->capacity) && !empty($product->rating) &&
-            $product->UpdateProduct()
+            !empty($ownership->customer_id) && !empty($ownership->product_id) &&
+            !empty($ownership->quantity) && $ownership->UpdateOwnership()
         ){
             http_response_code(200);
-            echo json_encode(array("message" => "Product updateed."));
+            echo json_encode(array("message" => "Ownership updated."));
         }
+         
         else{
-            http_response_code(400);
-            echo json_encode(array("message" => "Unable to update product"));
+            http_response_code(400);         
+            echo json_encode(array("message" => "Unable to update ownership"));
         }
     break;
     case "D":
-        $product->product_id = $data->product_id;
-        $product->model_no = $data->model_no;
+        $ownership->customer_id = $data->customer_id;
+        $ownership->product_id = $data->product_id;
         if(
-            (!empty($product->model_no) || !empty($product->product_id)) &&
-            $product->deleteProduct()
+            !empty($ownership->customer_id) && !empty($ownership->product_id) &&
+            $ownership->deleteOwnership()
         ){         
             http_response_code(200);
-            echo json_encode(array("message" => "Product deleted."));
+            echo json_encode(array("message" => "Ownership deleted."));
         }
         else{
             http_response_code(400);
-            echo json_encode(array("message" => "Unable to delete product"));
+            echo json_encode(array("message" => "Unable to delete Ownership"));
         }
     break;
 }

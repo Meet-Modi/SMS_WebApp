@@ -31,8 +31,7 @@ class Ownership{
 	function deleteOwnership(){
 		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
 		$this->product_id=htmlspecialchars(strip_tags($this->product_id));
-		$this->quantity=htmlspecialchars(strip_tags($this->quantity));
-
+	
 		$query = "DELETE FROM " .$this->table_name. " WHERE customerid='".$this->customer_id."' AND productid='".$this->product_id."'";	
        	if ($this->conn->query($query) === TRUE) {
 			return true;
@@ -41,15 +40,12 @@ class Ownership{
 		} 
 	}
 
-	function updateOwnership($oldproduct_id){
+	function updateOwnership(){
 		$this->customer_id=htmlspecialchars(strip_tags($this->customer_id));
 		$this->product_id=htmlspecialchars(strip_tags($this->product_id));
 		$this->quantity=htmlspecialchars(strip_tags($this->quantity));
 
-		$oldproduct_id=htmlspecialchars(strip_tags($oldproduct_id));
-
-		$query = "UPDATE " .$this->table_name." SET customerid= '" .$this->customer_id. "', productid = '".$this->product_id."',quantity='".$this->quantity."' WHERE customerid='".$this->customer_id."' AND productid='".$oldproduct_id."'";	
-		 echo($query);
+		$query = "UPDATE " .$this->table_name." SET quantity='".$this->quantity."' WHERE customerid='".$this->customer_id."' AND productid='".$this->product_id."'";	
 		if ($this->conn->query($query) === TRUE) {
 			return true;
 		} else {

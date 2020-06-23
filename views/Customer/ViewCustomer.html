@@ -165,6 +165,7 @@
 	</script>
 	<div class="header1" id="navbar"></div>
     <br><br>
+    <div id="response-customerform"></div>
     <div class="wrapper">
         <section class="content" id="customer_form">
             <div class="container-fluid">
@@ -336,17 +337,19 @@
                                         </thead>
                                         <tbody>
                                             <?php
+                                                if($data_ownership!=0){
                                                 foreach ($data_ownership as $stand) {
                                                 echo '<tr>';
-                                                    echo '<td><div class="row w-size1"><a href="#" onclick="UpdateOwnership(\''.$stand->productid.'\');"class="w-size13" style="position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" style="position: relative;left: 10px;font-size: 16px;"><i class="fa fa-trash"></i></button></div></td>';
+                                                    echo '<td><div class="row w-size1"><button onclick="UpdateOwnership(\''.$stand->productid.'\');"class="w-size13" style="position: relative;color: white;height: 60%; left: 10px;border: none;background-color: DodgerBlue;"><center>Update</center></button><button class="delete-btn" onclick="DeleteOwnership(\''.$stand->productid.'\',\''.$customer_id.'\')" style="position: relative;left: 10px;font-size: 16px;"><i class="fa fa-trash"></i></button></div></td>';
 													echo "<td>".$stand->productid."</td>";
                                                     echo "<td>".$stand->productcompany."</td>";
 													echo "<td>".$stand->producttype."</td>";
-													echo "<td><input type='number' id='product-".$stand->productid."' value='".$stand->quantity."' style='width: 40%;'></td>";
+													echo "<td><input type='number' id='product-".$stand->productid."' value='".$stand->quantity."' style='width: 50%;'></td>";
 													echo "<td>".$stand->modelno."</td>";
                                                     echo "<td>".$stand->capacity."</td>";
                                                     echo "<td>".$stand->rating."</td>";
                                                     echo "</tr>";										 																		 											
+                                                }
                                                 }
                                             ?>
                                         </tbody>
@@ -468,11 +471,11 @@
 								contentType : 'application/json',
 								data : data,
 								success : function(result){
-									$('#response-ownership').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Employee deleted Successfully</div>");
+									$('#response-ownership').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Product Added in Customer</div>");
 									setTimeout(url,1000);
 								},
 								error: function(xhr, status, error){
-									$('#response-ownership').html("<div class='alert alert-danger'>Unable to Employee.</div>");
+									$('#response-ownership').html("<div class='alert alert-danger'>Unable to Add Product in Customer.</div>");
 									setTimeout(url,1000);
 								}
 							});
@@ -485,7 +488,42 @@
 						console.log(quan);
 						var data = JSON.stringify({customer_id: customerid,product_id:productid,quantity:quan,operation:"U"});
 						console.log(data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/ownership/CRUD_ownership.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : data,
+                            success : function(result){
+                                $('#response-ownership').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Quantity updated successfully.</div>");
+                                setTimeout(url,1000);
+                            },
+                            error: function(xhr, status, error){
+                                $('#response-ownership').html("<div class='alert alert-danger'>Unable to Update Quantity.</div>");
+                                setTimeout(url,1000);
+                            }
+						});
 					}
+
+                    function DeleteOwnership(productid,customerid){
+                        var data = JSON.stringify({customer_id: customerid,product_id:productid,operation:"D"});
+						console.log(data);
+                        if(confirm("Are you sure you want to delete it?")){
+                            $.ajax({
+                                url: "http://localhost/SMS_WebApp/api/ownership/CRUD_ownership.php",
+                                type : "POST",
+                                contentType : 'application/json',
+                                data : data,
+                                success : function(result){
+                                    $('#response-ownership').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Product Deleted from Customer.</div>");
+                                    setTimeout(url,1000);
+                                },
+                                error: function(xhr, status, error){
+                                    setTimeout(function(){$('#response-ownership').html("<div class='alert alert-danger'>Unable to delete Product from Customer.</div>");},1000);
+                                    setTimeout(function(){$('#response-ownership').html('');}, 2500);
+                                }
+                            });
+                        }
+                    }
 				</script>
                 <script type="text/javascript">
                     $(document).ready(function(){
@@ -539,11 +577,13 @@
                                 
                                 success : function(result){
                                     $('#response-customerform').html('');
-                                    setTimeout(function(){$('#response-customerform').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Updated Successfully</div>");},400);									
+                                    setTimeout(function(){$('#response-customerform').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Updated Successfully</div>");},1000);									
+                                    setTimeout(function(){$('#response-customerform').html('');}, 2500);
                                 },
                                 error: function(xhr, status, error){
                                     $('#response-customerform').html('');
-                                    setTimeout(function(){$('#response-customerform').html("<div class='alert alert-danger'>Unable to update customer.</div>");},400);
+                                    setTimeout(function(){$('#response-customerform').html("<div class='alert alert-danger'>Unable to update customer.</div>");},1000);
+                                    setTimeout(function(){$('#response-customerform').html('');}, 2500);
                                 }
                             });
                             return false;
