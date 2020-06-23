@@ -96,11 +96,26 @@
 	$result1=curl_exec ($ch);
 	$data_customer = json_decode($result1);
 	
+	$cust_userid = $data_customer->userid;
+	$cust_billingname = $data_customer->billingname;
+	$cust_placeid = $data_customer->placeid;
+	$cust_placetype = $data_customer->placetype;
+	$cust_firstname = $data_customer->firstname;
+	$cust_lastname = $data_customer->lastname;
+	$cust_contactno1 = $data_customer->contactno1;
+	$cust_contactno2 = $data_customer->contactno2;
+	$cust_address = $data_customer->address;
+	$cust_city = $data_customer->city;
+	$cust_state = $data_customer->state;
+	$cust_pincode = $data_customer->pincode;
+	$cust_email = $data_customer->email;
+	
 	$inArray = (object)array();
 	$inArray->view = "Viewcustomer";
 	$inJSON = json_encode($inArray);
 	
 	$ch = curl_init();
+	
 	curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/dynamicviews/dropdownviews.php" );
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
 	curl_setopt($ch, CURLOPT_POST,           1 );
@@ -126,42 +141,11 @@
     $result3=curl_exec ($ch1);
     $data_product = json_decode($result3);
 
-	$myObj1 = (object)array();
-	$myObj1->operation = "R";
-	$myObj1->customer_id = $customer_id;
-    $myJSON1 = json_encode($myObj1);
-    
-    $ch1 = curl_init();
-    curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/ownership/CRUD_ownership.php");
-    curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1 );
-    curl_setopt($ch1, CURLOPT_POST,           1 );
-    curl_setopt($ch1, CURLOPT_POSTFIELDS,     $myJSON1 ); 
-    curl_setopt($ch1, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
-    $result4=curl_exec ($ch1);
-    $result4=curl_exec ($ch1);
-    $data_ownership = json_decode($result4);
-
-	$cust_userid = $data_customer->userid;
-	$cust_billingname = $data_customer->billingname;
-	$cust_placeid = $data_customer->placeid;
-	$cust_placetype = $data_customer->placetype;
-	$cust_firstname = $data_customer->firstname;
-	$cust_lastname = $data_customer->lastname;
-	$cust_contactno1 = $data_customer->contactno1;
-	$cust_contactno2 = $data_customer->contactno2;
-	$cust_address = $data_customer->address;
-	$cust_city = $data_customer->city;
-	$cust_state = $data_customer->state;
-	$cust_pincode = $data_customer->pincode;
-	$cust_email = $data_customer->email;
-	
 	?>
 	<script>
 		var userid = "<?php echo($userid);?>";
 		var firstname = "<?php echo($firstname);?>";
 		var lastname = "<?php echo($lastname); ?>"; 
-		var customerid = "<?php echo($customer_id);?>";
-		var url = "window.location = 'http://localhost/SMS_WebApp/views/Customer/ViewCustomer.html?customer_id=" + customerid +"'";
 	</script>
 	<div class="header1" id="navbar"></div>
     <br><br>
@@ -308,7 +292,7 @@
             </div>  
         </section>
         <section class="content" id="product-section">
-            <div id="response-ownership"></div>
+            <div id="response-product"></div>
             <div class="wrapper tablepostion3">
                 <div class="container-fluid">
                     <div class="row">
@@ -316,7 +300,11 @@
                             <div class="card">
                                 <div class="card-header row">
                                     <div class="col-4">
-                                        Product owned by customers
+                                        Product Entries
+                                    </div>
+                                    <div class="col-2">
+                                        <button onclick="AddProduct();" class='flex-c-m size0 bg4 bo-rad-25 hov1 m-text3 trans-0-4' name="AddProduct" value="AddProduct" style="position: relative; left: 40px; width:70%;border: none;">Add Product
+                                        </button>			
                                     </div>
                                 </div>
                                                                   
@@ -335,7 +323,7 @@
                                         </thead>
                                         <tbody>
                                             <?php
-                                                foreach ($data_ownership as $stand) {
+                                                foreach ($data_product as $stand) {
                                                 echo "<tr>";
                                                     echo '<td><div class="row w-size2"><a href="#" onclick="ViewUpdateProduct(\''.$stand->productid.'\',\''.$stand->productcompany.'\',\''.$stand->producttype.'\',\''.$stand->modelno.'\',\''.$stand->capacity.'\',\''.$stand->rating.'\');"class="w-size13" style="position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" onclick="DeleteProduct(\''.$stand->productid.'\',\''.$stand->modelno.'\');" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button></div></td>';
                                                     echo "<td>".$stand->productid."</td>";
@@ -349,14 +337,26 @@
                                             ?>
                                         </tbody>
                                     </table>
-								</div>
+                                </div>
+                        
+                                <div id="product-form" class="col-6">
+                                    <form id="add_product_form" method="POST">
+                                    </form>
+                                    <form id="update_product_form" method="POST">
+                                    </form>
+                                </div>
+                        
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="card">
                                 <div class="card-header row">
                                     <div class="col-4">
-                                        All products
+                                        Product Entries
+                                    </div>
+                                    <div class="col-2">
+                                        <button onclick="AddProduct();" class='flex-c-m size0 bg4 bo-rad-25 hov1 m-text3 trans-0-4' name="AddProduct" value="AddProduct" style="position: relative; left: 40px; width:70%;border: none;">Add Product
+                                        </button>			
                                     </div>
                                 </div>
                                                                   
@@ -377,7 +377,7 @@
                                             <?php
                                                 foreach ($data_product as $stand) {
                                                 echo "<tr>";
-                                                    echo '<td><div class="row w-size0"><button onclick="AddOwnership(\''.$stand->productid.'\');"class="w-size13" style="position: relative;color: white;border: none;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Add</center></button></div></td>';
+                                                    echo '<td><div class="row w-size2"><a href="#" onclick="ViewUpdateProduct(\''.$stand->productid.'\',\''.$stand->productcompany.'\',\''.$stand->producttype.'\',\''.$stand->modelno.'\',\''.$stand->capacity.'\',\''.$stand->rating.'\');"class="w-size13" style="position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" onclick="DeleteProduct(\''.$stand->productid.'\',\''.$stand->modelno.'\');" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button></div></td>';
                                                     echo "<td>".$stand->productid."</td>";
                                                     echo "<td>".$stand->productcompany."</td>";
                                                     echo "<td>".$stand->producttype."</td>";
@@ -397,7 +397,8 @@
             </div>
             </section>
             <br><br>
-    </div>    
+    
+</div>    
     
                 <!--===============================================================================================-->
                 <script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -456,26 +457,7 @@
                         });
                     });
                 </script>
-				<script>
-					function AddOwnership(productid){
-						var data = JSON.stringify({customer_id: customerid,product_id:productid,quantity:"1",operation:"C"});
-							console.log(data);
-							$.ajax({
-								url: "http://localhost/SMS_WebApp/api/ownership/CRUD_ownership.php",
-								type : "POST",
-								contentType : 'application/json',
-								data : data,
-								success : function(result){
-									$('#response-ownership').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Employee deleted Successfully</div>");
-									setTimeout(url,1000);
-								},
-								error: function(xhr, status, error){
-									$('#response-ownership').html("<div class='alert alert-danger'>Unable to Employee.</div>");
-									setTimeout(url,1000);
-								}
-							});
-					}
-				</script>
+                
                 <script type="text/javascript">
                     $(document).ready(function(){
                         showNavBar(userid,firstname,lastname);
