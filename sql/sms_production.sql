@@ -73,17 +73,6 @@ CREATE TABLE `amc` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `amc`
---
-
-INSERT INTO `amc` (`amcid`, `customerid`, `amctypeid`, `fromdate`, `period`, `quantity`, `totalservices`, `amount`) VALUES
-(1, 1, 1, '2020-06-18', 3, 2, 16, 18000),
-(2, 2, 1, '2020-06-09', 2, 66, 26, 180),
-(3, 1, 1, '2010-06-19', 2, 6, 16, 1800),
-(4, 1, 1, '2020-06-12', 2, 6, 16, 1800),
-(5, 2, 2, '2020-06-23', 2, 2, 16, 10);
-
---
 -- Triggers `amc`
 --
 DELIMITER $$
@@ -112,14 +101,6 @@ CREATE TABLE `amc_type` (
   `amctype` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `amc_type`
---
-
-INSERT INTO `amc_type` (`amctypeid`, `amctype`) VALUES
-(1, 'PREVENTIVE'),
-(2, 'WARRANTY');
-
 -- --------------------------------------------------------
 
 --
@@ -135,20 +116,6 @@ CREATE TABLE `complaint` (
   `status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `complaint`
---
-
-INSERT INTO `complaint` (`complaintid`, `customerid`, `amcid`, `date`, `complainttypeid`, `status`) VALUES
-(1, 1, 3, '1999-05-05', 1, 'CLOSED'),
-(2, 1, 1, '0555-05-05', 1, 'OPEN'),
-(3, 1, 1, '2020-06-06', 1, 'OPEN'),
-(4, 1, 1, '2020-06-24', 1, 'OPEN'),
-(5, 2, 2, '2020-06-11', 1, 'OPEN'),
-(6, 1, 1, '2020-06-12', 7, 'OPEN'),
-(7, 2, 2, '2020-07-23', 1, 'OPEN'),
-(8, 1, 3, '2020-06-20', 1, 'OPEN'),
-(9, 2, 5, '2020-06-26', 1, 'OPEN');
 
 -- --------------------------------------------------------
 
@@ -173,20 +140,6 @@ CREATE TABLE `complaint_report` (
   `customerremarks` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `complaint_report`
---
-
-INSERT INTO `complaint_report` (`complaintid`, `defectobserved`, `actiontaken`, `partsreplaced`, `remarks`, `linevoltage`, `grilltemp`, `current`, `roomtemp`, `timefrom`, `timeto`, `mechanicremarks`, `mechanicname`, `customerremarks`) VALUES
-(1, '', '', '', '', 0, 0, 0, 0, '2020-06-12 12:52:00', '0000-00-00 00:00:00', '', 'Late ltif', ''),
-(2, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'OPEN', ''),
-(3, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'OPEN', ''),
-(4, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'OPEN', ''),
-(5, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'OPEN', ''),
-(6, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'OPEN', ''),
-(7, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', ''),
-(8, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', ''),
-(9, '', '', '', '', 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -199,13 +152,6 @@ CREATE TABLE `complaint_type` (
   `complainttype` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `complaint_type`
---
-
-INSERT INTO `complaint_type` (`complainttypeid`, `complainttype`) VALUES
-(7, 'GAS LEAKAGE'),
-(1, 'ICE FORMATION');
 
 -- --------------------------------------------------------
 
@@ -229,15 +175,6 @@ CREATE TABLE `customer` (
   `email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `customer`
---
-
-INSERT INTO `customer` (`customerid`, `userid`, `billingname`, `placeid`, `firstname`, `lastname`, `contactno1`, `contactno2`, `address`, `city`, `state`, `pincode`, `email`) VALUES
-(1, 'jinesh@example.com', 'SBI_CTM', 1, 'meet', 'modi', '123456789', '987654321', 'Ankleshwar', 'Ahmedabad', 'Gujarat', '380001', 'meetmodi8@gmail.com'),
-(2, 'jinesh@example.com', 'BOB-meet', 1, 'mee', 'modi', '7987965453', '65465645645', 'a;SGB', 'AHD', 'GUJ', '380001', 'meetmodi8@gmail.com'),
-(4, 'saransh@example.com', 'aseasse', 1, 'MEet', 'Modi', '123456789', '987654321', '1687', 'assxa', 'asxaxa', '123456', 'meetmodi8@uadud.com');
-
 -- --------------------------------------------------------
 
 --
@@ -251,14 +188,6 @@ CREATE TABLE `employee` (
   `password` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `employee`
---
-
-INSERT INTO `employee` (`userid`, `firstname`, `lastname`, `password`) VALUES
-('jinesh@example.com', 'Jinesh', 'Patel', '$2y$10$bfVowEoz067gqoS5Br9VYugHSjrHLRPhV8LBIUtPSgwW/3KFPiVX2'),
-('meet@example.com', 'meet', 'modi', '$2y$10$xO9R6BkM8Wvi2HUtlAXFVu8Y8T2faMimBnuPr2dzNqiPKk839wxSC');
-
 -- --------------------------------------------------------
 
 --
@@ -271,15 +200,6 @@ CREATE TABLE `mechanic` (
   `age` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `mechanic`
---
-
-INSERT INTO `mechanic` (`id`, `name`, `age`) VALUES
-(1, 'Late ltif', 49),
-(2, 'aalsu pir', 12);
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `ownership`
@@ -291,17 +211,6 @@ CREATE TABLE `ownership` (
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `ownership`
---
-
-INSERT INTO `ownership` (`customerid`, `productid`, `quantity`) VALUES
-(2, 22, 1),
-(2, 23, 5),
-(4, 22, 1),
-(4, 23, 1);
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `payment`
@@ -364,13 +273,6 @@ CREATE TABLE `product` (
   `rating` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `product`
---
-
-INSERT INTO `product` (`productid`, `modelno`, `productcompany`, `producttype`, `capacity`, `rating`) VALUES
-(22, 'asafdsc', 'DAIKIN', 'WINDOW', 1, 3),
-(23, 'zxvxcvcd', 'DAIKIN', 'WINDOW', 8, 5);
 
 -- --------------------------------------------------------
 
@@ -387,102 +289,6 @@ CREATE TABLE `service` (
   `status` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `service`
---
-
-INSERT INTO `service` (`serviceid`, `amcid`, `date`, `handledby`, `remarks`, `status`) VALUES
-(1, 1, '2020-08-03', '', '', 'OPEN'),
-(2, 1, '2020-09-18', '', '', 'OPEN'),
-(3, 1, '2020-08-03', '', '', 'OPEN'),
-(4, 1, '2020-12-19', '', '', 'OPEN'),
-(5, 1, '2021-02-03', '', '', 'OPEN'),
-(6, 1, '2021-03-21', '', '', 'OPEN'),
-(7, 1, '2021-05-06', '', '', 'OPEN'),
-(8, 1, '2021-06-21', '', '', 'OPEN'),
-(9, 1, '2021-08-06', '', '', 'OPEN'),
-(10, 1, '2021-09-21', '', '', 'OPEN'),
-(11, 1, '2021-11-06', '', '', 'OPEN'),
-(12, 1, '2021-12-22', '', '', 'OPEN'),
-(13, 1, '2022-02-06', '', '', 'OPEN'),
-(14, 1, '2022-03-24', '', '', 'OPEN'),
-(15, 1, '2022-05-09', '', '', 'OPEN'),
-(16, 1, '2022-06-24', '', '', 'OPEN'),
-(20, 1, '2020-09-18', 'nobody', '', 'OPEN'),
-(21, 2, '2020-07-07', 'Late ltif', '', 'OPEN'),
-(22, 2, '2020-08-03', '', '', 'OPEN'),
-(23, 2, '2020-09-01', '', '', 'OPEN'),
-(24, 2, '2020-09-29', '', '', 'OPEN'),
-(25, 2, '2020-10-27', '', '', 'OPEN'),
-(26, 2, '2020-11-24', '', '', 'OPEN'),
-(27, 2, '2020-12-22', '', '', 'OPEN'),
-(28, 2, '2021-01-19', '', '', 'OPEN'),
-(29, 2, '2021-02-16', '', '', 'OPEN'),
-(30, 2, '2021-03-16', '', '', 'OPEN'),
-(31, 2, '2021-04-13', '', '', 'OPEN'),
-(32, 2, '2021-05-11', '', '', 'OPEN'),
-(33, 2, '2021-06-08', '', '', 'OPEN'),
-(34, 2, '2021-07-06', '', '', 'OPEN'),
-(35, 2, '2021-08-03', '', '', 'OPEN'),
-(36, 2, '2021-08-31', '', '', 'OPEN'),
-(37, 2, '2021-09-28', '', '', 'OPEN'),
-(38, 2, '2021-10-26', '', '', 'OPEN'),
-(39, 2, '2021-11-23', '', '', 'OPEN'),
-(40, 2, '2021-12-21', '', '', 'OPEN'),
-(41, 2, '2022-01-18', '', '', 'OPEN'),
-(42, 2, '2022-02-15', '', '', 'OPEN'),
-(43, 2, '2022-03-15', '', '', 'OPEN'),
-(44, 2, '2022-04-12', '', '', 'OPEN'),
-(45, 2, '2022-05-10', '', '', 'OPEN'),
-(46, 2, '2022-06-07', '', '', 'OPEN'),
-(47, 3, '2010-08-04', '', '', 'OPEN'),
-(48, 3, '2010-09-19', '', '', 'OPEN'),
-(49, 3, '2010-11-04', '', '', 'OPEN'),
-(50, 3, '2010-12-20', '', '', 'OPEN'),
-(51, 3, '2011-02-04', '', '', 'OPEN'),
-(52, 3, '2011-03-22', '', '', 'OPEN'),
-(53, 3, '2011-05-07', '', '', 'OPEN'),
-(54, 3, '2011-06-22', '', '', 'OPEN'),
-(55, 3, '2011-08-07', '', '', 'OPEN'),
-(56, 3, '2011-09-22', '', '', 'OPEN'),
-(57, 3, '2011-11-07', '', '', 'OPEN'),
-(58, 3, '2011-12-23', '', '', 'OPEN'),
-(59, 3, '2012-02-07', '', '', 'OPEN'),
-(60, 3, '2012-03-24', '', '', 'OPEN'),
-(61, 3, '2012-05-09', '', '', 'OPEN'),
-(62, 3, '2012-06-24', '', '', 'OPEN'),
-(63, 4, '2020-07-28', '', '', 'OPEN'),
-(64, 4, '2020-09-12', '', '', 'OPEN'),
-(65, 4, '2020-10-28', '', '', 'OPEN'),
-(66, 4, '2020-12-13', '', '', 'OPEN'),
-(67, 4, '2021-01-28', '', '', 'OPEN'),
-(68, 4, '2021-03-15', '', '', 'OPEN'),
-(69, 4, '2021-04-30', '', '', 'OPEN'),
-(70, 4, '2021-06-15', '', '', 'OPEN'),
-(71, 4, '2021-07-31', '', '', 'OPEN'),
-(72, 4, '2021-09-15', '', '', 'OPEN'),
-(73, 4, '2021-10-31', '', '', 'OPEN'),
-(74, 4, '2021-12-16', '', '', 'OPEN'),
-(75, 4, '2022-01-31', '', '', 'OPEN'),
-(76, 4, '2022-03-18', '', '', 'OPEN'),
-(77, 4, '2022-05-03', '', '', 'OPEN'),
-(78, 4, '2022-06-18', '', '', 'OPEN'),
-(79, 5, '2020-08-08', '', '', 'OPEN'),
-(80, 5, '2020-09-23', '', '', 'OPEN'),
-(81, 5, '2020-11-08', '', '', 'OPEN'),
-(82, 5, '2020-12-24', '', '', 'OPEN'),
-(83, 5, '2021-02-08', '', '', 'OPEN'),
-(84, 5, '2021-03-26', '', '', 'OPEN'),
-(85, 5, '2021-05-11', '', '', 'OPEN'),
-(86, 5, '2021-06-26', '', '', 'OPEN'),
-(87, 5, '2021-08-11', '', '', 'OPEN'),
-(88, 5, '2021-09-26', '', '', 'OPEN'),
-(89, 5, '2021-11-11', '', '', 'OPEN'),
-(90, 5, '2021-12-27', '', '', 'OPEN'),
-(91, 5, '2022-02-11', '', '', 'OPEN'),
-(92, 5, '2022-03-29', '', '', 'OPEN'),
-(93, 5, '2022-05-14', '', '', 'OPEN'),
-(94, 5, '2022-06-29', '', '', 'OPEN');
 
 --
 -- Indexes for dumped tables
@@ -597,37 +403,37 @@ ALTER TABLE `service`
 -- AUTO_INCREMENT for table `amc`
 --
 ALTER TABLE `amc`
-  MODIFY `amcid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `amcid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `amc_type`
 --
 ALTER TABLE `amc_type`
-  MODIFY `amctypeid` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `amctypeid` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `complaint`
 --
 ALTER TABLE `complaint`
-  MODIFY `complaintid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `complaintid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `complaint_type`
 --
 ALTER TABLE `complaint_type`
-  MODIFY `complainttypeid` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `complainttypeid` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customerid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `customerid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `mechanic`
 --
 ALTER TABLE `mechanic`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `payment`
@@ -645,19 +451,19 @@ ALTER TABLE `payment_mode`
 -- AUTO_INCREMENT for table `place`
 --
 ALTER TABLE `place`
-  MODIFY `placeid` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `placeid` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `productid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `productid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `service`
 --
 ALTER TABLE `service`
-  MODIFY `serviceid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+  MODIFY `serviceid` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- Constraints for dumped tables
