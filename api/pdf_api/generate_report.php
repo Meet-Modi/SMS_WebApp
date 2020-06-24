@@ -25,7 +25,7 @@ $data = json_decode($json);
 
 $complaint->complaint_id=$_POST['complaint_id'];
 $complaint->customer_id = Customer::getCustomerIdFromBillingName($_POST['billing_name'],$db);
-$customer->customer_id = $complaint->complaint_id;
+$customer->customer_id = $complaint->customer_id;
 
 $json_customer=$customer->showCustomer();
 $data_customer = json_decode($json_customer);
@@ -46,7 +46,7 @@ $pdf->Multicell(120,3,"\nComplaint ID: ".$_POST['complaint_id']."               
 $pdf->SetXY(20,46);
 $pdf->Multicell(120,3,"\nAMC From : ".$data_amc->fromdate."                   AMC TO: \n",1,'L'); 
 $pdf->SetXY(20,52);
-$pdf->Multicell(120,4,"\nName of Customer: ".$data_customer->billing_name."     \nContact Person: ".$data_customer->firstname." ".$data_customer->lastname."\n",1,'L'); 
+$pdf->Multicell(120,4,"\nName of Customer: ".$data_customer->billingname."     \nContact Person: ".$data_customer->firstname." ".$data_customer->lastname."\n",1,'L'); 
 $pdf->SetXY(20,64);
 $pdf->Multicell(120,4,"\nAddress: " . $data_customer->address . " ",1,'L'); 
 $pdf->SetXY(20,76);

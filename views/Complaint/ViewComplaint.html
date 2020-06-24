@@ -482,7 +482,7 @@
                     form.submit();
                 }
                 var form_data=JSON.stringify(update_customer_form.serializeObject());
-//                redirectPost('http://localhost/SMS_WebApp/api/pdf_api/generate_report.php', update_customer_form.serializeObject());
+                redirectPost('http://localhost/SMS_WebApp/api/pdf_api/generate_report.php', update_customer_form.serializeObject());
                 console.log(form_data);
             });
             
