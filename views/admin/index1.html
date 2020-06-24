@@ -151,6 +151,20 @@
     $result4=curl_exec ($ch1);
     $result4=curl_exec ($ch1);
     $data_complaint_type = json_decode($result4);
+
+    $myObj1 = (object)array();
+    $myObj1->operation = "R";
+    $myJSON1 = json_encode($myObj1);
+    
+    $ch1 = curl_init();
+    curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/mechanic/CRUD_mechanic.php");
+    curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch1, CURLOPT_POST,           1 );
+    curl_setopt($ch1, CURLOPT_POSTFIELDS,     $myJSON1 ); 
+    curl_setopt($ch1, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    $result5=curl_exec ($ch1);
+    $result5=curl_exec ($ch1);
+    $data_mechanic = json_decode($result5);
     ?>
     
     <script>
@@ -223,7 +237,6 @@
                 </div>
             </div>
             </section>
-            <br><br>
             <section class="content" id="customer-section">
                 <div class="response-customer"></div>
                 <div class="wrapper tablepostion3">
@@ -280,58 +293,6 @@
                         </div>
                     </div>
                 </section>      
- 
-                <section class="content" id="employee-section">
-                    <div id="response-employee"></div>
-                    <div class="wrapper tablepostion3">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-12">
-                                    
-                                    <div class="card">
-                                        <div class="card-header">
-                                            Employee Entries
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-6">                 
-                                                <!-- /.card-header -->
-                                                <div class="card-body">
-                                                    <table id="example4" class="table table-bordered table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Action</th>
-                                                                <th>userid</th>
-                                                                <th>First name</th>
-                                                                <th>Last name</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php
-                                                            $p = "'";
-                                                            foreach ($data_employee as $stand) {
-                                                                echo "<tr>";
-                                                                    echo '<td><div class="row w-size2"><button onclick="UpdateEmployee(\''.$stand->userid.'\',\''.$stand->firstname.'\',\''.$stand->lastname.'\');" class="w-size13" style="position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;border: none;"><center>Update</center></button><!--<button onclick="DeleteEmployee(\''.$stand->userid.'\');" class="delete-btn" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button>--></div></td>';
-                                                                    echo "<td>".$stand->userid."</td>";
-                                                                    echo "<td>".$stand->firstname."</td>";
-                                                                    echo "<td>".$stand->lastname."</td>";
-                                                                    echo "</tr>";										 																		 											
-                                                                }
-                                                                ?>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                                <div id="employee-form" class="col-6">
-                                                    <form id="update_employee_form" method="POST">
-                                                    </form>
-                                                </div>
-                                            </div>        
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
                 <section class="content" id="complaint-type-section">
                     <div id="response-complaint-type"></div>
                     <div class="wrapper tablepostion3">
@@ -388,6 +349,116 @@
                         </div>
                     </div>                            
                 </section>
+                <section class="content" id="mechanic-section">
+                    <div id="response-mechanic"></div>
+                    <div class="wrapper tablepostion3">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header row">
+                                            <div class="col-4">
+                                                Mechanic
+                                            </div>
+                                            <div class="col-2">
+                                                <button onclick="AddMechanic();" class='flex-c-m size0 bg4 bo-rad-25 hov1 m-text3 trans-0-4' name="AddProduct" value="AddProduct" style="position: relative; width:80%;border: none;">Add Mechanic
+                                                </button>	
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">                                    
+                                                <div class="card-body">   
+                                                    <table id="example6" class="table table-bordered table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Action</th>
+                                                                <th>Mechanic Id</th>
+                                                                <th>Mechanic Name</th>
+                                                                <th>Mechanic Age</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                                if($data_mechanic !=0){
+                                                                    foreach ($data_mechanic as $stand) {
+                                                                    echo "<tr>";
+                                                                        echo '<td><div class="row w-size2"><button onclick="ViewMechanic(\''.$stand->id.'\',\''.$stand->name.'\',\''.$stand->age.'\');"class="w-size13" style="position: relative;color: white;border: none;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" onclick="DeleteMechanic(\''.$stand->id.'\');" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button></div></td>';
+                                                                        echo "<td>".$stand->id."</td>";
+                                                                        echo "<td>".$stand->name."</td>";
+                                                                        echo "<td>".$stand->age."</td>";
+                                                                        echo "</tr>";										 																		 											
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>                           
+                                            <div id="mechanic-form" class="col-6">
+                                                <form id="add_mechanic_form" method="POST">
+                                                </form>
+                                                <form id="update_mechanic_form" method="POST">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                            
+                </section>
+                <section class="content" id="employee-section">
+                    <div id="response-employee"></div>
+                    <div class="wrapper tablepostion3">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Employee Entries
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">                 
+                                                <!-- /.card-header -->
+                                                <div class="card-body">
+                                                    <table id="example4" class="table table-bordered table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Action</th>
+                                                                <th>userid</th>
+                                                                <th>First name</th>
+                                                                <th>Last name</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                            $p = "'";
+                                                            foreach ($data_employee as $stand) {
+                                                                echo "<tr>";
+                                                                    echo '<td><div class="row w-size0"><button onclick="UpdateEmployee(\''.$stand->userid.'\',\''.$stand->firstname.'\',\''.$stand->lastname.'\');" class="w-size13" style="position: relative;color: white;height: 60%;width: 95%; left: 10px;background-color: DodgerBlue;border: none;"><center>Update</center></button><!--<button onclick="DeleteEmployee(\''.$stand->userid.'\');" class="delete-btn" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button>--></div></td>';
+                                                                    echo "<td>".$stand->userid."</td>";
+                                                                    echo "<td>".$stand->firstname."</td>";
+                                                                    echo "<td>".$stand->lastname."</td>";
+                                                                    echo "</tr>";										 																		 											
+                                                                }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div id="employee-form" class="col-6">
+                                                    <form id="update_employee_form" method="POST">
+                                                    </form>
+                                                </div>
+                                            </div>        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
                 </div>    
                 <!--===============================================================================================-->
                 <script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -453,7 +524,15 @@
                             "autoWidth": true,
                             "responsive": true,
                         });
-
+                        $('#example6').DataTable({
+                            "paging": true,
+                            "lengthChange": true,
+                            "searching": true,
+                            "ordering": true,
+                            "info": true,
+                            "autoWidth": true,
+                            "responsive": true,
+                        });
                     });
                 </script>
                 
@@ -578,300 +657,430 @@
                                         $("#update_product_form").html(html2);
                                     }
                                     
-                                    function DeleteProduct(productid,modelno){
-                                        console.log("Delete Product called "+ productid);
-                                        var data = JSON.stringify({product_id: productid,model_no: modelno, operation:"D"});
-                                        console.log(data);
-                                        if(confirm("Are you sure you want to delete the Product?")){
-                                            
-                                            $.ajax({
-                                                url: "http://localhost/SMS_WebApp/api/product/CRUD_product.php",
-                                                type : "POST",
-                                                contentType : 'application/json',
-                                                data : data,
-                                                success : function(result){
-                                                    $('#response-product').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Product Deleted Successfully</div>");
-                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                                },
-                                                error: function(xhr, status, error){
-                                                    alert(error);
-                                                    $('#response-product').html("<div class='alert alert-danger'>Unable to delete Product.</div>");
-                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                                }
-                                            });
+                            function DeleteProduct(productid,modelno){
+                                console.log("Delete Product called "+ productid);
+                                var data = JSON.stringify({product_id: productid,model_no: modelno, operation:"D"});
+                                console.log(data);
+                                if(confirm("Are you sure you want to delete the Product?")){
+                                    
+                                    $.ajax({
+                                        url: "http://localhost/SMS_WebApp/api/product/CRUD_product.php",
+                                        type : "POST",
+                                        contentType : 'application/json',
+                                        data : data,
+                                        success : function(result){
+                                            $('#response-product').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Product Deleted Successfully</div>");
+                                            setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                        },
+                                        error: function(xhr, status, error){
+                                            alert(error);
+                                            $('#response-product').html("<div class='alert alert-danger'>Unable to delete Product.</div>");
+                                            setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
                                         }
+                                    });
+                                }
+                            }
+                            
+                            function DeleteCustomer(customer_id){
+                                var data = JSON.stringify({customerid: customer_id,operation:"D"});
+                                console.log(data);
+                                $.ajax({
+                                    url: "http://localhost/SMS_WebApp/api/employee/RUD_employee.php",
+                                    type : "POST",
+                                    contentType : 'application/json',
+                                    data : data,
+                                    success : function(result){
+                                        $('#response-customer').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Employee deleted Successfully</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                    },
+                                    error: function(xhr, status, error){
+                                        alert(error);
+                                        $('#response-customer').html("<div class='alert alert-danger'>Unable to Employee.</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
                                     }
-                                    
-                                    function DeleteCustomer(customer_id){
-                                        var data = JSON.stringify({customerid: customer_id,operation:"D"});
-                                        console.log(data);
-                                        $.ajax({
-                                            url: "http://localhost/SMS_WebApp/api/employee/RUD_employee.php",
-                                            type : "POST",
-                                            contentType : 'application/json',
-                                            data : data,
-                                            success : function(result){
-                                                $('#response-customer').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Employee deleted Successfully</div>");
-                                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                            },
-                                            error: function(xhr, status, error){
-                                                alert(error);
-                                                $('#response-customer').html("<div class='alert alert-danger'>Unable to Employee.</div>");
-                                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                            }
-                                        });
+                                });
+                            }
+                            
+                            function DeleteEmployee(user_id){
+                                var data = JSON.stringify({userid: user_id,operation:"D"});
+                                console.log(data);
+                                $.ajax({
+                                    url: "http://localhost/SMS_WebApp/api/employee/RUD_employee.php",
+                                    type : "POST",
+                                    contentType : 'application/json',
+                                    data : data,
+                                    success : function(result){
+                                        $('#response-employee').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Employee deleted Successfully</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                    },
+                                    error: function(xhr, status, error){
+                                        alert(error);
+                                        $('#response-employee').html("<div class='alert alert-danger'>Unable to Employee.</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
                                     }
-                                    
-
-                                    function DeleteEmployee(user_id){
-                                        var data = JSON.stringify({userid: user_id,operation:"D"});
-                                        console.log(data);
-                                        $.ajax({
-                                            url: "http://localhost/SMS_WebApp/api/employee/RUD_employee.php",
-                                            type : "POST",
-                                            contentType : 'application/json',
-                                            data : data,
-                                            success : function(result){
-                                                $('#response-employee').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Employee deleted Successfully</div>");
-                                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                            },
-                                            error: function(xhr, status, error){
-                                                alert(error);
-                                                $('#response-employee').html("<div class='alert alert-danger'>Unable to Employee.</div>");
-                                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                            }
-                                        });
+                                });
+                            }
+                            
+                            function DeleteComplaintType(complainttypeid){
+                                var data = JSON.stringify({complaint_type_id: complainttypeid,operation:"D"});
+                                console.log(data);
+                                $.ajax({
+                                    url: "http://localhost/SMS_WebApp/api/complaint/type/CRUD_complaint_type.php",
+                                    type : "POST",
+                                    contentType : 'application/json',
+                                    data : data,
+                                    success : function(result){
+                                        $('#response-complaint-type').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Complaint Type Deleted</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                    },
+                                    error: function(xhr, status, error){
+                                        alert(error);
+                                        $('#response-complaint-type').html("<div class='alert alert-danger'>Unable to Delete Complaint Type.</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
                                     }
-                                    function DeleteComplaintType(complainttypeid){
-                                        var data = JSON.stringify({complaint_type_id: complainttypeid,operation:"D"});
-                                        console.log(data);
-                                        $.ajax({
-                                            url: "http://localhost/SMS_WebApp/api/complaint/type/CRUD_complaint_type.php",
-                                            type : "POST",
-                                            contentType : 'application/json',
-                                            data : data,
-                                            success : function(result){
-                                                $('#response-complaint-type').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Complaint Type Deleted</div>");
-                                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                            },
-                                            error: function(xhr, status, error){
-                                                alert(error);
-                                                $('#response-complaint-type').html("<div class='alert alert-danger'>Unable to Delete Complaint Type.</div>");
-                                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                            }
-                                        });
-                                    }
-                                    
-                                    function UpdateEmployee(user_id,first_name,last_name){                                        var html3 = ` <br>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <input type="submit" value="Update" class="btn btn-primary" style="float: right;">
+                                });
+                            }
+                            
+                            function UpdateEmployee(user_id,first_name,last_name){                                        var html3 = ` <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="submit" value="Update" class="btn btn-primary" style="float: right;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="userid">User ID</label>
+                                            <input type="text" class="form-control" style="width: 100%;" id="userid" disabled ="disabled" name="userid" value="` + user_id + `">
+                                        </div>	
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="firstname">First Name</label>
+                                            <input type="text" class="form-control" style="width: 80%;" id="firstname" name="firstname" value="` + first_name + `">
+                                        </div>	
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="lastname">Last Name</label>
+                                            <input type="text" class="form-control" style="width: 80%;" id="lastname" name="lastname" value="` + last_name + `">
+                                            <input type="hidden" class="form-control" style="width:25%;" id="operation" value="U" name="operation">
+                                        </div>	
+                                    </div>
+                                </div>`;       
+                                $("#update_employee_form").html('');
+                                $("#update_employee_form").html(html3);
+                            }
+                        
+                            function AddComplaintType(){
+                                var html = `<br>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
+                                                    </div>
                                                 </div>
                                             </div>
+                                            
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label for="complaint_type">Complaint Type</label>
+                                                    <input type="text" class="form-control" style="width: 120%;" id="complaint_type" name="complaint_type" placeholder="Enter Complaint Type">
+                                                    <input type="hidden" class="form-control" style="width:25%;" id="operation" value="C" name="operation">
+                                                </div>	                                								
+                                            </div>
+                                            `;
+
+                                $('#add_complaint_type_form').html('');
+                                $('#update_complaint_type_form').html('');
+                                $('#add_complaint_type_form').html(html);
+                    
+                            }
+
+                            function AddMechanic(){                                        
+                                var html3 = ` <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="userid">User ID</label>
-                                                    <input type="text" class="form-control" style="width: 100%;" id="userid" disabled ="disabled" name="userid" value="` + user_id + `">
-                                                </div>	
-                                            </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="firstname">Name</label>
+                                            <input type="text" class="form-control" style="width: 80%;" id="name" name="name" placeholder="Enter Mechanic Name">
+                                        </div>	
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="lastname">Age</label>
+                                            <input type="number" class="form-control" style="width: 80%;" id="age" name="age" placeholder="Enter Age">
+                                            <input type="hidden" class="form-control" style="width:25%;" id="operation" value="C" name="operation">
+                                        </div>	
+                                    </div>
+                                </div>`;       
+                                $("#add_mechanic_form").html('');
+                                $("#update_mechanic_form").html('');
+                                $("#add_mechanic_form").html(html3);
+                            }
+
+                            function ViewMechanic(id,name,age){                                        
+                                var html3 = ` <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="submit" value="Update" class="btn btn-primary" style="float: right;">
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="firstname">First Name</label>
-                                                    <input type="text" class="form-control" style="width: 80%;" id="firstname" name="firstname" value="` + first_name + `">
-                                                </div>	
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="lastname">Last Name</label>
-                                                    <input type="text" class="form-control" style="width: 80%;" id="lastname" name="lastname" value="` + last_name + `">
-                                                    <input type="hidden" class="form-control" style="width:25%;" id="operation" value="U" name="operation">
-                                                </div>	
-                                            </div>
-                                        </div>`;       
-                                        $("#update_employee_form").html('');
-                                        $("#update_employee_form").html(html3);
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="userid">ID</label>
+                                            <input type="text" class="form-control" style="width: 100%;" id="mechanicid" readonly name="mechanicid" value="` + id + `">
+                                        </div>	
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="firstname">Name</label>
+                                            <input type="text" class="form-control" style="width: 80%;" id="name" name="name" value="` + name + `">
+                                        </div>	
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="lastname">Age</label>
+                                            <input type="number" class="form-control" style="width: 80%;" id="age" name="age" value="` + age + `">
+                                            <input type="hidden" class="form-control" style="width:25%;" id="operation" value="U" name="operation">
+                                        </div>	
+                                    </div>
+                                </div>`;       
+                                $("#update_mechanic_form").html('');
+                                $("#add_mechanic_form").html('');
+                                $("#update_mechanic_form").html(html3);
+                            }
+
+                            function DeleteMechanic(id){
+                                var form_data = JSON.stringify({mechanicid: id,operation:"D"});
+                                console.log(form_data);
+                                $.ajax({
+                                    url: "http://localhost/SMS_WebApp/api/mechanic/CRUD_mechanic.php",
+                                    type : "POST",
+                                    contentType : 'application/json',
+                                    data : form_data,
+                                    success : function(result){
+                                        $('#response-mechanic').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Mechanic Deleted</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                                    },
+                                    error: function(xhr, status, error){
+                                        $('#response-mechanic').html("<br><br><div class='alert alert-danger'>Unable to Delete Mechanic.</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
                                     }
+                                });                  
+                            }
+            </script>
                                 
-                                    function AddComplaintType(){
-                                        var html = `<br>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="row">
-                                                        <div class="form-group">
-                                                            <label for="complaint_type">Complaint Type</label>
-                                                            <input type="text" class="form-control" style="width: 120%;" id="complaint_type" name="complaint_type" placeholder="Enter Complaint Type">
-                                                            <input type="hidden" class="form-control" style="width:25%;" id="operation" value="C" name="operation">
-                                                        </div>	                                								
-                                                    </div>
-                                                    `;
-
-                                        $('#add_complaint_type_form').html('');
-                                        $('#update_complaint_type_form').html('');
-                                        $('#add_complaint_type_form').html(html);
-                           
-                                    }
-                                </script>
-                                
-                                <script>
-                                    $(document).ready(function(){
-                                        showNavBar(userid,firstname,lastname);
-                                        
-                                        $('.js-show-header-dropdown').on('click', function(){
-                                            $(this).parent().find('.header-dropdown')
-                                        });
-                                        
-                                        var menu = $('.js-show-header-dropdown');
-                                        var sub_menu_is_showed = -1;
-                                        
-                                        for(var i=0; i<menu.length; i++){
-                                            $(menu[i]).on('click', function(){ 
-                                                
-                                                if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
-                                                    $(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
-                                                    sub_menu_is_showed = -1;
-                                                }
-                                                else {
-                                                    for (var i = 0; i < menu.length; i++) {
-                                                        $(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
-                                                    }
-                                                    
-                                                    $(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
-                                                    sub_menu_is_showed = jQuery.inArray( this, menu );
-                                                }
-                                            });
-                                        }
-                                        
-                                        $(".js-show-header-dropdown, .header-dropdown").click(function(event){
-                                            event.stopPropagation();
-                                        });
-                                        
-                                        $(window).on("click", function(){
-                                            for (var i = 0; i < menu.length; i++) {
-                                                $(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
-                                            }
-                                            sub_menu_is_showed = -1;
-                                        });
-                                        
-                                        $("#add_product_form").submit(function(){
-                                            var add_customer_form=$(this);
-                                            var form_data=JSON.stringify(add_customer_form.serializeObject());
-                                            console.log(form_data);
-                                            $.ajax({
-                                                url: "http://localhost/SMS_WebApp/api/product/CRUD_product.php",
-                                                type : "POST",
-                                                contentType : 'application/json',
-                                                data : form_data,
-                                                success : function(result){
-                                                    //alert("product added");
-                                                    $('#response-product').html("<br><br><div class='alert alert-success' style='postion:absolute; bottom:0px;'> Product Added Successfully</div>");
-                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                                },
-                                                error: function(xhr, status, error){
-                                                    //alert(error);
-                                                    $('#response-product').html("<br><br><div class='alert alert-danger'>Unable to add Product.</div>");
-                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                                }
-                                            });
-                                            return false;
-                                        });
-                                        
-                                        $("#update_product_form").submit(function(){
-                                            var add_customer_form=$(this);
-                                            var form_data=JSON.stringify(add_customer_form.serializeObject());
-                                            console.log(form_data);
-                                            $.ajax({
-                                                url: "http://localhost/SMS_WebApp/api/product/CRUD_product.php",
-                                                type : "POST",
-                                                contentType : 'application/json',
-                                                data : form_data,
-                                                success : function(result){
-                                                    //alert("product added");
-                                                    $('#response-product').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Product Updated Successfully</div>");
-                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                                },
-                                                error: function(xhr, status, error){
-                                                    //alert(error);
-                                                    $('#response-product').html("<div class='alert alert-danger'>Unable to update Product.</div>");
-                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                                }
-                                            });
-                                            return false;
-                                        });
-                                        
-                                        $("#update_employee_form").submit(function(){
-                                            var add_customer_form=$(this);
-                                            var form_data=JSON.stringify(add_customer_form.serializeObject());
-                                            console.log(form_data);
-                                            $.ajax({
-                                                url: "http://localhost/SMS_WebApp/api/employee/RUD_employee.php",
-                                                type : "POST",
-                                                contentType : 'application/json',
-                                                data : form_data,
-                                                success : function(result){
-                                                    //alert("product added");
-                                                    $('#response-employee').html("<div class='alert alert-success' style='postion: relative; bottom:0px;top: 10px'>Employee Updated Successfully</div>");
-                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                                },
-                                                error: function(xhr, status, error){
-                                                    //alert(error);
-                                                    $('#response-employee').html("<div class='alert alert-danger'>Unable to update Employee.</div>");
-                                                    //setTimeout("window.location = 'http://localhost/SMS_WebApp/view/admin/index1.html'",1000);
-                                                }
-                                            });
-                                            return false;
-                                        });
-
-                                        $("#add_complaint_type_form").submit(function(){
-                                            var add_customer_form=$(this);
-                                            var form_data=JSON.stringify(add_customer_form.serializeObject());
-                                            console.log(form_data);
-                                            $.ajax({
-                                                url: "http://localhost/SMS_WebApp/api/complaint/type/CRUD_complaint_type.php",
-                                                type : "POST",
-                                                contentType : 'application/json',
-                                                data : form_data,
-                                                success : function(result){
-                                                    //alert("product added");
-                                                    $('#response-complaint-type').html("<div class='alert alert-success' style='postion: relative; bottom:0px;top: 10px'>Complaint Type Added Successfully</div>");
-                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
-                                                },
-                                                error: function(xhr, status, error){
-                                                    //alert(error);
-                                                    $('#response-complaint-type').html("<div class='alert alert-danger'>Unable to Add Complaint Type.</div>");
-                                                    //setTimeout("window.location = 'http://localhost/SMS_WebApp/view/admin/index1.html'",1000);
-                                                }
-                                            });
-                                            return false;
-                                        });
-
-                                        $.fn.serializeObject = function(){	
-                                            var o = {};
-                                            var a = this.serializeArray();
-                                            $.each(a, function() {
-                                                if (o[this.name] !== undefined) {
-                                                    if (!o[this.name].push) {
-                                                        o[this.name] = [o[this.name]];
-                                                    }
-                                                    o[this.name].push(this.value || '');
-                                                } else {
-                                                    o[this.name] = this.value || '';
-                                                }
-                                            });
-                                            return o;
-                                        };
-                                    });
-                                </script>
-                            </body>
-                            </html>
+            <script>
+                $(document).ready(function(){
+                    showNavBar(userid,firstname,lastname);
+                    
+                    $('.js-show-header-dropdown').on('click', function(){
+                        $(this).parent().find('.header-dropdown')
+                    });
+                    
+                    var menu = $('.js-show-header-dropdown');
+                    var sub_menu_is_showed = -1;
+                    
+                    for(var i=0; i<menu.length; i++){
+                        $(menu[i]).on('click', function(){ 
                             
+                            if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
+                                $(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+                                sub_menu_is_showed = -1;
+                            }
+                            else {
+                                for (var i = 0; i < menu.length; i++) {
+                                    $(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+                                }
+                                
+                                $(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+                                sub_menu_is_showed = jQuery.inArray( this, menu );
+                            }
+                        });
+                    }
+                    
+                    $(".js-show-header-dropdown, .header-dropdown").click(function(event){
+                        event.stopPropagation();
+                    });
+                    
+                    $(window).on("click", function(){
+                        for (var i = 0; i < menu.length; i++) {
+                            $(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+                        }
+                        sub_menu_is_showed = -1;
+                    });
+                    
+                    $("#add_product_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/product/CRUD_product.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-product').html("<br><br><div class='alert alert-success' style='postion:absolute; bottom:0px;'> Product Added Successfully</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                //alert(error);
+                                $('#response-product').html("<br><br><div class='alert alert-danger'>Unable to add Product.</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+                    
+                    $("#update_product_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/product/CRUD_product.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-product').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Product Updated Successfully</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                //alert(error);
+                                $('#response-product').html("<div class='alert alert-danger'>Unable to update Product.</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+                    
+                    $("#update_employee_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/employee/RUD_employee.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-employee').html("<div class='alert alert-success' style='postion: relative; bottom:0px;top: 10px'>Employee Updated Successfully</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                //alert(error);
+                                $('#response-employee').html("<div class='alert alert-danger'>Unable to update Employee.</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/view/admin/index1.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+                    
+                    $("#add_complaint_type_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/complaint/type/CRUD_complaint_type.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-complaint-type').html("<div class='alert alert-success' style='postion: relative; bottom:0px;top: 10px'>Complaint Type Added Successfully</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                //alert(error);
+                                $('#response-complaint-type').html("<div class='alert alert-danger'>Unable to Add Complaint Type.</div>");
+                                //setTimeout("window.location = 'http://localhost/SMS_WebApp/view/admin/index1.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+                    $("#add_mechanic_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/mechanic/CRUD_mechanic.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-mechanic').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Mechanic Updated</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                //alert(error);
+                                $('#response-mechanic').html("<div class='alert alert-danger'>Unable to Update Mechanic.</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+                    
+                    $("#update_mechanic_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/mechanic/CRUD_mechanic.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-mechanic').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Mechanic Updated</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                //alert(error);
+                                $('#response-mechanic').html("<div class='alert alert-danger'>Unable to update Mechanic.</div>");
+//                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index1.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+
+                    $.fn.serializeObject = function(){	
+                        var o = {};
+                        var a = this.serializeArray();
+                        $.each(a, function() {
+                            if (o[this.name] !== undefined) {
+                                if (!o[this.name].push) {
+                                    o[this.name] = [o[this.name]];
+                                }
+                                o[this.name].push(this.value || '');
+                            } else {
+                                o[this.name] = this.value || '';
+                            }
+                        });
+                        return o;
+                    };
+                });
+            </script>
+        </body>
+    </html>
+        

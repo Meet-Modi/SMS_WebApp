@@ -77,7 +77,6 @@ switch($data->view){
         echo(json_encode($data));
         break;
     
-
     case "ViewAMC":
         $data = array();
         $data['amctype'] = json_encode(amc_type::getAllAmcTypes($db));
@@ -91,7 +90,13 @@ switch($data->view){
         $data['billingname'] = json_encode(Customer::getAllBillingName($db));
         echo json_encode($data);
         break;
-}
+
+    case "ViewService":
+        $data = array();
+        $data['mechanic'] = Mechanic::getAllMechanicName($db);
+        echo json_encode($data);
+        break;
+    }
 
 
 

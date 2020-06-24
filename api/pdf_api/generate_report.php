@@ -34,6 +34,7 @@ $complaint->amc_id = $_POST['amc_id'];
 $json_amc = AMC::getAmcById($_POST['amc_id'],$db);
 $data_amc = json_decode($json_amc);
 
+
 $pdf = new FPDF('L','mm','A4');
 $pdf->SetFont('Times','',11);
 $pdf->AddPage();
@@ -44,7 +45,7 @@ $pdf->Image('img/header.jpg',182,10,80,20,'JPG');
 $pdf->SetXY(20,40);
 $pdf->Multicell(120,3,"\nComplaint ID: ".$_POST['complaint_id']."                                             Date: ".$_POST['date']."\n",1,'L'); 
 $pdf->SetXY(20,46);
-$pdf->Multicell(120,3,"\nAMC From : ".$data_amc->fromdate."                   AMC TO: \n",1,'L'); 
+$pdf->Multicell(120,3,"\nAMC From : ".$data_amc->fromdate."             AMC To: ".$_POST['amc_to']."\n",1,'L'); 
 $pdf->SetXY(20,52);
 $pdf->Multicell(120,4,"\nName of Customer: ".$data_customer->billingname."     \nContact Person: ".$data_customer->firstname." ".$data_customer->lastname."\n",1,'L'); 
 $pdf->SetXY(20,64);
@@ -85,7 +86,7 @@ $pdf->Multicell(120,4,"\nCustomer's Remarks : ".$_POST['customer_remarks']."\n\n
 $pdf->SetXY(158,40);
 $pdf->Multicell(120,3,"\nComplaint ID: ".$_POST['complaint_id']."                                             Date: ".$_POST['date']."\n",1,'L'); 
 $pdf->SetXY(158,46);
-$pdf->Multicell(120,3,"\nAMC From : ".$data_amc->fromdate."                   AMC TO: \n",1,'L'); 
+$pdf->Multicell(120,3,"\nAMC From : ".$data_amc->fromdate."             AMC To: ".$_POST['amc_to']."\n",1,'L'); 
 $pdf->SetXY(158,52);
 $pdf->Multicell(120,4,"\nName of Customer: ".$data_customer->billingname."     \nContact Person: ".$data_customer->firstname." ".$data_customer->lastname."\n",1,'L'); 
 $pdf->SetXY(158,64);
@@ -122,11 +123,6 @@ $pdf->SetXY(158,160);
 $pdf->Multicell(120,4,"\nName & sign of Mechanic : \n\n",1,'L'); 
 $pdf->SetXY(158,168);
 $pdf->Multicell(120,4,"\nCustomer's Remarks : ".$_POST['customer_remarks']."\n\n",1,'L'); 
-
-
-
-
-
 
 $pdf->Output();
 ?>

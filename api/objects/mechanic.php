@@ -67,7 +67,7 @@
             $this->name=htmlspecialchars(strip_tags($this->name));
             $this->age=htmlspecialchars(strip_tags($this->age));
             
-            $query = "UPDATE mechanic SET name='".$this->name."', age'".$this->age."' ";
+            $query = "UPDATE mechanic SET name='".$this->name."', age='".$this->age."' ";
             $query .= "WHERE id= '".$this->id."'";
             if($this->conn->query($query) === TRUE){
                 return true;

@@ -115,6 +115,8 @@
     $billing_name = $data_complaint->billingname;
     $amc_id = $data_complaint->amcid;
     $date = $data_complaint->date;
+    $amc_from = $data_complaint->fromdate;
+    $period = $data_complaint->period;
     $complaint_type = $data_complaint->complainttype;
     $complaint_status = $data_complaint->status;
     $defect_observed=$data_complaint->defectobserved;
@@ -152,7 +154,6 @@
     $inJSON2 = json_encode($inArray2);
     
     $ch2= curl_init();
-    
     curl_setopt($ch2, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/dynamicviews/dropdownviews.php" );
     curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1 );
     curl_setopt($ch2, CURLOPT_POST,           1 );
@@ -380,6 +381,11 @@
                                 <label for="operation"></label>
                                 <input type="hidden" class="form-control" style="width:25%;" id="operation" value="U" name="operation">
                                 <input type="hidden" class="form-control" style="width:0%" id="complaint_id" value="<?php echo($complaint_id); ?>" name="complaint_id">
+                                <?php
+                                    $end_date = date("Y-m-d", strtotime($amc_from." +".$period." years"));
+                                    $end_date = date("Y-m-d", strtotime($end_date." - 1 days"));
+                                ?>
+                                <input type="hidden" class="form-control" style="width:0%" id="amc_to" value="<?php echo($end_date); ?>" name="amc_to">
                             </div> 
                         </div>
                         
@@ -464,13 +470,14 @@
             });
             
             
-            $("#print_button").click(function(){
+            $("#print_button").click(function(e){
                 var update_customer_form=$("#view_complaint_form");
                 function redirectPost(url, data) {
                     var form = document.createElement('form');
                     document.body.appendChild(form);
                     form.method = 'post';
                     form.action = url;
+                    form.target = '_blank';
                     for (var name in data) {
                         var input = document.createElement('input');
                         input.type = 'hidden';
@@ -480,6 +487,7 @@
                         console.log("{" + name + "," + data[name] + "}");
                     }
                     form.submit();
+                    e.preventDefault();
                 }
                 var form_data=JSON.stringify(update_customer_form.serializeObject());
                 redirectPost('http://localhost/SMS_WebApp/api/pdf_api/generate_report.php', update_customer_form.serializeObject());

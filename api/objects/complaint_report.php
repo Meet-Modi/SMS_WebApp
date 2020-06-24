@@ -60,11 +60,12 @@
         
         public static function getComplaintReportById($complaint_id,$db){
             $output = array();
-            $query = "SELECT complaint.complaintid,customer.billingname,complaint.customerid,complaint.amcid,complaint.status,complaint.date, complaint_type.complainttype,complaint_report.mechanicname,complaint_report.timefrom,complaint_report.timeto,complaint_report.linevoltage,complaint_report.defectobserved,complaint_report.actiontaken,complaint_report.partsreplaced,complaint_report.remarks,complaint_report.grilltemp,complaint_report.current,complaint_report.roomtemp,complaint_report.mechanicremarks,complaint_report.customerremarks
+            $query = "SELECT complaint.complaintid,customer.billingname,complaint.customerid,complaint.amcid,amc.fromdate,amc.period,complaint.status,complaint.date, complaint_type.complainttype,complaint_report.mechanicname,complaint_report.timefrom,complaint_report.timeto,complaint_report.linevoltage,complaint_report.defectobserved,complaint_report.actiontaken,complaint_report.partsreplaced,complaint_report.remarks,complaint_report.grilltemp,complaint_report.current,complaint_report.roomtemp,complaint_report.mechanicremarks,complaint_report.customerremarks
             FROM complaint 
             INNER JOIN complaint_type ON complaint_type.complainttypeid=complaint.complainttypeid
             INNER JOIN complaint_report ON complaint_report.complaintid=complaint.complaintid
             INNER JOIN customer ON complaint.customerid=customer.customerid
+            INNER JOIN amc ON complaint.amcid=amc.amcid
             WHERE complaint.complaintid='".$complaint_id."'";
             //echo($query);
             $result = $db->query($query);

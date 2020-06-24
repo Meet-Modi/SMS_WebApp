@@ -53,17 +53,22 @@ switch($data->operation){
                 $output_data = Service::getAllServiceByDate($db,$date);
                 echo(json_encode($output_data));        
             break;
+            case "readId":
+                $service_id=$data->service_id;
+                $output_data = Service::getServiceById($db,$service_id);
+                echo(json_encode($output_data));        
+            break;
         }
     break;
     case "U":
         $service->service_id = $data->service_id;
-        $service->amc_id = $data->amc_id;
+        //$service->amc_id = $data->amc_id;
         $service->date = $data->date;
         $service->handled_by = $data->handled_by;
         $service->remarks = $data->remarks;
         $service->status = $data->status;
         if(
-           !empty($service->service_id) && !empty($service->amc_id)&& !empty($service->date) && !empty($service->status) &&
+           !empty($service->service_id) && !empty($service->date) && !empty($service->status) &&
            $service->updateServiceById()
         ){
             http_response_code(200);

@@ -37,13 +37,13 @@ class Service{
     function updateServiceById(){
         
         $this->service_id=htmlspecialchars(strip_tags($this->service_id));
-        $this->amc_id=htmlspecialchars(strip_tags($this->amc_id));
+        //$this->amc_id=htmlspecialchars(strip_tags($this->amc_id));
         $this->date=htmlspecialchars(strip_tags($this->date));
         $this->handled_by=htmlspecialchars(strip_tags($this->handled_by));
         $this->remarks=htmlspecialchars(strip_tags($this->remarks));
         $this->status=htmlspecialchars(strip_tags($this->status));        
 
-        $query = "UPDATE ".$this->table_name." SET amcid='".$this->amc_id."',date='".$this->date."',handledby='".$this->handled_by."',remarks='".$this->remarks."',status='".$this->status."'";
+        $query = "UPDATE ".$this->table_name." SET date='".$this->date."',handledby='".$this->handled_by."',remarks='".$this->remarks."',status='".$this->status."'";
         $query .= " WHERE serviceid = '".$this->service_id."'";
         if ($this->conn->query($query) === TRUE) {
             return true;
@@ -90,6 +90,20 @@ class Service{
 			$output[] = $row;
 		}
 		return $output;
+    }
+
+    public static function getServiceById($db,$service_id){
+        $service_id=htmlspecialchars(strip_tags($service_id));
+        $query = "SELECT serviceid,status,handledby,date,remarks,amc.quantity FROM service INNER JOIN amc ON amc.amcid=service.amcid WHERE serviceid = '" . $service_id . "'";
+        $result = $db->query($query);
+		if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $output = $row;
+            return $output;
+        }
+        else{
+            return false;
+        }
     }
 
 }
