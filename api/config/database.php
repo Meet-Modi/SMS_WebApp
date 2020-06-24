@@ -3,7 +3,7 @@ class Database{
   
     // specify your own database credentials
     private $host = "localhost";
-    private $db_name = "sms";
+    private $db_name = "sms_production";
     private $username = "root";
     private $password = "MeetModi08)(";
     public $conn;

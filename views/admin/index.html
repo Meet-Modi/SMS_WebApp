@@ -1,403 +1,1088 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SDE | Customers</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="images/icons/logo.png"/>
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/custom.css">
-	<!--===============================================================================================-->
-	
-	<!-- Font Awesome -->
-	<link rel="stylesheet" href="Addcust_files/plugins/fontawesome-free/css/all.min.css">
-	<!-- Ionicons -->
-	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-	<!-- daterange picker -->
-	<link rel="stylesheet" href="Addcust_files/plugins/daterangepicker/daterangepicker.css">
-	<!-- iCheck for checkboxes and radio inputs -->
-	<link rel="stylesheet" href="Addcust_files/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-	<!-- Bootstrap Color Picker -->
-	<link rel="stylesheet" href="Addcust_files/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
-	<!-- Tempusdominus Bbootstrap 4 -->
-	<link rel="stylesheet" href="Addcust_files/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-	<!-- Select2 -->
-	<link rel="stylesheet" href="Addcust_files/plugins/select2/css/select2.min.css">
-	<link rel="stylesheet" href="Addcust_files/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-	<!-- Bootstrap4 Duallistbox -->
-	<link rel="stylesheet" href="Addcust_files/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
-	<!-- Theme style -->
-	<link rel="stylesheet" href="Addcust_files/dist/css/adminlte.min.css">
-	<!-- Google Font: Source Sans Pro -->
-	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-	
-	<style>
-		.form-control1 {
-			display: block;
-			width: 100%;
-			height: calc(4.5rem + 2px);
-			padding: 0.375rem 0.75rem;
-			font-size: 1rem;
-			font-weight: 400;
-			line-height: 1.5;
-			color: #495057;
-			background-color: #ffffff;
-			background-clip: padding-box;
-			border: 1px solid #ced4da;
-			border-radius: 0.25rem;
-			box-shadow: inset 0 0 0 rgba(0, 0, 0, 0);
-			transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-		}
-		
-	</style>
-	
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SDE | Customers</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="images/icons/logo.png"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/custom.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <style>
+        .delete-btn {
+            background-color: transparent;
+            border: none;
+            color: black;
+            padding: 2px 4px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        
+        /* Darker background on mouse-over */
+        .delete-btn:hover {
+            background-color: red;
+            color: white;
+        }
+    </style>    
 </head>
 
 <body class="hold-transition sidebar-mini animsition">
-	<?php
-	$cookie_name = "jwt_token";
-	if(isset($_COOKIE[$cookie_name])) { 
-		echo "Cookie named '" . $cookie_name . "' is set!";
-		$jwt_token = $_COOKIE[$cookie_name]; 
-	} 
-	else{
-		header("Location: ../../index.html");
-		exit();
-	}		
-	
-	$myObj = (object)array();
-	$myObj->jwt = $jwt_token;
-	$myJSON = json_encode($myObj);
-	
-	$ch = curl_init();
-	
-	curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/employee/validate_token.php" );
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-	curl_setopt($ch, CURLOPT_POST,           1 );
-	curl_setopt($ch, CURLOPT_POSTFIELDS,     $myJSON ); 
-	curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
-	
-	$result=curl_exec ($ch);
-	$data = json_decode($result);
-	$userid = $data->data->userid;
-	$firstname = $data->data->firstname;
-	$lastname = $data->data->lastname;
-	
-	$inArray = (object)array();
-	$inArray->view = "Addcustomer";
-	$inJSON = json_encode($inArray);
-	
-	$ch = curl_init();
-	
-	curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/dynamicviews/dropdownviews.php" );
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-	curl_setopt($ch, CURLOPT_POST,           1 );
-	curl_setopt($ch, CURLOPT_POSTFIELDS,     $inJSON ); 
-	curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
-	
-	$result1 =curl_exec ($ch);
-	$data = json_decode($result1);
-	$name = json_decode($data->name);
-	$place = json_decode($data->place);
-	
-	$myObj1 = (object)array();
-	$myObj1->customer_id = "1";
-	$myObj1->option = "2";
-	$myJSON1 = json_encode($myObj1);
-	
-	$ch1 = curl_init();
-	curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/customer/show_customers.php" );
-	curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1 );
-	curl_setopt($ch1, CURLOPT_POST,           1 );
-	curl_setopt($ch1, CURLOPT_POSTFIELDS,     $myJSON1 ); 
-	curl_setopt($ch1, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
-	$result1=curl_exec ($ch1);
-	$result1=curl_exec ($ch1);
-	$data_customer = json_decode($result1);
-	
-	?>
-	
-	<script>
-		var userid = "<?php echo($userid);?>";
-		var firstname = "<?php echo($firstname);?>";
-		var lastname = "<?php echo($lastname); ?>"; 
-	</script>
-	<div class="header1" id="navbar"></div>
-	<br><br>
-	<div id="response"></div>
-	<div class="wrapper">
-		<section class="content">
-			<div class="container-fluid">
-				<div class="card card-default">
-					<form id="add_customer_form" method="POST">
-						<div class="card-header">
-							<h3 class="card-title">Add Customer Details</h3>
-							<input type="submit" value="Add" class="btn btn-primary" style="float: right;">
-						</div>
-						<div class="card-body">
-							<div class="row">
-								<div class="col-md-4">
-									<div class="form-group">
-										<label for="product_company">Product Company</label>
-										<input list="product_company" class="form-control" name="product_company" style="width: 60%;">
-										<?php
-										echo ("<datalist id='product_company'>");
-											foreach($name as $row){
-												echo "<option>".$row->firstname."</option>";
-											}
-											echo("</datalist>");
-										?>
-									</div>
-									<div class="form-group">
-										<label for="capacity">Capacity</label>
-										<input type="text" class="form-control" style="width: 30%;" id="capacity" name="capacity" placeholder="Enter Capacity">
-									</div>
-								</div>
-								<div class="col-md-4">
-									<div class="form-group">
-										<label for="product_type">Product Type</label>
-										<input list="product_type" class="form-control" name="product_type" style="width: 60%;">
-										<?php
-										echo ("<datalist id='product_type'>");
-											foreach($name as $row){
-												echo "<option>".$row->firstname."</option>";
-											}
-											echo("</datalist>");
-										?>
-									</div>
-									<div class="form-group">
-										<label for="rating">Rating</label>
-										<input type="text" class="form-control" style="width: 30%;" id="rating" name="rating" placeholder="Enter Rating">
-									</div>
-								</div>
-								<div class="col-md-4">
-									<div class="form-group">
-										<label for="model_no">Model No.</label>
-										<input type="text" class="form-control" style="width: 40%;" id="model_no" name="model_no" placeholder="Enter Model No.">
-									</div>									
-								</div>
-							</div>									
-						</div>
-					</form>               
-				</div>
-			</div>
-		</section>    
-	</div>
-			
-			<div class="wrapper tablepostion">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-12">
-							<div class="card">
-			
-								<!-- /.card-header -->
-								<div class="card-body">
-									<table id="example2" class="table table-bordered table-hover">
-										<thead>
-											<tr>
-												<th>Customer ID</th>
-												<th>Billing Name</th>
-												<th>First name</th>
-												<th>Last name</th>
-												<th>email</th>
-												<th>Contact No. 1</th>
-												<th>Contact No. 2</th>
-												<th>Place Type</th>
-												<th>Address</th>
-												<th>City</th>
-												<th>State</th>
-												<th>Pincode</th>
-												<th>Action</th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php
-											foreach ($data_customer as $stand) {
-												echo "<tr>";
-													echo "<td>".$stand->customerid."</td>";
-													echo "<td>".$stand->billingname."</td>";
-													echo "<td>".$stand->firstname."</td>";
-													echo "<td>".$stand->lastname."</td>";
-													echo "<td>".$stand->email."</td>";
-													echo "<td>".$stand->contactno1."</td>";
-													echo "<td>".$stand->contactno2."</td>";
-													echo "<td>".$stand->placetype."</td>";
-													echo "<td>".$stand->address."</td>";
-													echo "<td>".$stand->city."</td>";
-													echo "<td>".$stand->state."</td>";
-													echo "<td>".$stand->pincode."</td>";
-													echo "<td><div class='row w-size0'><a href='ViewCustomer.html?customer_id=" . $stand->customerid . "'class='w-size0 bg4 bo-rad-23 hov1 trans-0-4' style='border: none;'>View/Update</a></div></td>";
-													echo "</tr>";										 																		 											
-												}
-												?>
-											</tbody>
-											<tfoot>
-												<tr>
-													<th>Customer ID</th>
-													<th>Billing Name</th>
-													<th>First name</th>
-													<th>Last name</th>
-													<th>email</th>
-													<th>Contact No. 1</th>
-													<th>Contact No. 2</th>
-													<th>Place Type</th>
-													<th>Address</th>
-													<th>City</th>
-													<th>State</th>
-													<th>Pincode</th>
-													<th>Action</th>
-												</tr>
-											</tfoot>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-				<script src="Addcust_files/plugins/jquery/jquery.min.js"></script>
-				<!-- Bootstrap 4 -->
-				<script src="Addcust_files/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-				<!-- Select2 -->
-				<script src="Addcust_files/plugins/select2/js/select2.full.min.js"></script>
-				<!-- Bootstrap4 Duallistbox -->
-				<script src="Addcust_files/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-				<!-- InputMask -->
-				<script src="Addcust_files/plugins/moment/moment.min.js"></script>
-				<script src="Addcust_files/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
-				<!-- date-range-picker -->
-				<script src="Addcust_files/plugins/daterangepicker/daterangepicker.js"></script>
-				<!-- bootstrap color picker -->
-				<script src="Addcust_files/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-				<!-- Tempusdominus Bootstrap 4 -->
-				<script src="Addcust_files/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-				<!-- Bootstrap Switch -->
-				<script src="Addcust_files/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-				<!-- AdminLTE App -->
-				<script src="Addcust_files/dist/js/adminlte.min.js"></script>
-				<!-- AdminLTE for demo purposes -->
-				<script src="Addcust_files/dist/js/demo.js"></script>
-				<!-- Page script -->
-				<!--===============================================================================================-->
-				<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
-				<!--===============================================================================================-->
-				<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
-				<!--===============================================================================================-->
-				<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
-				<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
-				<!--===============================================================================================-->
-				<script src="js/main.js"></script>
-				<script src="../views/NavBar/NavBar.js"></script>
-				<!--===============================================================================================-->
-				<script>
-					$(function () {
-						$("#example1").DataTable({
-							"responsive": true,
-							"autoWidth": true,
-						});
-						$('#example2').DataTable({
-							"paging": true,
-							"lengthChange": true,
-							"searching": true,
-							"ordering": true,
-							"info": true,
-							"autoWidth": true,
-							"responsive": true,
-						});
-					});
-				</script>
-				<script>
-					$(document).ready(function(){
-						showNavBar(userid,firstname,lastname);
-						
-						$('.js-show-header-dropdown').on('click', function(){
-							$(this).parent().find('.header-dropdown')
-						});
-						
-						var menu = $('.js-show-header-dropdown');
-						var sub_menu_is_showed = -1;
-						
-						for(var i=0; i<menu.length; i++){
-							$(menu[i]).on('click', function(){ 
-								
-								if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
-									$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
-									sub_menu_is_showed = -1;
-								}
-								else {
-									for (var i = 0; i < menu.length; i++) {
-										$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
-									}
-									
-									$(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
-									sub_menu_is_showed = jQuery.inArray( this, menu );
-								}
-							});
-						}
-						
-						$(".js-show-header-dropdown, .header-dropdown").click(function(event){
-							event.stopPropagation();
-						});
-						
-						$(window).on("click", function(){
-							for (var i = 0; i < menu.length; i++) {
-								$(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
-							}
-							sub_menu_is_showed = -1;
-						});
-						
-						$("#add_customer_form").submit(function(){
-							console.log("INSIDE");
-							var add_customer_form=$(this);
-							var form_data=JSON.stringify(add_customer_form.serializeObject());
-							console.log(form_data);
-							$.ajax({
-								url: "http://localhost/SMS_WebApp/api/customer/create_customer.php",
-								type : "POST",
-								contentType : 'application/json',
-								data : form_data,
-								success : function(result){
-									$('#response').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Customer Added Successfully</div>");
-									setTimeout("window.location = 'http://localhost/SMS_WebApp/admin/index.html'",500);
-								},
-								error: function(xhr, status, error){
-									$('#response').html("<div class='alert alert-danger'>Unable to add new customer.</div>");
-									setTimeout("window.location = 'http://localhost/SMS_WebApp/admin/index.html'",500);
-								}
-							});
-							return false;
-						});
-						
-						$.fn.serializeObject = function(){	
-							var o = {};
-							var a = this.serializeArray();
-							$.each(a, function() {
-								if (o[this.name] !== undefined) {
-									if (!o[this.name].push) {
-										o[this.name] = [o[this.name]];
-									}
-									o[this.name].push(this.value || '');
-								} else {
-									o[this.name] = this.value || '';
-								}
-							});
-							return o;
-						};
-					});
-				</script>
-				
-			</body>
-			</html>
-			
+    <?php
+    $cookie_name = "jwt_token";
+    if(isset($_COOKIE[$cookie_name])) { 
+        echo "Cookie named '" . $cookie_name . "' is set!";
+        $jwt_token = $_COOKIE[$cookie_name]; 
+    } 
+    else{
+        header("Location: ../../index.html");
+        exit();
+    }		
+    
+    $myObj = (object)array();
+    $myObj->jwt = $jwt_token;
+    $myJSON = json_encode($myObj);
+    
+    $ch = curl_init();
+    
+    curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/employee/validate_token.php" );
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch, CURLOPT_POST,           1 );
+    curl_setopt($ch, CURLOPT_POSTFIELDS,     $myJSON ); 
+    curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    
+    $result=curl_exec ($ch);
+    $data = json_decode($result);
+    $userid = $data->data->userid;
+    $firstname = $data->data->firstname;
+    $lastname = $data->data->lastname;
+    
+    $inArray = (object)array();
+    $inArray->view = "Addcustomer";
+    $inJSON = json_encode($inArray);
+    
+    $ch = curl_init();
+    
+    curl_setopt($ch, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/dynamicviews/dropdownviews.php" );
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch, CURLOPT_POST,           1 );
+    curl_setopt($ch, CURLOPT_POSTFIELDS,     $inJSON ); 
+    curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    
+    $result1 =curl_exec ($ch);
+    $data = json_decode($result1);
+    $name = json_decode($data->name);
+    $place = json_decode($data->place);
+    
+    $myObj1 = (object)array();
+    $myObj1->customer_id = "1";
+    $myObj1->option = "2";
+    $myJSON1 = json_encode($myObj1);
+    
+    $ch1 = curl_init();
+    curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/customer/show_customers.php" );
+    curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch1, CURLOPT_POST,           1 );
+    curl_setopt($ch1, CURLOPT_POSTFIELDS,     $myJSON1 ); 
+    curl_setopt($ch1, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    $result1=curl_exec ($ch1);
+    $result1=curl_exec ($ch1);
+    $data_customer = json_decode($result1);
+    
+    $myObj1 = (object)array();
+    $myObj1->operation = "R";
+    $myJSON1 = json_encode($myObj1);
+    
+    $ch1 = curl_init();
+    curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/employee/RUD_employee.php" );
+    curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch1, CURLOPT_POST,           1 );
+    curl_setopt($ch1, CURLOPT_POSTFIELDS,     $myJSON1 ); 
+    curl_setopt($ch1, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    $result2=curl_exec ($ch1);
+    $result2=curl_exec ($ch1);
+    $data_employee = json_decode($result2);
+    
+    $myObj1 = (object)array();
+    $myObj1->operation = "R";
+    $myJSON1 = json_encode($myObj1);
+    
+    $ch1 = curl_init();
+    curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/product/CRUD_product.php" );
+    curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch1, CURLOPT_POST,           1 );
+    curl_setopt($ch1, CURLOPT_POSTFIELDS,     $myJSON1 ); 
+    curl_setopt($ch1, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    $result3=curl_exec ($ch1);
+    $result3=curl_exec ($ch1);
+    $data_product = json_decode($result3);
+    
+    $myObj1 = (object)array();
+    $myObj1->operation = "R";
+    $myJSON1 = json_encode($myObj1);
+    
+    $ch1 = curl_init();
+    curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/complaint/type/CRUD_complaint_type.php");
+    curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch1, CURLOPT_POST,           1 );
+    curl_setopt($ch1, CURLOPT_POSTFIELDS,     $myJSON1 ); 
+    curl_setopt($ch1, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    $result4=curl_exec ($ch1);
+    $result4=curl_exec ($ch1);
+    $data_complaint_type = json_decode($result4);
+
+    $myObj1 = (object)array();
+    $myObj1->operation = "R";
+    $myJSON1 = json_encode($myObj1);
+    
+    $ch1 = curl_init();
+    curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/mechanic/CRUD_mechanic.php");
+    curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch1, CURLOPT_POST,           1 );
+    curl_setopt($ch1, CURLOPT_POSTFIELDS,     $myJSON1 ); 
+    curl_setopt($ch1, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    $result5=curl_exec ($ch1);
+    $result5=curl_exec ($ch1);
+    $data_mechanic = json_decode($result5);
+    ?>
+    
+    <script>
+        var userid = "<?php echo($userid);?>";
+        var firstname = "<?php echo($firstname);?>";
+        var lastname = "<?php echo($lastname); ?>"; 
+    </script>
+    <div class="header1" id="navbar"></div>
+    <br><br>
+    <div class="wrapper">
+        <section class="content" id="product-section">
+            <div id="response-product"></div>
+            <div class="wrapper tablepostion3">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header row">
+                                    <div class="col-4">
+                                        Product Entries
+                                    </div>
+                                    <div class="col-2">
+                                        <button onclick="AddProduct();" class='flex-c-m size0 bg4 bo-rad-25 hov1 m-text3 trans-0-4' name="AddProduct" value="AddProduct" style="position: relative; left: 40px; width:70%;border: none;">Add Product
+                                        </button>			
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">                                    
+                                        <div class="card-body">   
+                                            <table id="example3" class="table table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Action</th>
+                                                        <th>Product ID</th>
+                                                        <th>Company Name</th>
+                                                        <th>Product Type</th>
+                                                        <th>Model No</th>
+                                                        <th>Capacity</th>
+                                                        <th>Rating</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+													<?php
+													if($data_product !=0){
+															foreach ($data_product as $stand) {
+															echo "<tr>";
+																echo '<td><div class="row w-size2"><a href="#" onclick="ViewUpdateProduct(\''.$stand->productid.'\',\''.$stand->productcompany.'\',\''.$stand->producttype.'\',\''.$stand->modelno.'\',\''.$stand->capacity.'\',\''.$stand->rating.'\');"class="w-size13" style="position: relative;color: white;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" onclick="DeleteProduct(\''.$stand->productid.'\',\''.$stand->modelno.'\');" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button></div></td>';
+																echo "<td>".$stand->productid."</td>";
+																echo "<td>".$stand->productcompany."</td>";
+																echo "<td>".$stand->producttype."</td>";
+																echo "<td>".$stand->modelno."</td>";
+																echo "<td>".$stand->capacity."</td>";
+																echo "<td>".$stand->rating."</td>";
+																echo "</tr>";										 																		 											
+															}
+														}
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>                           
+                                    <div id="product-form" class="col-6">
+                                        <form id="add_product_form" method="POST">
+                                        </form>
+                                        <form id="update_product_form" method="POST">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </section>
+            <section class="content" id="customer-section">
+                <div class="response-customer"></div>
+                <div class="wrapper tablepostion3">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Customer Entries
+                                    </div>                         
+                                    <div class="card-body">
+                                        <table id="example2" class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Action</th>
+                                                    <th>Customer ID</th>
+                                                    <th>Billing Name</th>
+                                                    <th>First name</th>
+                                                    <th>Last name</th>
+                                                    <th>email</th>
+                                                    <th>Contact No. 1</th>
+                                                    <th>Contact No. 2</th>
+                                                    <th>Place Type</th>
+                                                    <th>Address</th>
+                                                    <th>City</th>
+                                                    <th>State</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                foreach ($data_customer as $stand) {
+                                                    echo "<tr>";
+                                                        echo "<td><button class='delete-btn' style='position: relative;left: 20px;font-size: 20px;'><i class='fa fa-trash'> </i></button></td>";
+                                                        echo "<td>".$stand->customerid."</td>";
+                                                        echo "<td>".$stand->billingname."</td>";
+                                                        echo "<td>".$stand->firstname."</td>";
+                                                        echo "<td>".$stand->lastname."</td>";
+                                                        echo "<td>".$stand->email."</td>";
+                                                        echo "<td>".$stand->contactno1."</td>";
+                                                        echo "<td>".$stand->contactno2."</td>";
+                                                        echo "<td>".$stand->placetype."</td>";
+                                                        echo "<td>".$stand->address."</td>";
+                                                        echo "<td>".$stand->city."</td>";
+                                                        echo "<td>".$stand->state."</td>";
+                                                        echo "</tr>";										 																		 											
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>      
+                <section class="content" id="complaint-type-section">
+                    <div id="response-complaint-type"></div>
+                    <div class="wrapper tablepostion3">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header row">
+                                            <div class="col-3">
+                                                Complaint Type
+                                            </div>
+                                            <div class="col-3">
+                                                <button onclick="AddComplaintType();" class='flex-c-m size0 bg4 bo-rad-25 hov1 m-text3 trans-0-4' name="AddProduct" value="AddProduct" style="position: relative; left: 80px; width: 70%;border: none;">Add Complaint Type
+                                                </button>			
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">                                    
+                                                <div class="card-body">   
+                                                    <table id="example5" class="table table-bordered table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Action</th>
+                                                                <th>Complaint Type Id</th>
+                                                                <th>Complaint Type</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                                if($data_complaint_type !=0){
+                                                                    foreach ($data_complaint_type as $stand) {
+                                                                    echo "<tr>";
+                                                                        echo '<td><div class="row w-size2"><button onclick="ViewUpdateComplaintType(\''.$stand->complainttypeid.'\',\''.$stand->complainttype.'\');"class="w-size13" style="position: relative;color: white;border: none;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" onclick="DeleteComplaintType(\''.$stand->complainttypeid.'\');" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button></div></td>';
+                                                                        echo "<td>".$stand->complainttypeid."</td>";
+                                                                        echo "<td>".$stand->complainttype."</td>";
+                                                                        echo "</tr>";										 																		 											
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>                           
+                                            <div id="complainttype-form" class="col-6">
+                                                <form id="add_complaint_type_form" method="POST">
+                                                </form>
+                                                <form id="update_complaint_type_form" method="POST">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                            
+                </section>
+                <section class="content" id="mechanic-section">
+                    <div id="response-mechanic"></div>
+                    <div class="wrapper tablepostion3">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header row">
+                                            <div class="col-4">
+                                                Mechanic
+                                            </div>
+                                            <div class="col-2">
+                                                <button onclick="AddMechanic();" class='flex-c-m size0 bg4 bo-rad-25 hov1 m-text3 trans-0-4' name="AddProduct" value="AddProduct" style="position: relative; left: 20px;width:80%;border: none;">Add Mechanic
+                                                </button>	
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">                                    
+                                                <div class="card-body">   
+                                                    <table id="example6" class="table table-bordered table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Action</th>
+                                                                <th>Mechanic Id</th>
+                                                                <th>Mechanic Name</th>
+                                                                <th>Mechanic Age</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                                if($data_mechanic !=0){
+                                                                    foreach ($data_mechanic as $stand) {
+                                                                    echo "<tr>";
+                                                                        echo '<td><div class="row w-size2"><button onclick="ViewMechanic(\''.$stand->id.'\',\''.$stand->name.'\',\''.$stand->age.'\');"class="w-size13" style="position: relative;color: white;border: none;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" onclick="DeleteMechanic(\''.$stand->id.'\');" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button></div></td>';
+                                                                        echo "<td>".$stand->id."</td>";
+                                                                        echo "<td>".$stand->name."</td>";
+                                                                        echo "<td>".$stand->age."</td>";
+                                                                        echo "</tr>";										 																		 											
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>                           
+                                            <div id="mechanic-form" class="col-6">
+                                                <form id="add_mechanic_form" method="POST">
+                                                </form>
+                                                <form id="update_mechanic_form" method="POST">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                            
+                </section>
+                <section class="content" id="employee-section">
+                    <div id="response-employee"></div>
+                    <div class="wrapper tablepostion3">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Employee Entries
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">                 
+                                                <!-- /.card-header -->
+                                                <div class="card-body">
+                                                    <table id="example4" class="table table-bordered table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Action</th>
+                                                                <th>userid</th>
+                                                                <th>First name</th>
+                                                                <th>Last name</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                            $p = "'";
+                                                            foreach ($data_employee as $stand) {
+                                                                echo "<tr>";
+                                                                    echo '<td><div class="row w-size0"><button onclick="UpdateEmployee(\''.$stand->userid.'\',\''.$stand->firstname.'\',\''.$stand->lastname.'\');" class="w-size13" style="position: relative;color: white;height: 60%;width: 95%; left: 10px;background-color: DodgerBlue;border: none;"><center>Update</center></button><!--<button onclick="DeleteEmployee(\''.$stand->userid.'\');" class="delete-btn" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button>--></div></td>';
+                                                                    echo "<td>".$stand->userid."</td>";
+                                                                    echo "<td>".$stand->firstname."</td>";
+                                                                    echo "<td>".$stand->lastname."</td>";
+                                                                    echo "</tr>";										 																		 											
+                                                                }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div id="employee-form" class="col-6">
+                                                    <form id="update_employee_form" method="POST">
+                                                    </form>
+                                                </div>
+                                            </div>        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>    
+                <!--===============================================================================================-->
+                <script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+                <!--===============================================================================================-->
+                <script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+                <!--===============================================================================================-->
+                <script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
+                <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+                <!--===============================================================================================-->
+                <script src="js/main.js"></script>
+                <script src="../NavBar/NavBar.js"></script>
+                <!--===============================================================================================-->
+                <!-- jQuery -->
+                <script src="plugins/jquery/jquery.min.js"></script>
+                <!-- Bootstrap 4 -->
+                <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+                <!-- DataTables -->
+                <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+                <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+                <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+                <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+                <!-- AdminLTE App -->
+                <script src="dist/js/adminlte.min.js"></script>
+                <!-- AdminLTE for demo purposes -->
+                <script src="dist/js/demo.js"></script>
+                <!-- page script -->
+                <script>
+                    $(function () {
+                        $('#example2').DataTable({
+                            "paging": true,
+                            "lengthChange": true,
+                            "searching": true,
+                            "ordering": true,
+                            "info": true,
+                            "autoWidth": true,
+                            "responsive": true,
+                        });
+                        $('#example3').DataTable({
+                            "paging": true,
+                            "lengthChange": true,
+                            "searching": true,
+                            "ordering": true,
+                            "info": true,
+                            "autoWidth": true,
+                            "responsive": true,
+                        });
+                        
+                        $('#example4').DataTable({
+                            "paging": true,
+                            "lengthChange": true,
+                            "searching": true,
+                            "ordering": true,
+                            "info": true,
+                            "autoWidth": true,
+                            "responsive": true,
+                        });
+                        $('#example5').DataTable({
+                            "paging": true,
+                            "lengthChange": true,
+                            "searching": true,
+                            "ordering": true,
+                            "info": true,
+                            "autoWidth": true,
+                            "responsive": true,
+                        });
+                        $('#example6').DataTable({
+                            "paging": true,
+                            "lengthChange": true,
+                            "searching": true,
+                            "ordering": true,
+                            "info": true,
+                            "autoWidth": true,
+                            "responsive": true,
+                        });
+                    });
+                </script>
+                
+                <script type="text/javascript">
+                    var html1 = `
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_company">Product Company</label>
+                                <input list="product_company" class="form-control" name="product_company" style="width: 80%;">
+                                <?php
+                                echo ("<datalist id='product_company'>");
+                                    foreach($name as $row){
+                                        echo "<option>".$row->firstname."</option>";
+                                    }
+                                    echo("</datalist>");
+                                    ?>
+                                    <div class="form-group">
+                                        <label for="capacity">Capacity</label>
+                                        <input type="text" class="form-control" style="width: 50%;" id="capacity" name="capacity" placeholder="Enter Capacity">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model_no">Model No.</label>
+                                    <input type="text" class="form-control" style="width: 80%;" id="model_no" name="model_no" placeholder="Enter Model No.">
+                                </div>	                                								
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="product_type">Product Type</label>
+                                    <input list="product_type" class="form-control" name="product_type" style="width: 80%;">
+                                    <?php
+                                    echo ("<datalist id='product_type'>");
+                                        foreach($name as $row){
+                                            echo "<option>".$row->firstname."</option>";
+                                        }
+                                        echo("</datalist>");
+                                        ?>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="rating">Rating</label>
+                                        <input type="text" class="form-control" style="width: 50%;" id="rating" name="rating" placeholder="Enter Rating">
+                                    </div>
+                                    <input type="hidden" class="form-control" style="width:25%;" id="operation" value="C" name="operation">
+                                </div>
+                            </div>`;
+                            
+                            function AddProduct(){
+                                $("#add_product_form").html('');
+                                $("#update_product_form").html('');
+                                $("#add_product_form").html(html1);
+                            }
+                            function ViewUpdateProduct(productid,productcompany,producttype,modelno,capacity,rating){
+                                var html2 = `   <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="submit" value="Update" class="btn btn-primary" style="float: right;">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="product_id">Model No.</label>
+                                            <input type="text" class="form-control" style="width: 80%;" id="product_id" name="product_id" value="` + productid + `">
+                                        </div>	
+                                        <div class="form-group">
+                                            <label for="product_company">Product Company</label>
+                                            <input list="product_company" class="form-control" name="product_company" style="width: 80%;" value="` + productcompany + `">
+                                            <?php
+                                            echo ("<datalist id='product_company'>");
+                                                foreach($name as $row){
+                                                    echo "<option>".$row->firstname."</option>";
+                                                }
+                                                echo("</datalist>");
+                                                ?>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="capacity">Capacity</label>
+                                                <input type="text" class="form-control" style="width: 50%;" id="capacity" name="capacity" value="` + capacity + `">
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="model_no">Model No.</label>
+                                                <input type="text" class="form-control" style="width: 80%;" id="model_no" name="model_no" value="` + modelno + `">
+                                            </div>	
+                                            <div class="form-group">
+                                                <label for="product_type">Product Type</label>
+                                                <input list="product_type" class="form-control" name="product_type" style="width: 80%;" value="` + producttype + `">
+                                                <?php
+                                                echo ("<datalist id='product_type'>");
+                                                    foreach($name as $row){
+                                                        echo "<option>".$row->firstname."</option>";
+                                                    }
+                                                    echo("</datalist>");
+                                                    ?>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="rating">Rating</label>
+                                                    <input type="text" class="form-control" style="width: 50%;" id="rating" name="rating" value="` + rating + `">
+                                                    <input type="hidden" class="form-control" style="width:25%;" id="operation" value="U" name="operation">
+                                                </div>
+                                            </div>
+                                        </div>									
+                                        `;
+                                        
+                                        $("#update_product_form").html('');
+                                        $("#add_product_form").html('');
+                                        $("#update_product_form").html(html2);
+                                    }
+                                    
+                            function DeleteProduct(productid,modelno){
+                                console.log("Delete Product called "+ productid);
+                                var data = JSON.stringify({product_id: productid,model_no: modelno, operation:"D"});
+                                console.log(data);
+                                if(confirm("Are you sure you want to delete the Product?")){
+                                    
+                                    $.ajax({
+                                        url: "http://localhost/SMS_WebApp/api/product/CRUD_product.php",
+                                        type : "POST",
+                                        contentType : 'application/json',
+                                        data : data,
+                                        success : function(result){
+                                            $('#response-product').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Product Deleted Successfully</div>");
+                                            setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                                        },
+                                        error: function(xhr, status, error){
+                                            alert(error);
+                                            $('#response-product').html("<div class='alert alert-danger'>Unable to delete Product.</div>");
+                                            setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                                        }
+                                    });
+                                }
+                            }
+                            
+                            function DeleteCustomer(customer_id){
+                                var data = JSON.stringify({customerid: customer_id,operation:"D"});
+                                console.log(data);
+                                $.ajax({
+                                    url: "http://localhost/SMS_WebApp/api/employee/RUD_employee.php",
+                                    type : "POST",
+                                    contentType : 'application/json',
+                                    data : data,
+                                    success : function(result){
+                                        $('#response-customer').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Employee deleted Successfully</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                                    },
+                                    error: function(xhr, status, error){
+                                        alert(error);
+                                        $('#response-customer').html("<div class='alert alert-danger'>Unable to Employee.</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                                    }
+                                });
+                            }
+                            
+                            function DeleteEmployee(user_id){
+                                var data = JSON.stringify({userid: user_id,operation:"D"});
+                                console.log(data);
+                                $.ajax({
+                                    url: "http://localhost/SMS_WebApp/api/employee/RUD_employee.php",
+                                    type : "POST",
+                                    contentType : 'application/json',
+                                    data : data,
+                                    success : function(result){
+                                        $('#response-employee').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Employee deleted Successfully</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                                    },
+                                    error: function(xhr, status, error){
+                                        alert(error);
+                                        $('#response-employee').html("<div class='alert alert-danger'>Unable to Employee.</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                                    }
+                                });
+                            }
+                            
+                            function DeleteComplaintType(complainttypeid){
+                                var data = JSON.stringify({complaint_type_id: complainttypeid,operation:"D"});
+                                console.log(data);
+                                $.ajax({
+                                    url: "http://localhost/SMS_WebApp/api/complaint/type/CRUD_complaint_type.php",
+                                    type : "POST",
+                                    contentType : 'application/json',
+                                    data : data,
+                                    success : function(result){
+                                        $('#response-complaint-type').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Complaint Type Deleted</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                                    },
+                                    error: function(xhr, status, error){
+                                        alert(error);
+                                        $('#response-complaint-type').html("<div class='alert alert-danger'>Unable to Delete Complaint Type.</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                                    }
+                                });
+                            }
+                            
+                            function UpdateEmployee(user_id,first_name,last_name){                                        var html3 = ` <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="submit" value="Update" class="btn btn-primary" style="float: right;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="userid">User ID</label>
+                                            <input type="text" class="form-control" style="width: 100%;" id="userid" readonly name="userid" value="` + user_id + `">
+                                        </div>	
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="firstname">First Name</label>
+                                            <input type="text" class="form-control" style="width: 80%;" id="firstname" name="firstname" value="` + first_name + `">
+                                        </div>	
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="lastname">Last Name</label>
+                                            <input type="text" class="form-control" style="width: 80%;" id="lastname" name="lastname" value="` + last_name + `">
+                                            <input type="hidden" class="form-control" style="width:25%;" id="operation" value="U" name="operation">
+                                        </div>	
+                                    </div>
+                                </div>`;       
+                                $("#update_employee_form").html('');
+                                $("#update_employee_form").html(html3);
+                            }
+                        
+                            function AddComplaintType(){
+                                var html = `<br>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label for="complaint_type">Complaint Type</label>
+                                                    <input type="text" class="form-control" style="width: 120%;" id="complaint_type" name="complaint_type" placeholder="Enter Complaint Type">
+                                                    <input type="hidden" class="form-control" style="width:25%;" id="operation" value="C" name="operation">
+                                                </div>	                                								
+                                            </div>
+                                            `;
+
+                                $('#add_complaint_type_form').html('');
+                                $('#update_complaint_type_form').html('');
+                                $('#add_complaint_type_form').html(html);
+                    
+                            }
+
+                            function AddMechanic(){                                        
+                                var html3 = ` <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="firstname">Name</label>
+                                            <input type="text" class="form-control" style="width: 80%;" id="name" name="name" placeholder="Enter Mechanic Name">
+                                        </div>	
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="lastname">Age</label>
+                                            <input type="number" class="form-control" style="width: 80%;" id="age" name="age" placeholder="Enter Age">
+                                            <input type="hidden" class="form-control" style="width:25%;" id="operation" value="C" name="operation">
+                                        </div>	
+                                    </div>
+                                </div>`;       
+                                $("#add_mechanic_form").html('');
+                                $("#update_mechanic_form").html('');
+                                $("#add_mechanic_form").html(html3);
+                            }
+
+                            function ViewMechanic(id,name,age){                                        
+                                var html3 = ` <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="submit" value="Update" class="btn btn-primary" style="float: right;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="userid">ID</label>
+                                            <input type="text" class="form-control" style="width: 100%;" id="mechanicid" readonly name="mechanicid" value="` + id + `">
+                                        </div>	
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="firstname">Name</label>
+                                            <input type="text" class="form-control" style="width: 80%;" id="name" name="name" value="` + name + `">
+                                        </div>	
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="lastname">Age</label>
+                                            <input type="number" class="form-control" style="width: 80%;" id="age" name="age" value="` + age + `">
+                                            <input type="hidden" class="form-control" style="width:25%;" id="operation" value="U" name="operation">
+                                        </div>	
+                                    </div>
+                                </div>`;       
+                                $("#update_mechanic_form").html('');
+                                $("#add_mechanic_form").html('');
+                                $("#update_mechanic_form").html(html3);
+                            }
+
+                            function DeleteMechanic(id){
+                                var form_data = JSON.stringify({mechanicid: id,operation:"D"});
+                                console.log(form_data);
+                                $.ajax({
+                                    url: "http://localhost/SMS_WebApp/api/mechanic/CRUD_mechanic.php",
+                                    type : "POST",
+                                    contentType : 'application/json',
+                                    data : form_data,
+                                    success : function(result){
+                                        $('#response-mechanic').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Mechanic Deleted</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                                    },
+                                    error: function(xhr, status, error){
+                                        $('#response-mechanic').html("<br><br><div class='alert alert-danger'>Unable to Delete Mechanic.</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                                    }
+                                });                  
+                            }
+            </script>
+                                
+            <script>
+                $(document).ready(function(){
+                    showNavBar(userid,firstname,lastname);
+                    
+                    $('.js-show-header-dropdown').on('click', function(){
+                        $(this).parent().find('.header-dropdown')
+                    });
+                    
+                    var menu = $('.js-show-header-dropdown');
+                    var sub_menu_is_showed = -1;
+                    
+                    for(var i=0; i<menu.length; i++){
+                        $(menu[i]).on('click', function(){ 
+                            
+                            if(jQuery.inArray( this, menu ) == sub_menu_is_showed){
+                                $(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+                                sub_menu_is_showed = -1;
+                            }
+                            else {
+                                for (var i = 0; i < menu.length; i++) {
+                                    $(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+                                }
+                                
+                                $(this).parent().find('.header-dropdown').toggleClass('show-header-dropdown');
+                                sub_menu_is_showed = jQuery.inArray( this, menu );
+                            }
+                        });
+                    }
+                    
+                    $(".js-show-header-dropdown, .header-dropdown").click(function(event){
+                        event.stopPropagation();
+                    });
+                    
+                    $(window).on("click", function(){
+                        for (var i = 0; i < menu.length; i++) {
+                            $(menu[i]).parent().find('.header-dropdown').removeClass("show-header-dropdown");
+                        }
+                        sub_menu_is_showed = -1;
+                    });
+                    
+                    $("#add_product_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/product/CRUD_product.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-product').html("<br><br><div class='alert alert-success' style='postion:absolute; bottom:0px;'> Product Added Successfully</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                //alert(error);
+                                $('#response-product').html("<br><br><div class='alert alert-danger'>Unable to add Product.</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+                    
+                    $("#update_product_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/product/CRUD_product.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-product').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Product Updated Successfully</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                //alert(error);
+                                $('#response-product').html("<div class='alert alert-danger'>Unable to update Product.</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+                    
+                    $("#update_employee_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/employee/RUD_employee.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-employee').html("<div class='alert alert-success' style='postion: relative; bottom:0px;top: 10px'>Employee Updated Successfully</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                //alert(error);
+                                $('#response-employee').html("<div class='alert alert-danger'>Unable to update Employee.</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+                    
+                    $("#add_complaint_type_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/complaint/type/CRUD_complaint_type.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-complaint-type').html("<div class='alert alert-success' style='postion: relative; bottom:0px;top: 10px'>Complaint Type Added Successfully</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                //alert(error);
+                                $('#response-complaint-type').html("<div class='alert alert-danger'>Unable to Add Complaint Type.</div>");
+                                //setTimeout("window.location = 'http://localhost/SMS_WebApp/view/admin/index.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+                    $("#add_mechanic_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/mechanic/CRUD_mechanic.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-mechanic').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>Mechanic Updated</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                //alert(error);
+                                $('#response-mechanic').html("<div class='alert alert-danger'>Unable to Update Mechanic.</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+                    
+                    $("#update_mechanic_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/mechanic/CRUD_mechanic.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-mechanic').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> Mechanic Updated</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                //alert(error);
+                                $('#response-mechanic').html("<div class='alert alert-danger'>Unable to update Mechanic.</div>");
+//                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+
+                    $.fn.serializeObject = function(){	
+                        var o = {};
+                        var a = this.serializeArray();
+                        $.each(a, function() {
+                            if (o[this.name] !== undefined) {
+                                if (!o[this.name].push) {
+                                    o[this.name] = [o[this.name]];
+                                }
+                                o[this.name].push(this.value || '');
+                            } else {
+                                o[this.name] = this.value || '';
+                            }
+                        });
+                        return o;
+                    };
+                });
+            </script>
+        </body>
+    </html>
+        
