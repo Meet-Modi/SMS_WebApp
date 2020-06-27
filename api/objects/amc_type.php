@@ -11,12 +11,11 @@
             $this->conn = $db;
         }
 
-        function AmcType(){
+        function createAmcType(){
             $this->amc_type=htmlspecialchars(strip_tags($this->amc_type));
-            $this->amc_type_id=htmlspecialchars(strip_tags($this->amc_type_id));
 
-            $query = "INSERT INTO amc_type(amctypeid, amctype) VALUES ";
-            $query .= "('".$this->amc_type."','".$this->amc_type_id."')";
+            $query = "INSERT INTO amc_type(amctype) VALUES ";
+            $query .= "('".$this->amc_type."')";
             if($this->conn->query($query) === TRUE){
                 return true;
             }
@@ -26,7 +25,7 @@
         }
 
         public static function getAllAmcTypes($db){
-            $query = "SELECT amctype FROM amc_type";
+            $query = "SELECT * FROM amc_type";
             $result = $db->query($query);
             $output = array();
             while($row = $result->fetch_assoc()) {			
@@ -92,6 +91,6 @@
                 return false;
             }          
         }
-    }
+    }   
 
 ?>

@@ -165,6 +165,20 @@
     $result5=curl_exec ($ch1);
     $result5=curl_exec ($ch1);
     $data_mechanic = json_decode($result5);
+
+    $myObj1 = (object)array();
+    $myObj1->operation = "R";
+    $myJSON1 = json_encode($myObj1);
+    
+    $ch1 = curl_init();
+    curl_setopt($ch1, CURLOPT_URL,            "http://localhost/SMS_WebApp/api/amc/type/CRUD_AmcType.php" );
+    curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1 );
+    curl_setopt($ch1, CURLOPT_POST,           1 );
+    curl_setopt($ch1, CURLOPT_POSTFIELDS,     $myJSON1 ); 
+    curl_setopt($ch1, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
+    $result4=curl_exec ($ch1);
+    $result4=curl_exec ($ch1);
+    $data_amc_type = json_decode($result4);
     ?>
     
     <script>
@@ -294,7 +308,63 @@
                             </div>
                         </div>
                     </div>
-                </section>      
+                </section> 
+                <section class="content" id="amc-type-section">
+                    <div id="response-amc-type"></div>
+                    <div class="wrapper tablepostion3">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header row">
+                                            <div class="col-3">
+                                                AMC Type
+                                            </div>
+                                            <div class="col-3">
+                                                <button onclick="AddAMCType();" class='flex-c-m size0 bg4 bo-rad-25 hov1 m-text3 trans-0-4' name="AddProduct" value="AddProduct" style="position: relative; left: 80px; width: 70%;border: none;">Add AMC Type
+                                                </button>			
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">                                    
+                                                <div class="card-body">   
+                                                    <table id="example7" class="table table-bordered table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Action</th>
+                                                                <th>AMC Type Id</th>
+                                                                <th>AMC Type</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                                if($data_amc_type !=0){
+                                                                    foreach ($data_amc_type as $stand) {
+                                                                    echo "<tr>";
+                                                                        echo '<td><div class="row w-size2"><button onclick="ViewUpdateAMCType(\''.$stand->amctypeid.'\',\''.$stand->amctype.'\');"class="w-size13" style="position: relative;color: white;border: none;height: 60%; left: 10px;background-color: DodgerBlue;"><center>Update</center></a><button class="delete-btn" onclick="DeleteAmcType(\''.$stand->amctypeid.'\');" style="position: relative;left: 20px;"><i class="fa fa-trash"> </i></button></div></td>';
+                                                                        echo "<td>".$stand->amctypeid."</td>";
+                                                                        echo "<td>".$stand->amctype."</td>";
+                                                                        echo "</tr>";										 																		 											
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>                           
+                                            <div id="amctype-form" class="col-6">
+                                                <form id="add_amc_type_form" method="POST">
+                                                </form>
+                                                <form id="update_amc_type_form" method="POST">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                            
+                </section>     
                 <section class="content" id="complaint-type-section">
                     <div id="response-complaint-type"></div>
                     <div class="wrapper tablepostion3">
@@ -502,7 +572,6 @@
                             "paging": true,
                             "lengthChange": true,
                             "searching": true,
-                            "ordering": true,
                             "info": true,
                             "autoWidth": true,
                             "responsive": true,
@@ -510,6 +579,7 @@
                         
                         $('#example4').DataTable({
                             "paging": true,
+                            "ordering": true,
                             "lengthChange": true,
                             "searching": true,
                             "ordering": true,
@@ -527,6 +597,15 @@
                             "responsive": true,
                         });
                         $('#example6').DataTable({
+                            "paging": true,
+                            "lengthChange": true,
+                            "searching": true,
+                            "ordering": true,
+                            "info": true,
+                            "autoWidth": true,
+                            "responsive": true,
+                        });
+                        $('#example7').DataTable({
                             "paging": true,
                             "lengthChange": true,
                             "searching": true,
@@ -778,6 +857,31 @@
                                 $("#update_employee_form").html(html3);
                             }
                         
+                            function AddAMCType(){
+                                var html = `<br>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <input type="submit" value="Add" class="btn btn-primary" style="float: right;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label for="amc_type">AMC Type</label>
+                                                    <input type="text" class="form-control" style="width: 120%;" id="amc_type" name="amc_type" placeholder="Enter AMC Type">
+                                                    <input type="hidden" class="form-control" style="width:25%;" id="operation" value="C" name="operation">
+                                                </div>	                                								
+                                            </div>
+                                            `;
+
+                                $('#add_amc_type_form').html('');
+                                $('#update_amc_type_form').html('');
+                                $('#add_amc_type_form').html(html);
+                    
+                            }
+
                             function AddComplaintType(){
                                 var html = `<br>
                                             <div class="row">
@@ -801,6 +905,35 @@
                                 $('#update_complaint_type_form').html('');
                                 $('#add_complaint_type_form').html(html);
                     
+                            }
+
+                            function ViewUpdateAMCType(id,type){                                        
+                                var html3 = ` <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="submit" value="Update" class="btn btn-primary" style="float: right;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="amc_type_id">AMC Type ID</label>
+                                            <input type="text" class="form-control" style="width: 100%;" id="amc_type_id" readonly name="amc_type_id" value="` + id + `">
+                                        </div>	
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="amc_type">AMC Type</label>
+                                            <input type="text" class="form-control" style="width: 80%;" id="amc_type" name="amc_type" value="` + type + `">
+                                            <input type="hidden" class="form-control" style="width:25%;" id="operation" value="U" name="operation">
+                                        </div>	
+                                    </div>
+                                </div>`;       
+                                $("#update_amc_type_form").html('');
+                                $("#add_amc_type_form").html('');
+                                $("#update_amc_type_form").html(html3);
                             }
 
                             function AddMechanic(){                                        
@@ -884,6 +1017,25 @@
                                     error: function(xhr, status, error){
                                         $('#response-mechanic').html("<br><br><div class='alert alert-danger'>Unable to Delete Mechanic.</div>");
                                         setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                                    }
+                                });                  
+                            }
+
+                            function DeleteAmcType(id){
+                                var form_data = JSON.stringify({amc_type_id: id,operation:"D"});
+                                console.log(form_data);
+                                $.ajax({
+                                    url: "http://localhost/SMS_WebApp/api/amc/type/CRUD_AmcType.php",
+                                    type : "POST",
+                                    contentType : 'application/json',
+                                    data : form_data,
+                                    success : function(result){
+                                        $('#response-amc-type').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>AMC Type Deleted</div>");
+                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                                    },
+                                    error: function(xhr, status, error){
+                                        $('#response-amc-type').html("<br><br><div class='alert alert-danger'>Unable to Delete AMC Type.</div>");
+//                                        setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
                                     }
                                 });                  
                             }
@@ -1061,6 +1213,51 @@
                                 //alert(error);
                                 $('#response-mechanic').html("<div class='alert alert-danger'>Unable to update Mechanic.</div>");
 //                                                    setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+
+                    $("#add_amc_type_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/amc/type/CRUD_AmcType.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-amc-type').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'>AMC Type Updated</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                //alert(error);
+                                $('#response-amc-type').html("<div class='alert alert-danger'>Unable to Update AMC Type.</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            }
+                        });
+                        return false;
+                    });
+                    
+                    $("#update_amc_type_form").submit(function(){
+                        var add_customer_form=$(this);
+                        var form_data=JSON.stringify(add_customer_form.serializeObject());
+                        console.log(form_data);
+                        $.ajax({
+                            url: "http://localhost/SMS_WebApp/api/amc/type/CRUD_AmcType.php",
+                            type : "POST",
+                            contentType : 'application/json',
+                            data : form_data,
+                            success : function(result){
+                                //alert("product added");
+                                $('#response-amc-type').html("<div class='alert alert-success' style='postion:absolute; bottom:0px;'> AMC Type Updated</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
+                            },
+                            error: function(xhr, status, error){
+                                $('#response-amc-type').html("<div class='alert alert-danger'>Unable to update AMC Type.</div>");
+                                setTimeout("window.location = 'http://localhost/SMS_WebApp/views/admin/index.html'",1000);
                             }
                         });
                         return false;
