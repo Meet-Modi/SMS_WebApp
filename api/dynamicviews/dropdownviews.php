@@ -48,12 +48,19 @@ switch($data->view){
         $data = json_decode($data);
         $json_array = array();
         foreach ($data as $row){
-            $query = "SELECT amcid FROM amc WHERE customerid = '". $row->customerid."'";
+            $query = "SELECT amcid,fromdate,period FROM amc WHERE customerid = '". $row->customerid."'";
             $result = $db->query($query);
             $output = array();
             if($result->num_rows>0) {
                 while($row1 = $result->fetch_assoc()) {
-                    $output[] = $row1['amcid'];
+                    $from_date = $row1['fromdate'];
+                    $period = $row1['period'];
+                    $end_date = date("Y-m-d", strtotime($from_date." +".$period." years"));
+                    $end_date = date("Y-m-d", strtotime($end_date." - 1 days"));
+                    $today_date = date("Y-m-d");
+                    if($today_date <= $end_date){
+                        $output[] = $row1['amcid'];
+                    }
                 }
             }
             $json_array[$row->billingname] = $output;            
