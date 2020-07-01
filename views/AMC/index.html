@@ -102,6 +102,7 @@
 											<th>AMC Type</th>
 											<th>From Date</th>
 											<th>Period (in years)</th>
+											<th>Status</th>
 											<th>Quantity</th>
 											<th>No. of Services</th>
 											<th>Amount</th>
@@ -113,6 +114,9 @@
 										if($data_AMC!=0){
 											foreach ($data_AMC as $stand) {
 												// Output a row
+												$end_date = date("Y-m-d", strtotime($stand->fromdate." +".$stand->period." years"));
+												$end_date = date("Y-m-d", strtotime($end_date." - 1 days"));
+												$today_date = date("Y-m-d");
 												echo "<tr>";
 												echo "<td>".$stand->amcid."</td>";
 												echo "<td>".$stand->customerid."</td>";
@@ -120,6 +124,11 @@
 												echo "<td>".$stand->amctype."</td>";
 												echo "<td>".$stand->fromdate."</td>";
 												echo "<td>".$stand->period."</td>";
+												if($today_date <= $end_date){
+													echo "<td>Running</td>";
+												}else {
+													echo "<td>Expired</td>";
+												}
 												echo "<td>".$stand->quantity."</td>";
 												echo "<td>".$stand->totalservices."</td>";
 												echo "<td>".$stand->amount."</td>";
@@ -137,6 +146,7 @@
 												<th>AMC Type</th>
 												<th>From Date</th>
 												<th>Period (in years)</th>
+												<th>Status</th>												
 												<th>Quantity</th>
 												<th>No. of Services</th>
 												<th>Amount</th>
